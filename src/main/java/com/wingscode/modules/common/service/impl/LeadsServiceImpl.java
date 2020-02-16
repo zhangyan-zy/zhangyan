@@ -9,6 +9,7 @@ import com.wingscode.modules.common.dao.LeadsDao;
 import com.wingscode.modules.common.entity.LeadsEntity;
 import com.wingscode.modules.common.service.LeadsService;
 import com.wingscode.modules.sys.service.SysUserService;
+import com.wingscode.util.MyTimeUtil;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,11 +60,43 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
     @Override
     public PageUtils listByCustomer(Map<String, Object> params, Long parentId) {
         String username = (String) params.get("name");
+        int amount1 = Integer.valueOf(String.valueOf(params.get("amount1")));
+        int amount2 = Integer.valueOf(String.valueOf(params.get("amount2")));
+        String date1 = (String) params.get("date1");
+        String date2 = (String) params.get("date2");
         IPage<LeadsEntity> page = this.page(
                 new Query<LeadsEntity>().getPage(params),
                 new QueryWrapper<LeadsEntity>()
                         .like(StringUtils.isNotBlank(username), "name", username)
                         .eq("parent_id", parentId)
+                        .ge(amount1 != 0, "amount", amount1)
+                        .le(amount2 != 0, "amount", amount2)
+                        .ge(!StringUtils.isEmpty(date1), "gmt_creat", date1)
+                        .le(!StringUtils.isEmpty(date2), "gmt_creat", MyTimeUtil.addDay(date2, 1))
+                        .orderByDesc("id")
+        );
+        for (LeadsEntity leadsEntity : page.getRecords()) {
+            leadsEntity.setDisposeUserName(sysUserService.getById(leadsEntity.getDisposeUser()).getUsername());
+        }
+        return new PageUtils(page);
+    }
+
+    @Override
+    public PageUtils listByAdmin(Map<String, Object> params, Long parentId) {
+        String username = (String) params.get("name");
+        int amount1 = Integer.valueOf(String.valueOf(params.get("amount1")));
+        int amount2 = Integer.valueOf(String.valueOf(params.get("amount2")));
+        String date1 = (String) params.get("date1");
+        String date2 = (String) params.get("date2");
+        IPage<LeadsEntity> page = this.page(
+                new Query<LeadsEntity>().getPage(params),
+                new QueryWrapper<LeadsEntity>()
+                        .like(StringUtils.isNotBlank(username), "name", username)
+                        .eq("parent_id", parentId)
+                        .ge(amount1 != 0, "amount", amount1)
+                        .le(amount2 != 0, "amount", amount2)
+                        .ge(!StringUtils.isEmpty(date1), "gmt_creat", date1)
+                        .le(!StringUtils.isEmpty(date2), "gmt_creat", MyTimeUtil.addDay(date2, 1))
                         .orderByDesc("id")
         );
         for (LeadsEntity leadsEntity : page.getRecords()) {

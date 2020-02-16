@@ -58,6 +58,13 @@ public class LeadsController extends AbstractController {
         return R.ok().put("page", page);
     }
 
+    @RequestMapping("/listByAdmin")
+    @RequiresPermissions("leads:list")
+    public R listByAdmin(@RequestParam Map<String, Object> params) {
+        PageUtils page = leadsService.listByAdmin(params, Long.parseLong((String) params.get("parentId")));
+        return R.ok().put("page", page);
+    }
+
     /**
      * 列表
      */
@@ -113,6 +120,9 @@ public class LeadsController extends AbstractController {
             leadsLogEntity.setStatus(leadsEntity.getStatus());
             leadsLogEntity.setStatusOld(leadsEntity_old.getStatus());
             leadsLogService.save(leadsLogEntity);
+        }
+        if (leadsEntity.getStatus() == 3) {
+            leadsEntity.setFriends(1);
         }
         leadsEntity.setGmtModified(new Date());
         leadsEntity.setParentId(leadsEntity_old.getParentId());

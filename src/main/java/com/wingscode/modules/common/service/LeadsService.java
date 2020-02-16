@@ -21,6 +21,8 @@ public interface LeadsService extends IService<LeadsEntity> {
 
     PageUtils listByCustomer(Map<String, Object> params, Long parentId);
 
+    PageUtils listByAdmin(Map<String, Object> params, Long parentId);
+
     PageUtils waitList(Map<String, Object> params, Long workerId);
 
 }
