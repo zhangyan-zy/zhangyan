@@ -1,12 +1,41 @@
 <template>
   <div class="mod-user">
+
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
+      <el-select v-model="coustomerId" filterable placeholder="请选择客户">
+        <el-option
+          v-for="item in coustomerList"
+          :key="item.userId"
+          :label="item.username"
+          :value="item.userId">
+        </el-option>
+      </el-select>
       <el-form-item>
-        <el-input v-model="dataForm.userName" placeholder="客户名称" clearable></el-input>
+        <el-input v-model="dataForm.userName" placeholder="Leads名称" clearable></el-input>
+      </el-form-item>
+      <el-form-item label="金额范围">
+        <el-input-number :controls="false" min="0" v-model="dataForm.ammount1" placeholder="金额"
+                         clearable></el-input-number>
+      </el-form-item>
+      <el-form-item>
+        ~
+      </el-form-item>
+      <el-form-item>
+        <el-input-number :controls="false" min="0" v-model="dataForm.ammount2" placeholder="金额"
+                         clearable></el-input-number>
+      </el-form-item>
+      <el-form-item>
+        <el-date-picker
+          v-model="dataForm.date"
+          type="daterange"
+          value-format="yyyy-MM-dd"
+          range-separator="——"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期">
+        </el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button type="primary" @click="addOrUpdateHandle()">新增</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -34,6 +63,12 @@
         label="客户微信">
       </el-table-column>
       <el-table-column
+        prop="amount"
+        header-align="center"
+        align="center"
+        label="金额">
+      </el-table-column>
+      <el-table-column
         prop="need"
         header-align="center"
         align="center"
@@ -42,12 +77,6 @@
           <el-tag v-if="scope.row.need === 0" size="small">没意向</el-tag>
           <el-tag v-if="scope.row.need === 1" size="small">有意向</el-tag>
         </template>
-      </el-table-column>
-      <el-table-column
-        prop="remark"
-        header-align="center"
-        align="center"
-        label="备注">
       </el-table-column>
       <el-table-column
         prop="status"
@@ -62,6 +91,18 @@
           <el-tag v-if="scope.row.status === 4" size="small">已成单</el-tag>
           <el-tag v-if="scope.row.status === 5" size="small">未成单</el-tag>
         </template>
+      </el-table-column>
+      <el-table-column
+        prop="remark"
+        header-align="center"
+        align="center"
+        label="备注">
+      </el-table-column>
+      <el-table-column
+        prop="disposeUserName"
+        header-align="center"
+        align="center"
+        label="操作人">
       </el-table-column>
       <el-table-column
         prop="gmtCreat"
@@ -91,7 +132,7 @@
       :total="totalPage"
       layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
-    <!-- 弹窗, 新增 / 修改 -->
+    <!-- 弹窗,  -->
     <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate"
                    @refreshDataList="getDataList"></add-or-update>
   </div>
@@ -103,8 +144,13 @@
   export default {
     data () {
       return {
+        coustomerList: [],
+        coustomerId: '',
         dataForm: {
-          userName: ''
+          userName: '',
+          ammount1: '',
+          ammount2: '',
+          date: []
         },
         dataList: [],
         pageIndex: 1,
@@ -119,30 +165,51 @@
       AddOrUpdate
     },
     activated () {
+      this.getCoustomerList()
       this.getDataList()
     },
     methods: {
       // 获取数据列表
-      getDataList () {
-        this.dataListLoading = true
+      getCoustomerList () {
         this.$http({
-          url: this.$http.adornUrl('/common/leads/listByWorker'),
+          url: this.$http.adornUrl('/common/account/coustomer'),
           method: 'get',
-          params: this.$http.adornParams({
-            'page': this.pageIndex,
-            'limit': this.pageSize,
-            'name': this.dataForm.userName
-          })
+          params: this.$http.adornParams({})
         }).then(({data}) => {
           if (data && data.code === 0) {
-            this.dataList = data.page.list
-            this.totalPage = data.page.totalCount
-          } else {
-            this.dataList = []
-            this.totalPage = 0
+            this.coustomerList = data.user
           }
-          this.dataListLoading = false
         })
+      },
+      getDataList () {
+        if (this.dataForm.ammount1 > this.dataForm.ammount2) {
+          this.$message.error('请输入正确的金额范围')
+        } else {
+          this.dataListLoading = true
+          this.$http({
+            url: this.$http.adornUrl('/common/leads/listByAdmin'),
+            method: 'get',
+            params: this.$http.adornParams({
+              'page': this.pageIndex,
+              'limit': this.pageSize,
+              'amount1': this.dataForm.ammount1,
+              'amount2': this.dataForm.ammount2,
+              'date1': this.dataForm.date ? this.dataForm.date[0] : '',
+              'date2': this.dataForm.date ? this.dataForm.date[1] : '',
+              'parentId': this.coustomerId,
+              'name': this.dataForm.userName
+            })
+          }).then(({data}) => {
+            if (data && data.code === 0) {
+              this.dataList = data.page.list
+              this.totalPage = data.page.totalCount
+            } else {
+              this.dataList = []
+              this.totalPage = 0
+            }
+            this.dataListLoading = false
+          })
+        }
       },
       // 每页数
       sizeChangeHandle (val) {

@@ -5,6 +5,15 @@
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm"
              @keyup.enter.native="dataFormSubmit()" label-width="80px">
+      <el-form-item label="客户名称" prop="name">
+        <el-input v-model="dataForm.name" placeholder="客户名称"></el-input>
+      </el-form-item>
+      <el-form-item label="客户电话" prop="phone">
+        <el-input v-model="dataForm.phone" @change="updateWebChat" placeholder="客户电话"></el-input>
+      </el-form-item>
+      <el-form-item label="客户微信" prop="webchat">
+        <el-input v-model="dataForm.webchat" placeholder="客户微信"></el-input>
+      </el-form-item>
       <el-form-item label="状态" prop="amount">
         <el-select v-model="dataForm.status" placeholder="请选择">
           <el-option
@@ -69,6 +78,9 @@
         isNeed: false,
         dataForm: {
           id: 0,
+          name: '',
+          phone: '',
+          webchat: '',
           amount: '',
           status: '',
           statusRemark: '',
@@ -91,6 +103,9 @@
             params: this.$http.adornParams()
           }).then(({data}) => {
             if (data && data.code === 0) {
+              this.dataForm.name = data.leads.name
+              this.dataForm.phone = data.leads.phone
+              this.dataForm.webchat = data.leads.webchat
               this.dataForm.amount = data.leads.amount
               this.dataForm.status = data.leads.status
               this.dataForm.remark = data.leads.remark
@@ -113,6 +128,9 @@
               method: 'post',
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
+                'name': this.dataForm.name,
+                'phone': this.dataForm.phone,
+                'webchat': this.dataForm.webchat,
                 'amount': this.dataForm.amount,
                 'status': this.dataForm.status,
                 'need': this.isNeed ? 1 : 0,

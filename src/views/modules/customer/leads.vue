@@ -4,6 +4,27 @@
       <el-form-item>
         <el-input v-model="dataForm.userName" placeholder="客户名称" clearable></el-input>
       </el-form-item>
+      <el-form-item label="金额范围">
+        <el-input-number :controls="false" min="0" v-model="dataForm.ammount1" placeholder="金额"
+                         clearable></el-input-number>
+      </el-form-item>
+      <el-form-item>
+        ~
+      </el-form-item>
+      <el-form-item>
+        <el-input-number :controls="false" min="0" v-model="dataForm.ammount2" placeholder="金额"
+                         clearable></el-input-number>
+      </el-form-item>
+      <el-form-item>
+        <el-date-picker
+          v-model="dataForm.date"
+          type="daterange"
+          value-format="yyyy-MM-dd"
+          range-separator="——"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期">
+        </el-date-picker>
+      </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
       </el-form-item>
@@ -39,13 +60,13 @@
         label="金额">
       </el-table-column>
       <el-table-column
-        prop="friends"
+        prop="need"
         header-align="center"
         align="center"
-        label="是否加好友">
+        label="是否意向">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.friends === 0" size="small" type="danger">未加好友</el-tag>
-          <el-tag v-if="scope.row.friends === 1" size="small">已加好友</el-tag>
+          <el-tag v-if="scope.row.need === 0" size="small">没意向</el-tag>
+          <el-tag v-if="scope.row.need === 1" size="small">有意向</el-tag>
         </template>
       </el-table-column>
       <el-table-column
@@ -115,7 +136,10 @@
     data () {
       return {
         dataForm: {
-          userName: ''
+          userName: '',
+          ammount1: '',
+          ammount2: '',
+          date: []
         },
         dataList: [],
         pageIndex: 1,
@@ -135,25 +159,33 @@
     methods: {
       // 获取数据列表
       getDataList () {
-        this.dataListLoading = true
-        this.$http({
-          url: this.$http.adornUrl('/common/leads/listByCustomer'),
-          method: 'get',
-          params: this.$http.adornParams({
-            'page': this.pageIndex,
-            'limit': this.pageSize,
-            'name': this.dataForm.userName
+        if (this.dataForm.ammount1 > this.dataForm.ammount2) {
+          this.$message.error('请输入正确的金额范围')
+        } else {
+          this.dataListLoading = true
+          this.$http({
+            url: this.$http.adornUrl('/common/leads/listByCustomer'),
+            method: 'get',
+            params: this.$http.adornParams({
+              'page': this.pageIndex,
+              'limit': this.pageSize,
+              'amount1': this.dataForm.ammount1,
+              'amount2': this.dataForm.ammount2,
+              'date1': this.dataForm.date ? this.dataForm.date[0] : '',
+              'date2': this.dataForm.date ? this.dataForm.date[1] : '',
+              'name': this.dataForm.userName
+            })
+          }).then(({data}) => {
+            if (data && data.code === 0) {
+              this.dataList = data.page.list
+              this.totalPage = data.page.totalCount
+            } else {
+              this.dataList = []
+              this.totalPage = 0
+            }
+            this.dataListLoading = false
           })
-        }).then(({data}) => {
-          if (data && data.code === 0) {
-            this.dataList = data.page.list
-            this.totalPage = data.page.totalCount
-          } else {
-            this.dataList = []
-            this.totalPage = 0
-          }
-          this.dataListLoading = false
-        })
+        }
       },
       // 每页数
       sizeChangeHandle (val) {

@@ -39,13 +39,13 @@
         label="金额">
       </el-table-column>
       <el-table-column
-        prop="friends"
+        prop="need"
         header-align="center"
         align="center"
-        label="是否加好友">
+        label="是否意向">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.friends === 0" size="small" type="danger">未加好友</el-tag>
-          <el-tag v-if="scope.row.friends === 1" size="small">已加好友</el-tag>
+          <el-tag v-if="scope.row.need === 0" size="small">没意向</el-tag>
+          <el-tag v-if="scope.row.need === 1" size="small">有意向</el-tag>
         </template>
       </el-table-column>
       <el-table-column

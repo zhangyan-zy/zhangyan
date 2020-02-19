@@ -18,14 +18,14 @@
       <el-form-item label="状态备注" prop="statusRemark">
         <el-input v-model="dataForm.statusRemark" placeholder="备注"></el-input>
       </el-form-item>
-      <el-form-item label="金额" prop="amount">
+      <el-form-item v-if="dataForm.status===4" label="金额" prop="amount">
         <el-input-number controls-position="right" :precision="2" :step="1"
                          v-model="dataForm.amount"
                          placeholder="金额"></el-input-number>
       </el-form-item>
-      <el-form-item label="是否好友" prop="friends">
+      <el-form-item label="是否意向" prop="need">
         <el-switch
-          v-model="isFriends"
+          v-model="isNeed"
           active-color="#13ce66"
           inactive-color="#ff4949">
         </el-switch>
@@ -56,14 +56,17 @@
           label: '已响应'
         }, {
           value: 4,
-          label: '已成单'
+          label: '已加微'
         }, {
           value: 5,
+          label: '已成单'
+        }, {
+          value: 6,
           label: '未成单'
         }],
         visible: false,
         roleList: [],
-        isFriends: false,
+        isNeed: false,
         dataForm: {
           id: 0,
           amount: '',
@@ -91,7 +94,7 @@
               this.dataForm.amount = data.leads.amount
               this.dataForm.status = data.leads.status
               this.dataForm.remark = data.leads.remark
-              this.isFriends = (data.leads.friends === 1)
+              this.isNeed = (data.leads.need === 1)
             }
           })
         }
@@ -100,6 +103,11 @@
       dataFormSubmit () {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
+            if (this.dataForm.status === 5 || this.dataForm.status === 0) {
+              if (this.dataForm.statusRemark) {
+                this.$message.error('请填写状态备注')
+              }
+            }
             this.$http({
               url: this.$http.adornUrl(`/common/leads/${!this.dataForm.id ? 'save' : 'update'}`),
               method: 'post',
@@ -107,7 +115,7 @@
                 'id': this.dataForm.id || undefined,
                 'amount': this.dataForm.amount,
                 'status': this.dataForm.status,
-                'friends': this.isFriends ? 1 : 0,
+                'need': this.isNeed ? 1 : 0,
                 'statusRemark': this.dataForm.statusRemark,
                 'remark': this.dataForm.remark
               })
