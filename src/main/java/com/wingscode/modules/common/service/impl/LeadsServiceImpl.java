@@ -92,7 +92,7 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
                 new Query<LeadsEntity>().getPage(params),
                 new QueryWrapper<LeadsEntity>()
                         .like(StringUtils.isNotBlank(username), "name", username)
-                        .eq("parent_id", parentId)
+                        .eq(parentId != 0, "parent_id", parentId)
                         .ge(amount1 != 0, "amount", amount1)
                         .le(amount2 != 0, "amount", amount2)
                         .ge(!StringUtils.isEmpty(date1), "gmt_creat", date1)

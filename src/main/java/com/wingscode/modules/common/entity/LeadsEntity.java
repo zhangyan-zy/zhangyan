@@ -50,9 +50,9 @@ public class LeadsEntity implements Serializable {
      */
     private BigDecimal amount;
     /**
-     * 是否加好友
+     * 是否意向
      */
-    private Integer friends;
+    private Integer need;
     /**
      * 状态
      * 0：已关闭
