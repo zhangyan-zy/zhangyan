@@ -84,7 +84,9 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
                         .orderByDesc("id")
         );
         for (LeadsEntity leadsEntity : page.getRecords()) {
-            leadsEntity.setDisposeUserName(sysUserService.getById(leadsEntity.getDisposeUser()).getUsername());
+            if (leadsEntity.getDisposeUser() != 0) {
+                leadsEntity.setDisposeUserName(sysUserService.getById(leadsEntity.getDisposeUser()).getUsername());
+            }
         }
         return new PageUtils(page);
     }
@@ -110,7 +112,9 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
                         .orderByDesc("id")
         );
         for (LeadsEntity leadsEntity : page.getRecords()) {
-            leadsEntity.setDisposeUserName(sysUserService.getById(leadsEntity.getDisposeUser()).getUsername());
+            if (leadsEntity.getDisposeUser() != 0) {
+                leadsEntity.setDisposeUserName(sysUserService.getById(leadsEntity.getDisposeUser()).getUsername());
+            }
             leadsEntity.setParentName(sysUserService.getById(leadsEntity.getParentId()).getUsername());
         }
         return new PageUtils(page);

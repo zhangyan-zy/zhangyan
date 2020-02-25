@@ -44,7 +44,7 @@ public class AccountController extends AbstractController {
         if(!StringUtils.isEmpty(params.get("parentId"))){
             Long userId = Long.parseLong((String) params.get("parentId"));
             if (userId == -1) {
-                params.put("parentId", getUserId());
+                params.put("parentId", getUserId()+"");
             }
         }
         PageUtils page = accountService.queryPage(params);

@@ -37,6 +37,7 @@ public class LeadsEntity implements Serializable {
      * 客户名称
      */
     private String name;
+    private String name1;
     /**
      * 手机号
      */
