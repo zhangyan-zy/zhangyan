@@ -5,8 +5,11 @@
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm"
              @keyup.enter.native="dataFormSubmit()" label-width="80px">
-      <el-form-item label="客户名称" prop="name">
-        <el-input v-model="dataForm.name" placeholder="客户名称"></el-input>
+      <el-form-item label="Leads名称" prop="name">
+        <el-input v-model="dataForm.name" placeholder="Leads名称"></el-input>
+      </el-form-item>
+      <el-form-item label="Leads姓名" prop="name1">
+        <el-input v-model="dataForm.name1" placeholder="Leads姓名"></el-input>
       </el-form-item>
       <el-form-item label="客户电话" prop="phone">
         <el-input v-model="dataForm.phone" @change="updateWebChat" placeholder="客户电话"></el-input>
@@ -40,7 +43,7 @@
         </el-switch>
       </el-form-item>
       <el-form-item label="备注" prop="remark">
-        <el-input v-model="dataForm.remark" placeholder="备注"></el-input>
+        <el-input v-model="dataForm.remark"   type="textarea" placeholder="备注"></el-input>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -79,6 +82,7 @@
         dataForm: {
           id: 0,
           name: '',
+          name1: '',
           phone: '',
           webchat: '',
           amount: '',
@@ -104,6 +108,7 @@
           }).then(({data}) => {
             if (data && data.code === 0) {
               this.dataForm.name = data.leads.name
+              this.dataForm.name1 = data.leads.name1
               this.dataForm.phone = data.leads.phone
               this.dataForm.webchat = data.leads.webchat
               this.dataForm.amount = data.leads.amount
@@ -129,6 +134,7 @@
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
                 'name': this.dataForm.name,
+                'name1': this.dataForm.name1,
                 'phone': this.dataForm.phone,
                 'webchat': this.dataForm.webchat,
                 'amount': this.dataForm.amount,

@@ -94,7 +94,7 @@
   import AddOrUpdate from './account-add-or-update'
 
   export default {
-    data() {
+    data () {
       return {
         coustomerList: [],
         coustomerId: '',
@@ -110,13 +110,13 @@
     components: {
       AddOrUpdate
     },
-    activated() {
+    activated () {
       this.getCoustomerList()
       this.getDataList()
     },
     methods: {
       // 获取数据列表
-      getCoustomerList() {
+      getCoustomerList () {
         this.$http({
           url: this.$http.adornUrl('/common/account/coustomer'),
           method: 'get',
@@ -128,7 +128,7 @@
         })
       },
       // 获取数据列表
-      getDataList() {
+      getDataList () {
         // if (this.coustomerId) {
         this.dataListLoading = true
         this.$http({
@@ -155,33 +155,33 @@
         // }
       },
       // 每页数
-      sizeChangeHandle(val) {
+      sizeChangeHandle (val) {
         this.pageSize = val
         this.pageIndex = 1
         this.getDataList()
       },
       // 当前页
-      currentChangeHandle(val) {
+      currentChangeHandle (val) {
         this.pageIndex = val
         this.getDataList()
       },
       // 多选
-      selectionChangeHandle(val) {
+      selectionChangeHandle (val) {
         this.dataListSelections = val
       },
       // 新增 / 修改
-      addOrUpdateHandle(id) {
-        if (this.coustomerId) {
-          this.addOrUpdateVisible = true
-          this.$nextTick(() => {
-            this.$refs.addOrUpdate.init(this.coustomerId, id)
-          })
-        } else {
-          this.$message.error('请选择客户')
-        }
+      addOrUpdateHandle (id) {
+        // if (this.coustomerId) {
+        this.addOrUpdateVisible = true
+        this.$nextTick(() => {
+          this.$refs.addOrUpdate.init(this.coustomerId, id)
+        })
+        // } else {
+        //   this.$message.error('请选择客户')
+        // }
       },
       // 设置组长
-      setHandle(id) {
+      setHandle (id) {
         this.$http({
           url: this.$http.adornUrl('/common/account/setWorkerAdmin'),
           method: 'post',

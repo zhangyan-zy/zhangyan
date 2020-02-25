@@ -62,6 +62,12 @@
         label="客户名称">
       </el-table-column>
       <el-table-column
+        prop="name1"
+        header-align="center"
+        align="center"
+        label="客户姓名">
+      </el-table-column>
+      <el-table-column
         prop="phone"
         header-align="center"
         align="center"
@@ -85,7 +91,7 @@
         align="center"
         label="是否意向">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.need === 0" size="small">没意向</el-tag>
+          <el-tag v-if="scope.row.need === 0" size="small" type="danger">没意向</el-tag>
           <el-tag v-if="scope.row.need === 1" size="small">有意向</el-tag>
         </template>
       </el-table-column>
@@ -154,7 +160,7 @@
   import AddOrUpdate from './leads-add-or-update'
 
   export default {
-    data() {
+    data () {
       return {
         staffList: [],
         options: [{
@@ -199,13 +205,13 @@
     components: {
       AddOrUpdate
     },
-    activated() {
+    activated () {
       this.getDataList()
       this.getStaffList()
     },
     methods: {
       // 获取数据列表
-      getDataList() {
+      getDataList () {
         if (this.dataForm.ammount1 > this.dataForm.ammount2) {
           this.$message.error('请输入正确的金额范围')
         } else {
@@ -236,7 +242,7 @@
           })
         }
       },
-      getStaffList() {
+      getStaffList () {
         this.$http({
           url: this.$http.adornUrl('/common/account/staff'),
           method: 'get',
@@ -248,22 +254,22 @@
         })
       },
       // 每页数
-      sizeChangeHandle(val) {
+      sizeChangeHandle (val) {
         this.pageSize = val
         this.pageIndex = 1
         this.getDataList()
       },
       // 当前页
-      currentChangeHandle(val) {
+      currentChangeHandle (val) {
         this.pageIndex = val
         this.getDataList()
       },
       // 多选
-      selectionChangeHandle(val) {
+      selectionChangeHandle (val) {
         this.dataListSelections = val
       },
       // 新增 / 修改
-      addOrUpdateHandle(id) {
+      addOrUpdateHandle (id) {
         this.addOrUpdateVisible = true
         this.$nextTick(() => {
           this.$refs.addOrUpdate.init(id)

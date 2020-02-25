@@ -18,7 +18,7 @@
       <el-form-item label="状态备注" prop="statusRemark">
         <el-input v-model="dataForm.statusRemark" placeholder="备注"></el-input>
       </el-form-item>
-      <el-form-item v-if="dataForm.status===4" label="金额" prop="amount">
+      <el-form-item v-if="dataForm.status===5" label="金额" prop="amount">
         <el-input-number controls-position="right" :precision="2" :step="1"
                          v-model="dataForm.amount"
                          placeholder="金额"></el-input-number>
@@ -31,7 +31,7 @@
         </el-switch>
       </el-form-item>
       <el-form-item label="备注" prop="remark">
-        <el-input v-model="dataForm.remark" placeholder="备注"></el-input>
+        <el-input v-model="dataForm.remark" type="textarea" placeholder="备注"></el-input>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">

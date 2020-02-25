@@ -8,11 +8,21 @@
       <el-form-item label="客户名称" prop="name">
         <el-input v-model="dataForm.name" placeholder="客户名称"></el-input>
       </el-form-item>
+      <el-form-item label="客户姓名" prop="name1">
+        <el-input v-model="dataForm.name1" placeholder="客户姓名"></el-input>
+      </el-form-item>
       <el-form-item label="客户电话" prop="phone">
         <el-input v-model="dataForm.phone" @change="updateWebChat" placeholder="客户电话"></el-input>
       </el-form-item>
       <el-form-item label="客户微信" prop="webchat">
         <el-input v-model="dataForm.webchat" placeholder="客户微信"></el-input>
+      </el-form-item>
+      <el-form-item label="是否意向" prop="need">
+        <el-switch
+          v-model="isNeed"
+          active-color="#13ce66"
+          inactive-color="#ff4949">
+        </el-switch>
       </el-form-item>
       <el-form-item label="备注" prop="remark">
         <el-input v-model="dataForm.remark" placeholder="备注"></el-input>
@@ -34,13 +44,18 @@
         dataForm: {
           id: 0,
           name: '',
+          name1: '',
           phone: '',
+          isNeed: false,
           webchat: '',
           remark: ''
         },
         dataRule: {
           name: [
             {required: true, message: '客户名称不能为空', trigger: 'blur'}
+          ],
+          name1: [
+            {required: true, message: '客户姓名不能为空', trigger: 'blur'}
           ],
           phone: [
             {required: true, message: '客户电话不能为空', trigger: 'blur'}
@@ -66,9 +81,11 @@
           }).then(({data}) => {
             if (data && data.code === 0) {
               this.dataForm.name = data.leads.name
+              this.dataForm.name1 = data.leads.name1
               this.dataForm.phone = data.leads.phone
               this.dataForm.webchat = data.leads.webchat
               this.dataForm.remark = data.leads.remark
+              this.isNeed = (data.leads.need === 1)
             }
           })
         }
@@ -83,7 +100,9 @@
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
                 'name': this.dataForm.name,
+                'name1': this.dataForm.name1,
                 'phone': this.dataForm.phone,
+                'need': this.isNeed ? 1 : 0,
                 'webchat': this.dataForm.webchat,
                 'remark': this.dataForm.remark
               })
