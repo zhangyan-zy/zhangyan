@@ -26,6 +26,26 @@
         </el-date-picker>
       </el-form-item>
       <el-form-item>
+        <el-select v-model="dataForm.staff" clearable filterable placeholder="请选择员工">
+          <el-option
+            v-for="item in staffList"
+            :key="item.userId"
+            :label="item.username"
+            :value="item.userId">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-select v-model="dataForm.status" clearable placeholder="客户状态">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
       </el-form-item>
     </el-form>
@@ -79,8 +99,9 @@
           <el-tag v-if="scope.row.status === 1" size="small">待分配</el-tag>
           <el-tag v-if="scope.row.status === 2" size="small">待处理</el-tag>
           <el-tag v-if="scope.row.status === 3" size="small">已响应</el-tag>
-          <el-tag v-if="scope.row.status === 4" size="small">已成单</el-tag>
-          <el-tag v-if="scope.row.status === 5" size="small">未成单</el-tag>
+          <el-tag v-if="scope.row.status === 4" size="small">已加微</el-tag>
+          <el-tag v-if="scope.row.status === 5" size="small">已成单</el-tag>
+          <el-tag v-if="scope.row.status === 6" size="small">未成单</el-tag>
         </template>
       </el-table-column>
       <el-table-column
@@ -108,7 +129,7 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button type="text" size="small"
+          <el-button v-if="scope.row.status !== 0" type="text" size="small"
                      @click="addOrUpdateHandle(scope.row.id)">修改
           </el-button>
         </template>
@@ -133,12 +154,37 @@
   import AddOrUpdate from './leads-add-or-update'
 
   export default {
-    data () {
+    data() {
       return {
+        staffList: [],
+        options: [{
+          value: 0,
+          label: '已关闭'
+        }, {
+          value: 1,
+          label: '待分配'
+        }, {
+          value: 2,
+          label: '待处理'
+        }, {
+          value: 3,
+          label: '已响应'
+        }, {
+          value: 4,
+          label: '已加微'
+        }, {
+          value: 5,
+          label: '已成单'
+        }, {
+          value: 6,
+          label: '未成单'
+        }],
         dataForm: {
           userName: '',
           ammount1: '',
           ammount2: '',
+          status: '',
+          staff: '',
           date: []
         },
         dataList: [],
@@ -153,12 +199,13 @@
     components: {
       AddOrUpdate
     },
-    activated () {
+    activated() {
       this.getDataList()
+      this.getStaffList()
     },
     methods: {
       // 获取数据列表
-      getDataList () {
+      getDataList() {
         if (this.dataForm.ammount1 > this.dataForm.ammount2) {
           this.$message.error('请输入正确的金额范围')
         } else {
@@ -171,6 +218,8 @@
               'limit': this.pageSize,
               'amount1': this.dataForm.ammount1,
               'amount2': this.dataForm.ammount2,
+              'status': this.dataForm.status,
+              'staff': this.dataForm.staff,
               'date1': this.dataForm.date ? this.dataForm.date[0] : '',
               'date2': this.dataForm.date ? this.dataForm.date[1] : '',
               'name': this.dataForm.userName
@@ -187,23 +236,34 @@
           })
         }
       },
+      getStaffList() {
+        this.$http({
+          url: this.$http.adornUrl('/common/account/staff'),
+          method: 'get',
+          params: this.$http.adornParams({})
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.staffList = data.user
+          }
+        })
+      },
       // 每页数
-      sizeChangeHandle (val) {
+      sizeChangeHandle(val) {
         this.pageSize = val
         this.pageIndex = 1
         this.getDataList()
       },
       // 当前页
-      currentChangeHandle (val) {
+      currentChangeHandle(val) {
         this.pageIndex = val
         this.getDataList()
       },
       // 多选
-      selectionChangeHandle (val) {
+      selectionChangeHandle(val) {
         this.dataListSelections = val
       },
       // 新增 / 修改
-      addOrUpdateHandle (id) {
+      addOrUpdateHandle(id) {
         this.addOrUpdateVisible = true
         this.$nextTick(() => {
           this.$refs.addOrUpdate.init(id)

@@ -5,6 +5,16 @@
         <el-input v-model="dataForm.userName" placeholder="客户名称" clearable></el-input>
       </el-form-item>
       <el-form-item>
+        <el-select v-model="dataForm.status" clearable placeholder="客户状态">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
         <el-button type="primary" @click="addOrUpdateHandle()">新增</el-button>
       </el-form-item>
@@ -59,8 +69,9 @@
           <el-tag v-if="scope.row.status === 1" size="small">待分配</el-tag>
           <el-tag v-if="scope.row.status === 2" size="small">待处理</el-tag>
           <el-tag v-if="scope.row.status === 3" size="small">已响应</el-tag>
-          <el-tag v-if="scope.row.status === 4" size="small">已成单</el-tag>
-          <el-tag v-if="scope.row.status === 5" size="small">未成单</el-tag>
+          <el-tag v-if="scope.row.status === 4" size="small">已加微</el-tag>
+          <el-tag v-if="scope.row.status === 5" size="small">已成单</el-tag>
+          <el-tag v-if="scope.row.status === 6" size="small">未成单</el-tag>
         </template>
       </el-table-column>
       <el-table-column
@@ -76,7 +87,7 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button type="text" size="small"
+          <el-button v-if="scope.row.status <3&&scope.row.status !==0" type="text" size="small"
                      @click="addOrUpdateHandle(scope.row.id)">修改
           </el-button>
         </template>
@@ -101,10 +112,33 @@
   import AddOrUpdate from './leads-add-or-update'
 
   export default {
-    data () {
+    data() {
       return {
+        options: [{
+          value: 0,
+          label: '已关闭'
+        }, {
+          value: 1,
+          label: '待分配'
+        }, {
+          value: 2,
+          label: '待处理'
+        }, {
+          value: 3,
+          label: '已响应'
+        }, {
+          value: 4,
+          label: '已加微'
+        }, {
+          value: 5,
+          label: '已成单'
+        }, {
+          value: 6,
+          label: '未成单'
+        }],
         dataForm: {
-          userName: ''
+          userName: '',
+          status:''
         },
         dataList: [],
         pageIndex: 1,
@@ -118,12 +152,12 @@
     components: {
       AddOrUpdate
     },
-    activated () {
+    activated() {
       this.getDataList()
     },
     methods: {
       // 获取数据列表
-      getDataList () {
+      getDataList() {
         this.dataListLoading = true
         this.$http({
           url: this.$http.adornUrl('/common/leads/listByWorker'),
@@ -131,6 +165,7 @@
           params: this.$http.adornParams({
             'page': this.pageIndex,
             'limit': this.pageSize,
+            'status': this.dataForm.status,
             'name': this.dataForm.userName
           })
         }).then(({data}) => {
@@ -145,22 +180,22 @@
         })
       },
       // 每页数
-      sizeChangeHandle (val) {
+      sizeChangeHandle(val) {
         this.pageSize = val
         this.pageIndex = 1
         this.getDataList()
       },
       // 当前页
-      currentChangeHandle (val) {
+      currentChangeHandle(val) {
         this.pageIndex = val
         this.getDataList()
       },
       // 多选
-      selectionChangeHandle (val) {
+      selectionChangeHandle(val) {
         this.dataListSelections = val
       },
       // 新增 / 修改
-      addOrUpdateHandle (id) {
+      addOrUpdateHandle(id) {
         this.addOrUpdateVisible = true
         this.$nextTick(() => {
           this.$refs.addOrUpdate.init(id)

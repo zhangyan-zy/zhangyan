@@ -1,7 +1,7 @@
 <template>
   <div class="mod-user">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
-      <el-select v-model="coustomerId" filterable placeholder="请选择客户">
+      <el-select v-model="coustomerId" clearable filterable placeholder="请选择客户">
         <el-option
           v-for="item in coustomerList"
           :key="item.userId"
@@ -20,6 +20,12 @@
       v-loading="dataListLoading"
       @selection-change="selectionChangeHandle"
       style="width: 100%;">
+      <el-table-column
+        prop="parentName"
+        header-align="center"
+        align="center"
+        label="所属客户">
+      </el-table-column>
       <el-table-column
         prop="username"
         header-align="center"
@@ -88,7 +94,7 @@
   import AddOrUpdate from './account-add-or-update'
 
   export default {
-    data () {
+    data() {
       return {
         coustomerList: [],
         coustomerId: '',
@@ -104,12 +110,13 @@
     components: {
       AddOrUpdate
     },
-    activated () {
+    activated() {
       this.getCoustomerList()
+      this.getDataList()
     },
     methods: {
       // 获取数据列表
-      getCoustomerList () {
+      getCoustomerList() {
         this.$http({
           url: this.$http.adornUrl('/common/account/coustomer'),
           method: 'get',
@@ -121,49 +128,49 @@
         })
       },
       // 获取数据列表
-      getDataList () {
-        if (this.coustomerId) {
-          this.dataListLoading = true
-          this.$http({
-            url: this.$http.adornUrl('/common/account/list'),
-            method: 'get',
-            params: this.$http.adornParams({
-              'page': this.pageIndex,
-              'limit': this.pageSize,
-              'roleId': 5,
-              'parentId': this.coustomerId
-            })
-          }).then(({data}) => {
-            if (data && data.code === 0) {
-              this.dataList = data.page.list
-              this.totalPage = data.page.totalCount
-            } else {
-              this.dataList = []
-              this.totalPage = 0
-            }
-            this.dataListLoading = false
+      getDataList() {
+        // if (this.coustomerId) {
+        this.dataListLoading = true
+        this.$http({
+          url: this.$http.adornUrl('/common/account/list'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'page': this.pageIndex,
+            'limit': this.pageSize,
+            'roleId': 5,
+            'parentId': this.coustomerId
           })
-        } else {
-          this.$message.error('请选择客户')
-        }
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.dataList = data.page.list
+            this.totalPage = data.page.totalCount
+          } else {
+            this.dataList = []
+            this.totalPage = 0
+          }
+          this.dataListLoading = false
+        })
+        // } else {
+        //   this.$message.error('请选择客户')
+        // }
       },
       // 每页数
-      sizeChangeHandle (val) {
+      sizeChangeHandle(val) {
         this.pageSize = val
         this.pageIndex = 1
         this.getDataList()
       },
       // 当前页
-      currentChangeHandle (val) {
+      currentChangeHandle(val) {
         this.pageIndex = val
         this.getDataList()
       },
       // 多选
-      selectionChangeHandle (val) {
+      selectionChangeHandle(val) {
         this.dataListSelections = val
       },
       // 新增 / 修改
-      addOrUpdateHandle (id) {
+      addOrUpdateHandle(id) {
         if (this.coustomerId) {
           this.addOrUpdateVisible = true
           this.$nextTick(() => {
@@ -174,7 +181,7 @@
         }
       },
       // 设置组长
-      setHandle (id) {
+      setHandle(id) {
         this.$http({
           url: this.$http.adornUrl('/common/account/setWorkerAdmin'),
           method: 'post',

@@ -2,7 +2,7 @@
   <div class="mod-user">
 
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
-      <el-select v-model="coustomerId" filterable placeholder="请选择客户">
+      <el-select v-model="coustomerId" clearable filterable placeholder="请选择客户">
         <el-option
           v-for="item in coustomerList"
           :key="item.userId"
@@ -35,6 +35,16 @@
         </el-date-picker>
       </el-form-item>
       <el-form-item>
+        <el-select v-model="dataForm.status" clearable placeholder="Leads状态">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
       </el-form-item>
     </el-form>
@@ -45,22 +55,28 @@
       @selection-change="selectionChangeHandle"
       style="width: 100%;">
       <el-table-column
-        prop="name"
+        prop="parentName"
         header-align="center"
         align="center"
         label="客户名称">
       </el-table-column>
       <el-table-column
+        prop="name"
+        header-align="center"
+        align="center"
+        label="Leads名称">
+      </el-table-column>
+      <el-table-column
         prop="phone"
         header-align="center"
         align="center"
-        label="客户电话">
+        label="Leads电话">
       </el-table-column>
       <el-table-column
         prop="webchat"
         header-align="center"
         align="center"
-        label="客户微信">
+        label="Leads微信">
       </el-table-column>
       <el-table-column
         prop="amount"
@@ -88,8 +104,9 @@
           <el-tag v-if="scope.row.status === 1" size="small">待分配</el-tag>
           <el-tag v-if="scope.row.status === 2" size="small">待处理</el-tag>
           <el-tag v-if="scope.row.status === 3" size="small">已响应</el-tag>
-          <el-tag v-if="scope.row.status === 4" size="small">已成单</el-tag>
-          <el-tag v-if="scope.row.status === 5" size="small">未成单</el-tag>
+          <el-tag v-if="scope.row.status === 4" size="small">已加微</el-tag>
+          <el-tag v-if="scope.row.status === 5" size="small">已成单</el-tag>
+          <el-tag v-if="scope.row.status === 6" size="small">未成单</el-tag>
         </template>
       </el-table-column>
       <el-table-column
@@ -142,14 +159,37 @@
   import AddOrUpdate from './leads-add-or-update'
 
   export default {
-    data () {
+    data() {
       return {
+        options: [{
+          value: 0,
+          label: '已关闭'
+        }, {
+          value: 1,
+          label: '待分配'
+        }, {
+          value: 2,
+          label: '待处理'
+        }, {
+          value: 3,
+          label: '已响应'
+        }, {
+          value: 4,
+          label: '已加微'
+        }, {
+          value: 5,
+          label: '已成单'
+        }, {
+          value: 6,
+          label: '未成单'
+        }],
         coustomerList: [],
         coustomerId: '',
         dataForm: {
           userName: '',
           ammount1: '',
           ammount2: '',
+          status: '',
           date: []
         },
         dataList: [],
@@ -164,13 +204,13 @@
     components: {
       AddOrUpdate
     },
-    activated () {
+    activated() {
       this.getCoustomerList()
       this.getDataList()
     },
     methods: {
       // 获取数据列表
-      getCoustomerList () {
+      getCoustomerList() {
         this.$http({
           url: this.$http.adornUrl('/common/account/coustomer'),
           method: 'get',
@@ -181,7 +221,7 @@
           }
         })
       },
-      getDataList () {
+      getDataList() {
         if (this.dataForm.ammount1 > this.dataForm.ammount2) {
           this.$message.error('请输入正确的金额范围')
         } else {
@@ -194,6 +234,7 @@
               'limit': this.pageSize,
               'amount1': this.dataForm.ammount1,
               'amount2': this.dataForm.ammount2,
+              'status': this.dataForm.status,
               'date1': this.dataForm.date ? this.dataForm.date[0] : '',
               'date2': this.dataForm.date ? this.dataForm.date[1] : '',
               'parentId': this.coustomerId,
@@ -212,22 +253,22 @@
         }
       },
       // 每页数
-      sizeChangeHandle (val) {
+      sizeChangeHandle(val) {
         this.pageSize = val
         this.pageIndex = 1
         this.getDataList()
       },
       // 当前页
-      currentChangeHandle (val) {
+      currentChangeHandle(val) {
         this.pageIndex = val
         this.getDataList()
       },
       // 多选
-      selectionChangeHandle (val) {
+      selectionChangeHandle(val) {
         this.dataListSelections = val
       },
       // 新增 / 修改
-      addOrUpdateHandle (id) {
+      addOrUpdateHandle(id) {
         this.addOrUpdateVisible = true
         this.$nextTick(() => {
           this.$refs.addOrUpdate.init(id)
