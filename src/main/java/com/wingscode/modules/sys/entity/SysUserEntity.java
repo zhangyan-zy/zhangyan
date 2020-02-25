@@ -77,5 +77,6 @@ public class SysUserEntity implements Serializable {
      * 上级id
      */
     private Long parentId;
-
+    @TableField(exist = false)
+    private String parentName;
 }

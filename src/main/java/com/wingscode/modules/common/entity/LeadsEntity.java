@@ -71,6 +71,8 @@ public class LeadsEntity implements Serializable {
      * 所属客户
      */
     private Long parentId;
+    @TableField(exist = false)
+    private String parentName;
     /**
      * 处理人
      */

@@ -32,12 +32,14 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
     @Override
     public PageUtils listByStaff(Map<String, Object> params, Long parentId, Long staffId) {
         String username = (String) params.get("name");
+        String status = (String) params.get("status");
         IPage<LeadsEntity> page = this.page(
                 new Query<LeadsEntity>().getPage(params),
                 new QueryWrapper<LeadsEntity>()
-                        .like(StringUtils.isNotBlank(username), "name", username)
+                        .like(StringUtils.isNotEmpty(username), "name", username)
                         .eq("parent_id", parentId)
                         .eq("dispose_user", staffId)
+                        .eq(StringUtils.isNotEmpty(status), "status", status)
                         .orderByDesc("id")
         );
         return new PageUtils(page);
@@ -46,11 +48,13 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
     @Override
     public PageUtils listByWorker(Map<String, Object> params, Long parentId, Long workerId) {
         String username = (String) params.get("name");
+        String status = (String) params.get("status");
         IPage<LeadsEntity> page = this.page(
                 new Query<LeadsEntity>().getPage(params),
                 new QueryWrapper<LeadsEntity>()
-                        .like(StringUtils.isNotBlank(username), "name", username)
+                        .like(StringUtils.isNotEmpty(username), "name", username)
                         .eq("parent_id", parentId)
+                        .eq(StringUtils.isNotEmpty(status), "status", status)
                         .eq("worker_id", workerId)
                         .orderByDesc("id")
         );
@@ -64,15 +68,19 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
         int amount2 = Integer.valueOf(String.valueOf(params.get("amount2")));
         String date1 = (String) params.get("date1");
         String date2 = (String) params.get("date2");
+        String status = (String) params.get("status");
+        String staff = (String) params.get("staff");
         IPage<LeadsEntity> page = this.page(
                 new Query<LeadsEntity>().getPage(params),
                 new QueryWrapper<LeadsEntity>()
-                        .like(StringUtils.isNotBlank(username), "name", username)
+                        .like(StringUtils.isNotEmpty(username), "name", username)
                         .eq("parent_id", parentId)
+                        .eq(StringUtils.isNotEmpty(status), "status", status)
+                        .eq(StringUtils.isNotEmpty(staff), "dispose_user", staff)
                         .ge(amount1 != 0, "amount", amount1)
                         .le(amount2 != 0, "amount", amount2)
-                        .ge(!StringUtils.isEmpty(date1), "gmt_creat", date1)
-                        .le(!StringUtils.isEmpty(date2), "gmt_creat", MyTimeUtil.addDay(date2, 1))
+                        .ge(StringUtils.isNotEmpty(date1), "gmt_creat", date1)
+                        .le(StringUtils.isNotEmpty(date2), "gmt_creat", MyTimeUtil.addDay(date2, 1))
                         .orderByDesc("id")
         );
         for (LeadsEntity leadsEntity : page.getRecords()) {
@@ -88,19 +96,22 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
         int amount2 = Integer.valueOf(String.valueOf(params.get("amount2")));
         String date1 = (String) params.get("date1");
         String date2 = (String) params.get("date2");
+        String status = (String) params.get("status");
         IPage<LeadsEntity> page = this.page(
                 new Query<LeadsEntity>().getPage(params),
                 new QueryWrapper<LeadsEntity>()
-                        .like(StringUtils.isNotBlank(username), "name", username)
+                        .like(StringUtils.isNotEmpty(username), "name", username)
                         .eq(parentId != 0, "parent_id", parentId)
+                        .eq(StringUtils.isNotEmpty(status), "status", status)
                         .ge(amount1 != 0, "amount", amount1)
                         .le(amount2 != 0, "amount", amount2)
-                        .ge(!StringUtils.isEmpty(date1), "gmt_creat", date1)
-                        .le(!StringUtils.isEmpty(date2), "gmt_creat", MyTimeUtil.addDay(date2, 1))
+                        .ge(StringUtils.isNotEmpty(date1), "gmt_creat", date1)
+                        .le(StringUtils.isNotEmpty(date2), "gmt_creat", MyTimeUtil.addDay(date2, 1))
                         .orderByDesc("id")
         );
         for (LeadsEntity leadsEntity : page.getRecords()) {
             leadsEntity.setDisposeUserName(sysUserService.getById(leadsEntity.getDisposeUser()).getUsername());
+            leadsEntity.setParentName(sysUserService.getById(leadsEntity.getParentId()).getUsername());
         }
         return new PageUtils(page);
     }

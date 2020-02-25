@@ -13,6 +13,7 @@ import com.wingscode.modules.sys.service.SysUserService;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,9 +41,11 @@ public class AccountController extends AbstractController {
     @RequestMapping("/list")
     @RequiresPermissions("admin:account")
     public R coustomerList(@RequestParam Map<String, Object> params) {
-        Long userId = Long.parseLong((String) params.get("parentId"));
-        if (userId == -1) {
-            params.put("parentId", getUserId());
+        if(!StringUtils.isEmpty(params.get("parentId"))){
+            Long userId = Long.parseLong((String) params.get("parentId"));
+            if (userId == -1) {
+                params.put("parentId", getUserId());
+            }
         }
         PageUtils page = accountService.queryPage(params);
         return R.ok().put("page", page);

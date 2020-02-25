@@ -30,14 +30,15 @@ public class AccountServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         String username = (String) params.get("username");
+        String parentId = (String) params.get("parentId");
         Long roleId = Long.parseLong(String.valueOf(params.get("roleId")));
         List<Long> ids = sysUserRoleService.queryUserIdList(roleId);
         IPage<SysUserEntity> page = this.page(
                 new Query<SysUserEntity>().getPage(params),
                 new QueryWrapper<SysUserEntity>()
-                        .like(StringUtils.isNotBlank(username), "username", username)
+                        .like(StringUtils.isNotEmpty(username), "username", username)
                         .in("user_id", ids)
-                        .eq("parent_id", params.get("parentId"))
+                        .eq(StringUtils.isNotEmpty(parentId), "parent_id", parentId)
                         .eq(ids.size() == 0, "user_id", 0)
         );
         if (roleId == 5) {
@@ -49,6 +50,7 @@ public class AccountServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
                     }
                 }
                 sysUserEntity.setRoleIdList(roleIdList);
+                sysUserEntity.setParentName(sysUserService.getById(sysUserEntity.getParentId()).getUsername());
             }
         }
         return new PageUtils(page);
