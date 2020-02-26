@@ -19,7 +19,7 @@
       </el-form-item>
       <el-form-item label="是否意向" prop="need">
         <el-switch
-          v-model="isNeed"
+          v-model="dataForm.isNeed"
           active-color="#13ce66"
           inactive-color="#ff4949">
         </el-switch>

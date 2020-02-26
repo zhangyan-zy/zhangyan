@@ -2,6 +2,14 @@
   <div class="mod-user">
 
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
+      <el-select v-model="workerId" clearable filterable placeholder="请选择坐席">
+        <el-option
+          v-for="item in workerList"
+          :key="item.userId"
+          :label="item.username"
+          :value="item.userId">
+        </el-option>
+      </el-select>
       <el-select v-model="coustomerId" clearable filterable placeholder="请选择客户">
         <el-option
           v-for="item in coustomerList"
@@ -14,14 +22,14 @@
         <el-input v-model="dataForm.userName" placeholder="Leads名称" clearable></el-input>
       </el-form-item>
       <el-form-item label="金额范围">
-        <el-input-number :controls="false" min="0" v-model="dataForm.ammount1" placeholder="金额"
+        <el-input-number :controls="false" :min="0" v-model="dataForm.ammount1" placeholder="金额"
                          clearable></el-input-number>
       </el-form-item>
       <el-form-item>
         ~
       </el-form-item>
       <el-form-item>
-        <el-input-number :controls="false" min="0" v-model="dataForm.ammount2" placeholder="金额"
+        <el-input-number :controls="false" :min="0" v-model="dataForm.ammount2" placeholder="金额"
                          clearable></el-input-number>
       </el-form-item>
       <el-form-item>
@@ -96,7 +104,7 @@
         align="center"
         label="是否意向">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.need === 0" size="small" type="danger">没意向</el-tag>
+          <el-tag v-if="scope.row.need === 0" size="small" type="danger">无意向</el-tag>
           <el-tag v-if="scope.row.need === 1" size="small">有意向</el-tag>
         </template>
       </el-table-column>
@@ -126,6 +134,12 @@
         header-align="center"
         align="center"
         label="操作人">
+      </el-table-column>
+      <el-table-column
+        prop="workerName"
+        header-align="center"
+        align="center"
+        label="负责坐席">
       </el-table-column>
       <el-table-column
         prop="gmtCreat"
@@ -189,6 +203,8 @@
           value: 6,
           label: '未成单'
         }],
+        workerList: [],
+        workerId: '',
         coustomerList: [],
         coustomerId: '',
         dataForm: {
@@ -212,10 +228,22 @@
     },
     activated () {
       this.getCoustomerList()
+      this.getworkerList()
       this.getDataList()
     },
     methods: {
       // 获取数据列表
+      getworkerList () {
+        this.$http({
+          url: this.$http.adornUrl('/common/account/worker'),
+          method: 'get',
+          params: this.$http.adornParams({})
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.workerList = data.user
+          }
+        })
+      },
       getCoustomerList () {
         this.$http({
           url: this.$http.adornUrl('/common/account/coustomer'),
@@ -240,6 +268,7 @@
               'limit': this.pageSize,
               'amount1': this.dataForm.ammount1,
               'amount2': this.dataForm.ammount2,
+              'workerId': this.workerId,
               'status': this.dataForm.status,
               'date1': this.dataForm.date ? this.dataForm.date[0] : '',
               'date2': this.dataForm.date ? this.dataForm.date[1] : '',
