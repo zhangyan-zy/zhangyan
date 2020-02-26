@@ -99,12 +99,14 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
         String date1 = (String) params.get("date1");
         String date2 = (String) params.get("date2");
         String status = (String) params.get("status");
+        String workerId = (String) params.get("workerId");
         IPage<LeadsEntity> page = this.page(
                 new Query<LeadsEntity>().getPage(params),
                 new QueryWrapper<LeadsEntity>()
                         .like(StringUtils.isNotEmpty(username), "name", username)
                         .eq(parentId != 0, "parent_id", parentId)
                         .eq(StringUtils.isNotEmpty(status), "status", status)
+                        .eq(StringUtils.isNotEmpty(workerId), "worker_id", workerId)
                         .ge(amount1 != 0, "amount", amount1)
                         .le(amount2 != 0, "amount", amount2)
                         .ge(StringUtils.isNotEmpty(date1), "gmt_creat", date1)
@@ -116,6 +118,7 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
                 leadsEntity.setDisposeUserName(sysUserService.getById(leadsEntity.getDisposeUser()).getUsername());
             }
             leadsEntity.setParentName(sysUserService.getById(leadsEntity.getParentId()).getUsername());
+            leadsEntity.setWorkerName(sysUserService.getById(leadsEntity.getWorkerId()).getUsername());
         }
         return new PageUtils(page);
     }

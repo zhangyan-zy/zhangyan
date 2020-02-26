@@ -86,4 +86,6 @@ public class LeadsEntity implements Serializable {
     private String statusRemark;
     @TableField(exist = false)
     private String disposeUserName;
+    @TableField(exist = false)
+    private String workerName;
 }

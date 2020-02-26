@@ -41,10 +41,10 @@ public class AccountController extends AbstractController {
     @RequestMapping("/list")
     @RequiresPermissions("admin:account")
     public R coustomerList(@RequestParam Map<String, Object> params) {
-        if(!StringUtils.isEmpty(params.get("parentId"))){
+        if (!StringUtils.isEmpty(params.get("parentId"))) {
             Long userId = Long.parseLong((String) params.get("parentId"));
             if (userId == -1) {
-                params.put("parentId", getUserId()+"");
+                params.put("parentId", getUserId() + "");
             }
         }
         PageUtils page = accountService.queryPage(params);
@@ -61,6 +61,12 @@ public class AccountController extends AbstractController {
     @RequiresPermissions("admin:staff")
     public R staffList() {
         return R.ok().put("user", accountService.allList((long) 7, getUserId()));
+    }
+
+    @RequestMapping("/worker")
+    @RequiresPermissions("admin:account")
+    public R workerList() {
+        return R.ok().put("user", accountService.allList((long) 5, (long) 0));
     }
 
     @RequestMapping("/setWorkerAdmin")

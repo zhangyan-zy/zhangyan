@@ -61,7 +61,7 @@ public class AccountServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         List<Long> ids = sysUserRoleService.queryUserIdList(roleId);
         return this.list(new QueryWrapper<SysUserEntity>()
                 .in("user_id", ids)
-                .eq("parent_id", parentId)
+                .eq(parentId!=0,"parent_id", parentId)
                 .eq(ids.size() == 0, "user_id", 0));
     }
 
