@@ -33,12 +33,16 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
     public PageUtils listByStaff(Map<String, Object> params, Long parentId, Long staffId) {
         String username = (String) params.get("name");
         String status = (String) params.get("status");
+        int amount1 = Integer.valueOf(String.valueOf(params.get("amount1")));
+        int amount2 = Integer.valueOf(String.valueOf(params.get("amount2")));
         IPage<LeadsEntity> page = this.page(
                 new Query<LeadsEntity>().getPage(params),
                 new QueryWrapper<LeadsEntity>()
                         .like(StringUtils.isNotEmpty(username), "name", username)
                         .eq("parent_id", parentId)
                         .eq("dispose_user", staffId)
+                        .ge(amount1 != 0, "amount", amount1)
+                        .le(amount2 != 0, "amount", amount2)
                         .eq(StringUtils.isNotEmpty(status), "status", status)
                         .orderByDesc("id")
         );
@@ -49,11 +53,15 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
     public PageUtils listByWorker(Map<String, Object> params, Long parentId, Long workerId) {
         String username = (String) params.get("name");
         String status = (String) params.get("status");
+        int amount1 = Integer.valueOf(String.valueOf(params.get("amount1")));
+        int amount2 = Integer.valueOf(String.valueOf(params.get("amount2")));
         IPage<LeadsEntity> page = this.page(
                 new Query<LeadsEntity>().getPage(params),
                 new QueryWrapper<LeadsEntity>()
                         .like(StringUtils.isNotEmpty(username), "name", username)
                         .eq("parent_id", parentId)
+                        .ge(amount1 != 0, "amount", amount1)
+                        .le(amount2 != 0, "amount", amount2)
                         .eq(StringUtils.isNotEmpty(status), "status", status)
                         .eq("worker_id", workerId)
                         .orderByDesc("id")
