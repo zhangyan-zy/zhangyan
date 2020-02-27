@@ -11,7 +11,8 @@
             v-for="item in options"
             :key="item.value"
             :label="item.label"
-            :value="item.value">
+            :value="item.value"
+            :disabled="item.value<dataForm.status">
           </el-option>
         </el-select>
       </el-form-item>

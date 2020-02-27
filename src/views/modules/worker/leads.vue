@@ -4,6 +4,17 @@
       <el-form-item>
         <el-input v-model="dataForm.userName" placeholder="客户名称" clearable></el-input>
       </el-form-item>
+      <el-form-item label="金额范围">
+        <el-input-number :controls="false" min="0" v-model="dataForm.ammount1" placeholder="金额"
+                         clearable></el-input-number>
+      </el-form-item>
+      <el-form-item>
+        ~
+      </el-form-item>
+      <el-form-item>
+        <el-input-number :controls="false" min="0" v-model="dataForm.ammount2" placeholder="金额"
+                         clearable></el-input-number>
+      </el-form-item>
       <el-form-item>
         <el-select v-model="dataForm.status" clearable placeholder="客户状态">
           <el-option
@@ -144,6 +155,8 @@
         }],
         dataForm: {
           userName: '',
+          ammount1: '',
+          ammount2: '',
           status: ''
         },
         dataList: [],
@@ -171,6 +184,8 @@
           params: this.$http.adornParams({
             'page': this.pageIndex,
             'limit': this.pageSize,
+            'amount1': this.dataForm.ammount1,
+            'amount2': this.dataForm.ammount2,
             'status': this.dataForm.status,
             'name': this.dataForm.userName
           })
