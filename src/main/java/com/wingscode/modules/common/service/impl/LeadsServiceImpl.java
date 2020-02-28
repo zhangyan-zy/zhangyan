@@ -7,7 +7,9 @@ import com.wingscode.common.utils.PageUtils;
 import com.wingscode.common.utils.Query;
 import com.wingscode.modules.common.dao.LeadsDao;
 import com.wingscode.modules.common.entity.LeadsEntity;
+import com.wingscode.modules.common.service.AccountService;
 import com.wingscode.modules.common.service.LeadsService;
+import com.wingscode.modules.sys.entity.SysUserEntity;
 import com.wingscode.modules.sys.service.SysUserService;
 import com.wingscode.util.MyTimeUtil;
 
@@ -15,6 +17,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +26,8 @@ import java.util.Map;
 public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> implements LeadsService {
     @Autowired
     private SysUserService sysUserService;
+    @Autowired
+    private AccountService accountService;
 
     @Override
     public List<Long> queryList(Long parentId, String name) {
@@ -35,6 +40,8 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
         String status = (String) params.get("status");
         int amount1 = Integer.valueOf(String.valueOf(params.get("amount1")));
         int amount2 = Integer.valueOf(String.valueOf(params.get("amount2")));
+        String date1 = (String) params.get("date1");
+        String date2 = (String) params.get("date2");
         IPage<LeadsEntity> page = this.page(
                 new Query<LeadsEntity>().getPage(params),
                 new QueryWrapper<LeadsEntity>()
@@ -43,6 +50,8 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
                         .eq("dispose_user", staffId)
                         .ge(amount1 != 0, "amount", amount1)
                         .le(amount2 != 0, "amount", amount2)
+                        .ge(StringUtils.isNotEmpty(date1), "gmt_creat", date1)
+                        .le(StringUtils.isNotEmpty(date2), "gmt_creat", MyTimeUtil.addDay(date2, 1))
                         .eq(StringUtils.isNotEmpty(status), "status", status)
                         .orderByDesc("id")
         );
@@ -55,6 +64,8 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
         String status = (String) params.get("status");
         int amount1 = Integer.valueOf(String.valueOf(params.get("amount1")));
         int amount2 = Integer.valueOf(String.valueOf(params.get("amount2")));
+        String date1 = (String) params.get("date1");
+        String date2 = (String) params.get("date2");
         IPage<LeadsEntity> page = this.page(
                 new Query<LeadsEntity>().getPage(params),
                 new QueryWrapper<LeadsEntity>()
@@ -64,6 +75,8 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
                         .le(amount2 != 0, "amount", amount2)
                         .eq(StringUtils.isNotEmpty(status), "status", status)
                         .eq("worker_id", workerId)
+                        .ge(StringUtils.isNotEmpty(date1), "gmt_creat", date1)
+                        .le(StringUtils.isNotEmpty(date2), "gmt_creat", MyTimeUtil.addDay(date2, 1))
                         .orderByDesc("id")
         );
         return new PageUtils(page);
@@ -143,6 +156,13 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
                         .orderByDesc("id")
         );
         return new PageUtils(page);
+    }
+
+    @Override
+    public List<Map<String, Object>> workerCount(SysUserEntity worker) {
+        List<Map<String, Object>> mapList = new ArrayList<>();
+        List<SysUserEntity> sysUserEntity = accountService.allList((long) 5, worker.getParentId());
+        return null;
     }
 
 }

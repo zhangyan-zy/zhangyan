@@ -1,5 +1,6 @@
 package com.wingscode.modules.common.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.wingscode.common.utils.PageUtils;
 import com.wingscode.common.utils.R;
 import com.wingscode.modules.common.entity.LeadsEntity;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 
@@ -73,6 +75,51 @@ public class LeadsController extends AbstractController {
     public R waitList(@RequestParam Map<String, Object> params) {
         PageUtils page = leadsService.waitList(params, getUserId());
         return R.ok().put("page", page);
+    }
+
+    @RequestMapping("/waitCount")
+    @RequiresPermissions("leads:list")
+    public R waitCount() {
+        return R.ok().put("count", leadsService.count(new QueryWrapper<LeadsEntity>()
+                .eq("parent_id", getUserId())
+                .eq("status", 1)));
+    }
+
+    @RequestMapping("/disposeCount")
+    @RequiresPermissions("leads:list")
+    public R disposeCount() {
+        return R.ok().put("count", leadsService.count(new QueryWrapper<LeadsEntity>()
+                .eq("dispose_user", getUserId())
+                .eq("status", 2)));
+    }
+
+    @RequestMapping("/workerCount")
+    @RequiresPermissions("leads:list")
+    public R workerCount() {
+        return R.ok().put("list", leadsService.workerCount(getUser()));
+    }
+
+    @RequestMapping("/toStaff")
+    @RequiresPermissions("leads:update")
+    public R toStaff(@RequestBody Map<String, Object> params) {
+        List<Integer> ids = (List<Integer>) params.get("id");
+        Long id = Long.valueOf(params.get("disposeUser").toString());
+        ids.stream().forEach(item -> {
+            LeadsEntity leadsEntity = leadsService.getById(item);
+            LeadsLogEntity leadsLogEntity = new LeadsLogEntity();
+            leadsLogEntity.setGmtCreat(new Date());
+            leadsLogEntity.setGmtModified(new Date());
+            leadsLogEntity.setDisposeUser(getUserId());
+            leadsLogEntity.setLeadsId(Long.valueOf(item));
+            leadsLogEntity.setRemark("分配");
+            leadsLogEntity.setStatus(2);
+            leadsLogEntity.setStatusOld(leadsEntity.getStatus());
+            leadsLogService.save(leadsLogEntity);
+            leadsEntity.setDisposeUser(id);
+            leadsEntity.setGmtModified(new Date());
+            leadsService.updateById(leadsEntity);
+        });
+        return R.ok();
     }
 
 

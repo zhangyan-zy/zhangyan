@@ -3,6 +3,7 @@ package com.wingscode.modules.common.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wingscode.common.utils.PageUtils;
 import com.wingscode.modules.common.entity.LeadsEntity;
+import com.wingscode.modules.sys.entity.SysUserEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,8 @@ public interface LeadsService extends IService<LeadsEntity> {
     PageUtils listByAdmin(Map<String, Object> params, Long parentId);
 
     PageUtils waitList(Map<String, Object> params, Long workerId);
+
+    List<Map<String, Object>> workerCount(SysUserEntity worker);
 
 }
 
