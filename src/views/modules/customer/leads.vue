@@ -5,14 +5,14 @@
         <el-input v-model="dataForm.userName" placeholder="客户名称" clearable></el-input>
       </el-form-item>
       <el-form-item label="金额范围">
-        <el-input-number :controls="false" min="0" v-model="dataForm.ammount1" placeholder="金额"
+        <el-input-number :controls="false" :min="0" v-model="dataForm.ammount1" placeholder="金额"
                          clearable></el-input-number>
       </el-form-item>
       <el-form-item>
         ~
       </el-form-item>
       <el-form-item>
-        <el-input-number :controls="false" min="0" v-model="dataForm.ammount2" placeholder="金额"
+        <el-input-number :controls="false" :min="0" v-model="dataForm.ammount2" placeholder="金额"
                          clearable></el-input-number>
       </el-form-item>
       <el-form-item>

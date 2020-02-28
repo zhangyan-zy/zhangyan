@@ -5,15 +5,25 @@
         <el-input v-model="dataForm.userName" placeholder="客户名称" clearable></el-input>
       </el-form-item>
       <el-form-item label="金额范围">
-        <el-input-number :controls="false" min="0" v-model="dataForm.ammount1" placeholder="金额"
+        <el-input-number :controls="false" :min="0" v-model="dataForm.ammount1" placeholder="金额"
                          clearable></el-input-number>
       </el-form-item>
       <el-form-item>
         ~
       </el-form-item>
       <el-form-item>
-        <el-input-number :controls="false" min="0" v-model="dataForm.ammount2" placeholder="金额"
+        <el-input-number :controls="false" :min="0" v-model="dataForm.ammount2" placeholder="金额"
                          clearable></el-input-number>
+      </el-form-item>
+      <el-form-item>
+        <el-date-picker
+          v-model="dataForm.date"
+          type="daterange"
+          value-format="yyyy-MM-dd"
+          range-separator="——"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期">
+        </el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-select v-model="dataForm.status" clearable placeholder="客户状态">
@@ -158,11 +168,14 @@
           value: 6,
           label: '未成单'
         }],
+        timer: '',
+        size: 0,
         dataForm: {
           userName: '',
           ammount1: '',
           ammount2: '',
-          status: ''
+          status: '',
+          date: []
         },
         dataList: [],
         pageIndex: 1,
@@ -173,11 +186,18 @@
         addOrUpdateVisible: false
       }
     },
+    mounted () {
+      this.timer = setInterval(this.tips, 5000)
+    },
+    beforeDestroy () {
+      clearInterval(this.timer)
+    },
     components: {
       AddOrUpdate
     },
     activated () {
       this.getDataList()
+      this.tips()
     },
     methods: {
       // 获取数据列表
@@ -191,6 +211,8 @@
             'limit': this.pageSize,
             'amount1': this.dataForm.ammount1,
             'amount2': this.dataForm.ammount2,
+            'date1': this.dataForm.date ? this.dataForm.date[0] : '',
+            'date2': this.dataForm.date ? this.dataForm.date[1] : '',
             'status': this.dataForm.status,
             'name': this.dataForm.userName
           })
@@ -203,6 +225,25 @@
             this.totalPage = 0
           }
           this.dataListLoading = false
+        })
+      },
+      tips () {
+        this.$http({
+          url: this.$http.adornUrl('/common/leads/disposeCount'),
+          method: 'get',
+          params: this.$http.adornParams({})
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            if (this.size < data.count && this.size !== 0) {
+              const h = this.$createElement
+              this.$notify({
+                title: '温馨提示',
+                message: h('i', {style: 'color: teal'}, '您有新的待处理Leads')
+              })
+            }
+            console.log(123)
+            this.size = data.count
+          }
         })
       },
       // 每页数

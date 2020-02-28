@@ -6,6 +6,7 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
+        <el-button @click="addOrUpdateHandle()">批量分配</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -14,6 +15,12 @@
       v-loading="dataListLoading"
       @selection-change="selectionChangeHandle"
       style="width: 100%;">
+      <el-table-column
+        type="selection"
+        header-align="center"
+        align="center"
+        width="50">
+      </el-table-column>
       <el-table-column
         prop="name"
         header-align="center"
@@ -81,6 +88,8 @@
         dataForm: {
           userName: ''
         },
+        timer: '',
+        size: 0,
         dataList: [],
         pageIndex: 1,
         pageSize: 10,
@@ -93,8 +102,15 @@
     components: {
       AddOrUpdate
     },
+    mounted () {
+      this.timer = setInterval(this.tips, 5000)
+    },
+    beforeDestroy () {
+      clearInterval(this.timer)
+    },
     activated () {
       this.getDataList()
+      this.tips()
     },
     methods: {
       // 获取数据列表
@@ -119,6 +135,24 @@
           this.dataListLoading = false
         })
       },
+      tips () {
+        this.$http({
+          url: this.$http.adornUrl('/common/leads/waitCount'),
+          method: 'get',
+          params: this.$http.adornParams({})
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            if (this.size < data.count && this.size !== 0) {
+              const h = this.$createElement
+              this.$notify({
+                title: '温馨提示',
+                message: h('i', {style: 'color: teal'}, '您有新的待分配Leads')
+              })
+            }
+            this.size = data.count
+          }
+        })
+      },
       // 每页数
       sizeChangeHandle (val) {
         this.pageSize = val
@@ -136,10 +170,17 @@
       },
       // 新增 / 修改
       addOrUpdateHandle (id) {
-        this.addOrUpdateVisible = true
-        this.$nextTick(() => {
-          this.$refs.addOrUpdate.init(id)
+        var ids = id ? [id] : this.dataListSelections.map(item => {
+          return item.id
         })
+        if (ids.length > 0) {
+          this.addOrUpdateVisible = true
+          this.$nextTick(() => {
+            this.$refs.addOrUpdate.init(ids)
+          })
+        } else {
+          this.$message.error('请选择Leads')
+        }
       }
     }
   }

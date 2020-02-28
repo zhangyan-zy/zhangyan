@@ -31,6 +31,7 @@
               </el-form-item>
             </el-form>
           </div>
+          <p class="brand-info__intro" style="text-align: center">Copyright © 2016-2020 飞梦网络</p>
         </div>
       </div>
     </div>

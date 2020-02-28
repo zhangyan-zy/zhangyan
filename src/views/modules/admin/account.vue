@@ -171,14 +171,14 @@
       },
       // 新增 / 修改
       addOrUpdateHandle (id) {
-        // if (this.coustomerId) {
-        this.addOrUpdateVisible = true
-        this.$nextTick(() => {
-          this.$refs.addOrUpdate.init(this.coustomerId, id)
-        })
-        // } else {
-        //   this.$message.error('请选择客户')
-        // }
+        if (this.coustomerId) {
+          this.addOrUpdateVisible = true
+          this.$nextTick(() => {
+            this.$refs.addOrUpdate.init(this.coustomerId, id)
+          })
+        } else {
+          this.$message.error('请选择客户')
+        }
       },
       // 设置组长
       setHandle (id) {

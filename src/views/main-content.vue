@@ -39,6 +39,7 @@
         <router-view />
       </keep-alive>
     </el-card>
+    <p class="brand-info__intro" style="text-align: center">Copyright © 2016-2020 飞梦网络</p>
   </main>
 </template>
 
@@ -66,7 +67,7 @@
         set (val) { this.$store.commit('common/updateMainTabsActiveName', val) }
       },
       siteContentViewHeight () {
-        var height = this.documentClientHeight - 50 - 30 - 2
+        var height = this.documentClientHeight - 50 - 30 - 2 - 30
         if (this.$route.meta.isTab) {
           height -= 40
           return isURL(this.$route.meta.iframeUrl) ? { height: height + 'px' } : { minHeight: height + 'px' }

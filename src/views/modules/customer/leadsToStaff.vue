@@ -68,12 +68,10 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.$http({
-              url: this.$http.adornUrl(`/common/leads/update`),
+              url: this.$http.adornUrl(`/common/leads/toStaff`),
               method: 'post',
               data: this.$http.adornData({
                 'id': this.leadsId,
-                'statusRemark': '分配',
-                'status': 2,
                 'disposeUser': this.dataForm.staffId
               })
             }).then(({data}) => {
