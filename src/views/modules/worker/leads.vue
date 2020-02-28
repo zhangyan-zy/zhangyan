@@ -137,16 +137,21 @@
         border
         style="width: 100%;">
         <el-table-column
-          prop="remark"
-          header-align="center"
-          align="center"
-          label="备注">
+          type="index"
+          :index="indexMethod"
+          label="排名">
         </el-table-column>
         <el-table-column
-          prop="gmtCreat"
+          prop="name"
           header-align="center"
           align="center"
-          label="创建时间">
+          label="项目">
+        </el-table-column>
+        <el-table-column
+          prop="num"
+          header-align="center"
+          align="center"
+          label="Leads数量">
         </el-table-column>
       </el-table>
     </div>
@@ -191,6 +196,7 @@
           status: '',
           date: []
         },
+        num: 1,
         dataList: [],
         userList: [],
         pageIndex: 1,
@@ -249,8 +255,18 @@
           params: this.$http.adornParams({})
         }).then(({data}) => {
           if (data && data.code === 0) {
+            this.userList = data.list
           }
         })
+      },
+      indexMethod (index) {
+        if (index > 0 && this.userList[index - 1].num === this.userList[index].num) {
+          this.userList[index].index = this.userList[index - 1].index + 1
+        } else {
+          this.userList[index].index = -1
+        }
+        index = index - this.userList[index].index
+        return index
       },
       // 每页数
       sizeChangeHandle (val) {
