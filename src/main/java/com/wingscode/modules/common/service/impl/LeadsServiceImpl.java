@@ -12,12 +12,15 @@ import com.wingscode.modules.common.service.LeadsService;
 import com.wingscode.modules.sys.entity.SysUserEntity;
 import com.wingscode.modules.sys.service.SysUserService;
 import com.wingscode.util.MyTimeUtil;
+import com.wingscode.util.MyUtilTime;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -162,7 +165,27 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
     public List<Map<String, Object>> workerCount(SysUserEntity worker) {
         List<Map<String, Object>> mapList = new ArrayList<>();
         List<SysUserEntity> sysUserEntity = accountService.allList((long) 5, worker.getParentId());
-        return null;
+        sysUserEntity.stream().forEach(item -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("name", item.getUsername());
+            map.put("num", this.count(new QueryWrapper<LeadsEntity>()
+                    .ge("gmt_creat", MyUtilTime.getDate(2, ""))
+                    .eq("worker_id", item.getUserId())
+                    .eq("parent_id", item.getParentId())));
+            mapList.add(map);
+        });
+        Collections.sort(mapList, (o1, o2) -> {
+            int t1 = (int) o1.get("num");
+            int t2 = (int) o2.get("num");
+            if (t1 > t2) {
+                return -1;
+            } else if (t1 < t2) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+        return mapList;
     }
 
 }
