@@ -157,6 +157,9 @@
           <el-button type="text" size="small"
                      @click="addOrUpdateHandle(scope.row.id)">修改
           </el-button>
+          <el-button v-if="isAuth('admin:leads:delete')" type="text" size="small"
+                     @click="deleteHandle(scope.row.id)">删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -307,6 +310,36 @@
         this.addOrUpdateVisible = true
         this.$nextTick(() => {
           this.$refs.addOrUpdate.init(id)
+        })
+      },
+      // 删除
+      deleteHandle (id) {
+        this.$confirm(`确定对进行删除操作?`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$http({
+            url: this.$http.adornUrl('/common/leads/delete'),
+            method: 'post',
+            params: this.$http.adornParams({
+              'id': id
+            })
+          }).then(({data}) => {
+            if (data && data.code === 0) {
+              this.$message({
+                message: '操作成功',
+                type: 'success',
+                duration: 1500,
+                onClose: () => {
+                  this.getDataList()
+                }
+              })
+            } else {
+              this.$message.error(data.msg)
+            }
+          })
+        }).catch(() => {
         })
       }
     }

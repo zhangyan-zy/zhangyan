@@ -145,7 +145,7 @@
           prop="name"
           header-align="center"
           align="center"
-          label="项目">
+          label="姓名">
         </el-table-column>
         <el-table-column
           prop="num"
