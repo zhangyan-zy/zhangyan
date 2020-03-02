@@ -116,6 +116,7 @@ public class LeadsController extends AbstractController {
             leadsLogEntity.setStatusOld(leadsEntity.getStatus());
             leadsLogService.save(leadsLogEntity);
             leadsEntity.setDisposeUser(id);
+            leadsEntity.setStatus(2);
             leadsEntity.setGmtModified(new Date());
             leadsService.updateById(leadsEntity);
         });
@@ -180,5 +181,13 @@ public class LeadsController extends AbstractController {
     public R log(@RequestParam Map<String, Object> params) {
         PageUtils page = leadsLogService.queryPage(params, getUserId());
         return R.ok().put("page", page);
+    }
+
+    @RequestMapping("/delete")
+    @RequiresPermissions("admin:leads:delete")
+    public R delete(@RequestParam Long id) {
+        leadsService.removeById(id);
+        leadsLogService.remove(new QueryWrapper<LeadsLogEntity>().eq("leads_id", id));
+        return R.ok();
     }
 }
