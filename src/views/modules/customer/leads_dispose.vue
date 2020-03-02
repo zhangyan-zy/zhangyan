@@ -143,15 +143,28 @@
         }).then(({data}) => {
           if (data && data.code === 0) {
             if (this.size < data.count && this.size !== 0) {
-              const h = this.$createElement
-              this.$notify({
-                title: '温馨提示',
-                message: h('i', {style: 'color: teal'}, '您有新的待分配Leads')
-              })
+              this.setNotification('您有新的待分配Leads')
             }
             this.size = data.count
           }
         })
+      },
+      setNotification (content) {
+        let notify = new Notification('新消息来啦！', {
+          body: content,
+          lang: 'zh-CN'
+        })
+        notify.onshow = function () {
+        }
+        notify.onclick = function () {
+          window.focus()
+          notify.close()
+        }
+        notify.onerror = function () {
+          notify.close()
+        }
+        notify.onclose = function () {
+        }
       },
       // 每页数
       sizeChangeHandle (val) {
