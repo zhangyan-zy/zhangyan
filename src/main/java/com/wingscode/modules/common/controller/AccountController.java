@@ -96,6 +96,7 @@ public class AccountController extends AbstractController {
     public R coustomerUpdate(@RequestBody SysUserEntity user) {
         ValidatorUtils.validateEntity(user, UpdateGroup.class);
         user.setCreateUserId(getUserId());
+        user.setSalt(sysUserService.getById(user.getUserId()).getSalt());
         sysUserService.update(user);
         sysUserService.update(new UpdateWrapper<SysUserEntity>().set("status", user.getStatus()).eq("parent_id", user.getUserId()));
         return R.ok();
