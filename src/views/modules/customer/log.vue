@@ -29,8 +29,8 @@
           <el-tag v-if="scope.row.statusOld === 0" size="small" type="danger">已关闭</el-tag>
           <el-tag v-if="scope.row.statusOld === 1" size="small">待分配</el-tag>
           <el-tag v-if="scope.row.statusOld === 2" size="small">待处理</el-tag>
-          <el-tag v-if="scope.row.statusOld === 3" size="small">已响应</el-tag>
-          <el-tag v-if="scope.row.statusOld === 4" size="small">已加微</el-tag>
+          <el-tag v-if="scope.row.statusOld === 3" size="small">已加微</el-tag>
+          <el-tag v-if="scope.row.statusOld === 4" size="small">已响应</el-tag>
           <el-tag v-if="scope.row.statusOld === 5" size="small">已成单</el-tag>
           <el-tag v-if="scope.row.statusOld === 6" size="small">未成单</el-tag>
         </template>
@@ -44,8 +44,8 @@
           <el-tag v-if="scope.row.status === 0" size="small" type="danger">已关闭</el-tag>
           <el-tag v-if="scope.row.status === 1" size="small">待分配</el-tag>
           <el-tag v-if="scope.row.status === 2" size="small">待处理</el-tag>
-          <el-tag v-if="scope.row.status === 3" size="small">已响应</el-tag>
-          <el-tag v-if="scope.row.status === 4" size="small">已加微</el-tag>
+          <el-tag v-if="scope.row.status === 3" size="small">已加微</el-tag>
+          <el-tag v-if="scope.row.status === 4" size="small">已响应</el-tag>
           <el-tag v-if="scope.row.status === 5" size="small">已成单</el-tag>
           <el-tag v-if="scope.row.status === 6" size="small">未成单</el-tag>
         </template>

@@ -117,8 +117,8 @@
           <el-tag v-if="scope.row.status === 0" size="small" type="danger">已关闭</el-tag>
           <el-tag v-if="scope.row.status === 1" size="small">待分配</el-tag>
           <el-tag v-if="scope.row.status === 2" size="small">待处理</el-tag>
-          <el-tag v-if="scope.row.status === 3" size="small">已响应</el-tag>
-          <el-tag v-if="scope.row.status === 4" size="small">已加微</el-tag>
+          <el-tag v-if="scope.row.status === 3" size="small">已加微</el-tag>
+          <el-tag v-if="scope.row.status === 4" size="small">已响应</el-tag>
           <el-tag v-if="scope.row.status === 5" size="small">已成单</el-tag>
           <el-tag v-if="scope.row.status === 6" size="small">未成单</el-tag>
         </template>
@@ -195,10 +195,10 @@
           label: '待处理'
         }, {
           value: 3,
-          label: '已响应'
+          label: '已加微'
         }, {
           value: 4,
-          label: '已加微'
+          label: '已响应'
         }, {
           value: 5,
           label: '已成单'

@@ -12,7 +12,7 @@
             :key="item.value"
             :label="item.label"
             :value="item.value"
-            :disabled="item.value<dataForm.status">
+            :disabled="item.value<dataForm.status&&dataForm.status!==6&&item.value!==5">
           </el-option>
         </el-select>
       </el-form-item>
@@ -54,10 +54,10 @@
           label: '待处理'
         }, {
           value: 3,
-          label: '已响应'
+          label: '已加微'
         }, {
           value: 4,
-          label: '已加微'
+          label: '已响应'
         }, {
           value: 5,
           label: '已成单'

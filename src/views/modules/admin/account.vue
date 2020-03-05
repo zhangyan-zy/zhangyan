@@ -171,7 +171,7 @@
       },
       // 新增 / 修改
       addOrUpdateHandle (id) {
-        if (this.coustomerId) {
+        if (this.coustomerId || id) {
           this.addOrUpdateVisible = true
           this.$nextTick(() => {
             this.$refs.addOrUpdate.init(this.coustomerId, id)
