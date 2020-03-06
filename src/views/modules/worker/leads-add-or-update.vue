@@ -85,7 +85,7 @@
               this.dataForm.phone = data.leads.phone
               this.dataForm.webchat = data.leads.webchat
               this.dataForm.remark = data.leads.remark
-              this.isNeed = (data.leads.need === 1)
+              this.dataForm.isNeed = (data.leads.need === 1)
             }
           })
         }
@@ -102,7 +102,7 @@
                 'name': this.dataForm.name,
                 'name1': this.dataForm.name1,
                 'phone': this.dataForm.phone,
-                'need': this.isNeed ? 1 : 0,
+                'need': this.dataForm.isNeed ? 1 : 0,
                 'webchat': this.dataForm.webchat,
                 'remark': this.dataForm.remark
               })
