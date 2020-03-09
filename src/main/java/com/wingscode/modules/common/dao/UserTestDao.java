@@ -12,7 +12,7 @@ import java.util.List;
  * Description：<描述>
  */
 @Mapper
-public interface UserDao extends BaseMapper<SysUserEntity> {
+public interface UserTestDao extends BaseMapper<SysUserEntity> {
 
     List  queryUserList(Long parentId, Long roleId);
 

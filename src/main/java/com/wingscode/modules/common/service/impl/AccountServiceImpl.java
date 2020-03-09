@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wingscode.common.utils.PageUtils;
 import com.wingscode.common.utils.Query;
-import com.wingscode.modules.common.dao.UserDao;
+import com.wingscode.modules.common.dao.UserTestDao;
 import com.wingscode.modules.common.entity.LeadsEntity;
 import com.wingscode.modules.common.service.AccountService;
 import com.wingscode.modules.common.service.LeadsService;
@@ -32,7 +32,7 @@ public class AccountServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
     @Autowired
     private LeadsService leadsService;
     @Autowired
-    private UserDao userDao;
+    private UserTestDao userTestDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -125,13 +125,13 @@ public class AccountServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 
     @Override
     public List leadersList(Long roleId, Long parentId) {
-        List list = userDao.queryUserList(parentId,roleId);
+        List list = userTestDao.queryUserList(parentId,roleId);
         return list;
     }
 
     @Override
     public List zxLeadersList(Long roleId, Long parentId) {
-        List list = userDao.queryUserList(parentId,roleId);
+        List list = userTestDao.queryUserList(parentId,roleId);
         return list;
     }
 
