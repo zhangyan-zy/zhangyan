@@ -31,8 +31,7 @@
               </el-form-item>
             </el-form>
           </div>
-          <p class="brand-info__intro" style="text-align: center">Copyright © 2016-2020 飞梦网络</p>
-          <p><a href="http://www.beian.miit.gov.cn">苏ICP备19010048号-1</a></p>
+          <p class="brand-info__intro" style="text-align: center">Copyright © 2016-2020 飞梦网络&nbsp&nbsp&nbsp&nbsp<a href="http://www.beian.miit.gov.cn">苏ICP备19010048号-1</a></p>
         </div>
       </div>
     </div>
