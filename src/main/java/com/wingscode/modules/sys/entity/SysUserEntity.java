@@ -79,4 +79,10 @@ public class SysUserEntity implements Serializable {
     private Long parentId;
     @TableField(exist = false)
     private String parentName;
+
+    @TableField(exist = false)
+    private Integer allNum;
+
+    @TableField(exist = false)
+    private Integer todayNum;
 }

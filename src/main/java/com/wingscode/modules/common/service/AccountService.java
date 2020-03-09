@@ -18,5 +18,9 @@ public interface AccountService extends IService<SysUserEntity> {
     List<SysUserEntity> allList(Long roleId, Long parentId);
 
     void setWorkerAdmin(Long userId);
+
+    PageUtils allCustomer(Map<String, Object> params);
+    PageUtils allWorker(Map<String, Object> params);
+
 }
 
