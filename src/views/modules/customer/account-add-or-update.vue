@@ -48,7 +48,6 @@
         }
       }
       return {
-        parentId: 0,
         visible: false,
         roleList: [],
         dataForm: {
@@ -72,8 +71,7 @@
       }
     },
     methods: {
-      init (parentId, id) {
-        this.parentId = parentId
+      init (id) {
         this.dataForm.id = id || 0
         this.visible = true
         this.$nextTick(() => {

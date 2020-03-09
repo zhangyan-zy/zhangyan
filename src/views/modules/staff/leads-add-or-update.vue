@@ -129,7 +129,7 @@
                 'id': this.dataForm.id || undefined,
                 'amount': this.dataForm.amount,
                 'status': this.dataForm.status,
-                'need': this.dataForm.isNeed ,
+                'need': this.dataForm.isNeed,
                 'statusRemark': this.dataForm.statusRemark,
                 'remark': this.dataForm.remark
               })

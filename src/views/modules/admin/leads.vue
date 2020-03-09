@@ -106,6 +106,7 @@
         <template slot-scope="scope">
           <el-tag v-if="scope.row.need === 0" size="small" type="danger">无意向</el-tag>
           <el-tag v-if="scope.row.need === 1" size="small">有意向</el-tag>
+          <el-tag v-if="scope.row.need === 2" size="small">一般</el-tag>
         </template>
       </el-table-column>
       <el-table-column
