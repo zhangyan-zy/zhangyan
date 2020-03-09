@@ -18,11 +18,14 @@
         <el-input v-model="dataForm.webchat" placeholder="客户微信"></el-input>
       </el-form-item>
       <el-form-item label="是否意向" prop="need">
-        <el-switch
-          v-model="dataForm.isNeed"
-          active-color="#13ce66"
-          inactive-color="#ff4949">
-        </el-switch>
+        <el-select v-model="dataForm.isNeed" placeholder="请选择">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="备注" prop="remark">
         <el-input v-model="dataForm.remark" placeholder="备注"></el-input>
@@ -39,6 +42,16 @@
   export default {
     data () {
       return {
+        options: [{
+          value: 0,
+          label: '无意向'
+        }, {
+          value: 1,
+          label: '有意向'
+        }, {
+          value: 2,
+          label: '一般'
+        }],
         visible: false,
         roleList: [],
         dataForm: {
@@ -46,7 +59,7 @@
           name: '',
           name1: '',
           phone: '',
-          isNeed: false,
+          isNeed: 0,
           webchat: '',
           remark: ''
         },
@@ -85,7 +98,7 @@
               this.dataForm.phone = data.leads.phone
               this.dataForm.webchat = data.leads.webchat
               this.dataForm.remark = data.leads.remark
-              this.dataForm.isNeed = (data.leads.need === 1)
+              this.dataForm.isNeed = data.leads.need
             }
           })
         }
@@ -102,7 +115,7 @@
                 'name': this.dataForm.name,
                 'name1': this.dataForm.name1,
                 'phone': this.dataForm.phone,
-                'need': this.dataForm.isNeed ? 1 : 0,
+                'need': this.dataForm.isNeed,
                 'webchat': this.dataForm.webchat,
                 'remark': this.dataForm.remark
               })

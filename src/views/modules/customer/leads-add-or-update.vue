@@ -24,11 +24,14 @@
                          placeholder="金额"></el-input-number>
       </el-form-item>
       <el-form-item label="是否意向" prop="need">
-        <el-switch
-          v-model="isNeed"
-          active-color="#13ce66"
-          inactive-color="#ff4949">
-        </el-switch>
+        <el-select v-model="dataForm.isNeed" placeholder="请选择">
+          <el-option
+            v-for="item in options1"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="备注" prop="remark">
         <el-input v-model="dataForm.remark" placeholder="备注"></el-input>
@@ -45,6 +48,16 @@
   export default {
     data () {
       return {
+        options1: [{
+          value: 0,
+          label: '无意向'
+        }, {
+          value: 1,
+          label: '有意向'
+        }, {
+          value: 2,
+          label: '一般'
+        }],
         options: [{
           value: 0,
           label: '关闭'
@@ -66,11 +79,11 @@
         }],
         visible: false,
         roleList: [],
-        isNeed: false,
         dataForm: {
           id: 0,
           amount: '',
           status: '',
+          isNeed: 0,
           statusRemark: '',
           remark: ''
         },
@@ -94,7 +107,7 @@
               this.dataForm.amount = data.leads.amount
               this.dataForm.status = data.leads.status
               this.dataForm.remark = data.leads.remark
-              this.isNeed = (data.leads.need === 1)
+              this.dataForm.isNeed = data.leads.need
             }
           })
         }
@@ -115,7 +128,7 @@
                 'id': this.dataForm.id || undefined,
                 'amount': this.dataForm.amount,
                 'status': this.dataForm.status,
-                'need': this.isNeed ? 1 : 0,
+                'need': this.dataForm.isNeed,
                 'statusRemark': this.dataForm.statusRemark,
                 'remark': this.dataForm.remark
               })
