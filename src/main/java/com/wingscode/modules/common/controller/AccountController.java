@@ -110,6 +110,6 @@ public class AccountController extends AbstractController {
     @RequestMapping("/coustomerzxLeadersList")
     @RequiresPermissions("admin:account")
     public R UserZxList() {
-        return R.ok().put("user", accountService.leadersList((long) 5, (long) 0));
+        return R.ok().put("user", accountService.zxLeadersList((long) 5, (long) 0));
     }
 }
