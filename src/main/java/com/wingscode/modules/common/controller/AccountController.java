@@ -10,7 +10,6 @@ import com.wingscode.modules.common.service.AccountService;
 import com.wingscode.modules.sys.controller.AbstractController;
 import com.wingscode.modules.sys.entity.SysUserEntity;
 import com.wingscode.modules.sys.service.SysUserService;
-
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -100,5 +99,17 @@ public class AccountController extends AbstractController {
         sysUserService.update(user);
         sysUserService.update(new UpdateWrapper<SysUserEntity>().set("status", user.getStatus()).eq("parent_id", user.getUserId()));
         return R.ok();
+    }
+
+    @RequestMapping("/coustomerLeadersList")
+    @RequiresPermissions("admin:account")
+    public R UserList() {
+        return R.ok().put("user", accountService.leadersList((long) 5, (long) 0));
+    }
+
+    @RequestMapping("/coustomerzxLeadersList")
+    @RequiresPermissions("admin:account")
+    public R UserZxList() {
+        return R.ok().put("user", accountService.leadersList((long) 5, (long) 0));
     }
 }

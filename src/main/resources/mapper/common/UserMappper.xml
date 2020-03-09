@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+		<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wingscode.modules.common.dao.UserDao">
+
+<select id="queryUserList" resultType="long">
+		select username
+	  (select count(id) from tb_leads left join sys_user on tb_leads.parent_id=sys_user.user_id where tb_leads.parent_id=#{parentId} ) leaderCount
+	  (select count(id) from tb_leads left join sys_user on tb_leads.parent_id=sys_user.user_id where tb_leads.parent_id=#{parentId} and DateDiff(dd,VoucherDate,getdate())= 0 )
+		 from sys_user u
+		 left join sys_user_role ur
+		 on u.user_id=ur.user_id
+		 left join sys_role r
+		 on ur.role_id=r.role_id
+		 where u.parent_id = #{parentId} and r.role_id=#{roleId}
+	</select>
+
+
+	<select id="queryZxLeadersList" resultType="long">
+	  select username,
+	   (select count(id) from tb_leads left join sys_user on tb_leads.parent_id=sys_user.user_id where tb_leads.parent_id=#{parentId} ) leaderCount
+	   from sys_user u
+		 left join sys_user_role ur
+		 on u.user_id=ur.user_id
+		 left join sys_role r
+		 on ur.role_id=r.role_id
+		 where r.role_id=5 and u.parent_id = #{parentId}
+	</select>
+
+
+</mapper>
