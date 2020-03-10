@@ -15,4 +15,8 @@ import java.util.List;
 @Mapper
 public interface LeadsDao extends BaseMapper<LeadsEntity> {
     List<Long> queryList(Long parentId, String name);
+
+
+
+    List  queryLeadersList(Long parentId, Long roleId);
 }

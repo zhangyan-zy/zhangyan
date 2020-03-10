@@ -1,10 +1,9 @@
 package com.wingscode.modules.app.controller;
 
 
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import io.swagger.annotations.Api;
 
 /**
  * APP测试接口
@@ -15,6 +14,7 @@ import io.swagger.annotations.Api;
 @RequestMapping("/app")
 @Api("APP接口")
 public class AppController {
+
 
 
 }

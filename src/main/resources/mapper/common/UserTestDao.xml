@@ -3,29 +3,68 @@
 
 <mapper namespace="com.wingscode.modules.common.dao.UserTestDao">
 
-<select id="queryUserList" resultType="long">
-		select username
-	  (select count(id) from tb_leads left join sys_user on tb_leads.parent_id=sys_user.user_id where tb_leads.parent_id=#{parentId} ) leaderCount
-	  (select count(id) from tb_leads left join sys_user on tb_leads.parent_id=sys_user.user_id where tb_leads.parent_id=#{parentId} and DateDiff(dd,VoucherDate,getdate())= 0 )
-		 from sys_user u
-		 left join sys_user_role ur
-		 on u.user_id=ur.user_id
-		 left join sys_role r
-		 on ur.role_id=r.role_id
-		 where u.parent_id = #{parentId} and r.role_id=#{roleId}
+<select id="queryUserList" resultType="java.util.Map">
+      SELECT
+        count(*) sumLeads,
+        u.username,
+       (select count(*)
+        from
+      tb_leads l
+      where DATE_FORMAT(l.gmt_creat,'%m-%d-%Y') = DATE_FORMAT(NOW(),'%m-%d-%Y') and  l.parent_id = u.user_id
+       ) addLeads
+      from sys_user u
+      inner join tb_leads l ON u.user_id = l.parent_id
+      inner join sys_user_role ur ON ur.user_id = u.user_id
+      and ur.role_id = 4
+      group  by
+        u.user_id
+      LIMIT 10
 	</select>
 
 
-	<select id="queryZxLeadersList" resultType="long">
-	  select username,
-	   (select count(id) from tb_leads left join sys_user on tb_leads.parent_id=sys_user.user_id where tb_leads.parent_id=#{parentId} ) leaderCount
-	   from sys_user u
-		 left join sys_user_role ur
-		 on u.user_id=ur.user_id
-		 left join sys_role r
-		 on ur.role_id=r.role_id
-		 where r.role_id=5 and u.parent_id = #{parentId}
+	<select id="queryZxLeadersList" resultType="java.util.Map">
+     select
+	      count(*) esumLeads,
+	      u.username workerName,
+        (select username from sys_user u where u.user_id=l.parent_id ) ename,
+        (
+         select
+          count(*)
+          from
+          tb_leads l
+            where DATE_FORMAT(l.gmt_creat,'%m-%d-%Y') = DATE_FORMAT(NOW(),'%m-%d-%Y')  and  l.worker_id = u.user_id
+  )  eaddleads
+	from sys_user u
+	    inner join tb_leads l on u.user_id=l.worker_id
+	    inner JOIN sys_user_role ur ON ur.user_id = u.user_id
+		AND ur.role_id = 5 group by u.user_id
+		LIMIT 10
 	</select>
 
 
+
+	<select id="OrderAgentList" resultType="java.util.Map">
+	select
+	count(*) asumLeads,
+	u.username aname,
+	(
+		select
+			count(*)
+		from
+			tb_leads l
+		where
+			DATE_FORMAT(l.gmt_creat, '%m-%d-%Y') = DATE_FORMAT(NOW(), '%m-%d-%Y')
+		and l.worker_id = u.user_id
+	) aaddleads
+      from
+	sys_user u
+      inner join tb_leads l ON u.user_id = l.worker_id
+      inner join sys_user_role ur ON ur.user_id = u.user_id
+      and ur.role_id = 5
+      group by
+      	u.user_id
+      order by
+      	asumLeads DESC
+      LIMIT 10
+      	</select>
 </mapper>

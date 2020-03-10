@@ -20,4 +20,6 @@ public interface UserService extends IService<UserEntity> {
 	 * @return        返回用户ID
 	 */
 	long login(LoginForm form);
+
+
 }

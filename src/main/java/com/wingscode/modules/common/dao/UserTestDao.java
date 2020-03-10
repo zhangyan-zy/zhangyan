@@ -5,6 +5,7 @@ import com.wingscode.modules.sys.entity.SysUserEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Author：张延
@@ -14,7 +15,9 @@ import java.util.List;
 @Mapper
 public interface UserTestDao extends BaseMapper<SysUserEntity> {
 
-    List  queryUserList(Long parentId, Long roleId);
+    List  queryUserList(Map<String, Object> params);
 
-    List  queryZxLeadersList(Long parentId, Long roleId);
+    List  queryZxLeadersList(Map<String, Object> params);
+
+    List  OrderAgentList(Map<String, Object> params);
 }

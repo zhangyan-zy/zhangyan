@@ -22,8 +22,10 @@ public interface AccountService extends IService<SysUserEntity> {
     PageUtils allCustomer(Map<String, Object> params);
     PageUtils allWorker(Map<String, Object> params);
 
-    List  leadersList(Long roleId, Long parentId);
+    List  leadersList(Map<String, Object> params);
 
-    List  zxLeadersList(Long roleId, Long parentId);
+    List  zxLeadersList(Map<String, Object> params);
+
+    List OrderAgentList(Map<String, Object> params);
 }
 

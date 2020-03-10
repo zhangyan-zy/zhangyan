@@ -13,10 +13,7 @@ import com.wingscode.modules.sys.service.SysUserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -101,15 +98,31 @@ public class AccountController extends AbstractController {
         return R.ok();
     }
 
-    @RequestMapping("/coustomerLeadersList")
+
+
+
+
+    @PostMapping("/coustomerLeadersList")
     @RequiresPermissions("admin:account")
-    public R UserList() {
-        return R.ok().put("user", accountService.leadersList((long) 5, (long) 0));
+    public R UserList(@RequestParam  Map<String, Object> params) {
+
+        return R.ok().put("user", accountService.leadersList(params));
     }
 
-    @RequestMapping("/coustomerzxLeadersList")
+
+
+    @PostMapping("/AgentsLeadersList")
     @RequiresPermissions("admin:account")
-    public R UserZxList() {
-        return R.ok().put("user", accountService.zxLeadersList((long) 5, (long) 0));
+    public R UserZxList(@RequestParam  Map<String, Object> params) {
+        return R.ok().put("user", accountService.zxLeadersList(params));
     }
+
+
+
+    @PostMapping("/orderAgentsLeadersList")
+    @RequiresPermissions("admin:account")
+    public R OrderAgentList(@RequestParam  Map<String, Object> params) {
+        return R.ok().put("user", accountService.OrderAgentList(params));
+    }
+
 }
