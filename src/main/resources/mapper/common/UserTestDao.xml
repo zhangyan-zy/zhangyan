@@ -3,43 +3,60 @@
 
 <mapper namespace="com.wingscode.modules.common.dao.UserTestDao">
 
-<select id="queryUserList" resultType="java.util.Map">
-      SELECT
+
+    <!--<resultMap id="coustomerList" type="com.wingscode.modules.common.entity.LeadsEntity">-->
+        <!--<result column="parent_id"  property="parentId" />-->
+    <!--</resultMap>-->
+    
+<select id="queryUserList"  resultType="java.util.Map" >
+       SELECT
         count(*) sumLeads,
         u.username,
-       (select count(*)
-        from
-      tb_leads l
-      where DATE_FORMAT(l.gmt_creat,'%m-%d-%Y') = DATE_FORMAT(NOW(),'%m-%d-%Y') and  l.parent_id = u.user_id
-       ) addLeads
+       (select count(*) from tb_leads l where DATE_FORMAT(l.gmt_creat,'%m-%d-%Y') = DATE_FORMAT(NOW(),'%m-%d-%Y') and  l.parent_id = u.user_id
+       ) addLeads,
+       (select count(*)from tb_leads l where l.parent_id = u.user_id and l.status=0)status0,
+       (select count(*)from tb_leads l where l.parent_id = u.user_id and l.status=1)status1,
+       (select count(*)from tb_leads l where l.parent_id = u.user_id and l.status=2)status2,
+       (select count(*)from tb_leads l where l.parent_id = u.user_id and l.status=3)status3,
+       (select count(*)from tb_leads l where l.parent_id = u.user_id and l.status=4)status4,
+       (select count(*)from tb_leads l where l.parent_id = u.user_id and l.status=5)status5,
+       (select count(*)from tb_leads l where l.parent_id = u.user_id and l.status=6)status6
       from sys_user u
       inner join tb_leads l ON u.user_id = l.parent_id
       inner join sys_user_role ur ON ur.user_id = u.user_id
       and ur.role_id = 4
+       <if test="parentId != null and parentId != ''">
+           and u.user_id=#{parentId}
+       </if>
+       <if test="date1 != null and date1 != '' and date2 != null and date2 != ''">
+        and  DATE_FORMAT(u.create_time,'%m-%d-%Y')  between DATE_FORMAT(#{date1},'%m-%d-%Y') and DATE_FORMAT(#{date2},'%m-%d-%Y')
+       </if>
       group  by
         u.user_id
       LIMIT 10
 	</select>
 
 
-	<select id="queryZxLeadersList" resultType="java.util.Map">
-     select
-	      count(*) esumLeads,
-	      u.username workerName,
-        (select username from sys_user u where u.user_id=l.parent_id ) ename,
-        (
-         select
-          count(*)
-          from
-          tb_leads l
-            where DATE_FORMAT(l.gmt_creat,'%m-%d-%Y') = DATE_FORMAT(NOW(),'%m-%d-%Y')  and  l.worker_id = u.user_id
-  )  eaddleads
-	from sys_user u
-	    inner join tb_leads l on u.user_id=l.worker_id
-	    inner JOIN sys_user_role ur ON ur.user_id = u.user_id
-		AND ur.role_id = 5 group by u.user_id
-		LIMIT 10
-	</select>
+
+
+	<!--<select id="queryZxLeadersList" resultType="java.util.Map">-->
+     <!--select-->
+	      <!--count(*) esumLeads,-->
+	      <!--u.username workerName,-->
+        <!--(select username from sys_user u where u.user_id=l.parent_id ) ename,-->
+        <!--(-->
+         <!--select-->
+          <!--count(*)-->
+          <!--from-->
+          <!--tb_leads l-->
+            <!--where DATE_FORMAT(l.gmt_creat,'%m-%d-%Y') = DATE_FORMAT(NOW(),'%m-%d-%Y')  and  l.worker_id = u.user_id-->
+  <!--)  eaddleads-->
+	<!--from sys_user u-->
+	    <!--inner join tb_leads l on u.user_id=l.worker_id-->
+	    <!--inner JOIN sys_user_role ur ON ur.user_id = u.user_id-->
+		<!--AND ur.role_id = 5 group by u.user_id-->
+		<!--LIMIT 10-->
+	<!--</select>-->
 
 
 
@@ -67,4 +84,67 @@
       	asumLeads DESC
       LIMIT 10
       	</select>
+
+
+    <!--<select id="addAndShowLeadsList" resultType="java.util.Map">-->
+        <!--SELECT-->
+	<!--statistics_time,-->
+	<!--new_count,-->
+	<!--all_count-->
+        <!--FROM-->
+	<!--tb_leads_statistics ls-->
+        <!--LEFT JOIN sys_user u ON ls.parent_id = u.user_id-->
+        <!--LEFT JOIN sys_user_role ur ON u.user_id = ur.user_id-->
+        <!--LEFT JOIN tb_leads l ON u.user_id = l.parent_id-->
+        <!--GROUP BY-->
+	<!--u.user_id-->
+    <!--</select>-->
+
+
+
+    <!--<select id="queryCostumerList" resultType="java.util.Map">-->
+        <!--SELECT-->
+        <!--count(*) sumLeads,-->
+        <!--l.parent_id,-->
+        <!--l.gmt_creat,-->
+        <!--l.gmt_modified,-->
+       <!--(select count(*)-->
+        <!--from-->
+      <!--tb_leads l-->
+      <!--where DATE_FORMAT(l.gmt_creat,'%m-%d-%Y') = DATE_FORMAT(NOW(),'%m-%d-%Y') and  l.parent_id = u.user_id-->
+       <!--) addLeads-->
+      <!--from sys_user u-->
+      <!--inner join tb_leads l ON u.user_id = l.parent_id-->
+      <!--inner join sys_user_role ur ON ur.user_id = u.user_id-->
+      <!--and ur.role_id = 4-->
+      <!--group  by-->
+        <!--u.user_id-->
+      <!--LIMIT 10-->
+    <!--</select>-->
+
+
+    <!--<select id="queryAgentsList" resultType="java.util.Map">-->
+      <!--select-->
+	      <!--count(*) esumLeads,-->
+	       <!--l.parent_id,-->
+        <!--l.gmt_creat,-->
+        <!--l.gmt_modified,-->
+
+        <!--(-->
+         <!--select-->
+          <!--count(*)-->
+          <!--from-->
+          <!--tb_leads l-->
+            <!--where DATE_FORMAT(l.gmt_creat,'%m-%d-%Y') = DATE_FORMAT(NOW(),'%m-%d-%Y')  and  l.worker_id = u.user_id-->
+  <!--)  eaddleads-->
+	<!--from sys_user u-->
+	    <!--inner join tb_leads l on u.user_id=l.worker_id-->
+	    <!--inner JOIN sys_user_role ur ON ur.user_id = u.user_id-->
+		<!--AND ur.role_id = 5 group by u.user_id-->
+		<!--LIMIT 10-->
+    <!--</select>-->
+
+
+
+
 </mapper>

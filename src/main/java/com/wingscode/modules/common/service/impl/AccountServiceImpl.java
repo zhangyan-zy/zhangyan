@@ -5,8 +5,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wingscode.common.utils.PageUtils;
 import com.wingscode.common.utils.Query;
-import com.wingscode.modules.common.dao.LeadsDao;
-import com.wingscode.modules.common.dao.UserTestDao;
 import com.wingscode.modules.common.entity.LeadsEntity;
 import com.wingscode.modules.common.service.AccountService;
 import com.wingscode.modules.common.service.LeadsService;
@@ -20,7 +18,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,11 +30,7 @@ public class AccountServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
     private SysUserService sysUserService;
     @Autowired
     private LeadsService leadsService;
-    @Autowired
-    private UserTestDao userTestDao;
 
-    @Autowired
-    private LeadsDao leadsDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -128,24 +121,7 @@ public class AccountServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         return new PageUtils(page);
     }
 
-    @Override
-    public List leadersList(Map<String, Object> params) {
-        List list = userTestDao.queryUserList(params);
 
-        return list;
-    }
-
-    @Override
-    public List zxLeadersList(Map<String, Object> params) {
-        List list = userTestDao.queryZxLeadersList(params);
-        return list;
-    }
-
-    @Override
-    public List OrderAgentList(Map<String, Object> params) {
-        List list = userTestDao.OrderAgentList(params);
-        return list;
-    }
 
 
 }

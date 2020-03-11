@@ -100,29 +100,4 @@ public class AccountController extends AbstractController {
 
 
 
-
-
-    @PostMapping("/coustomerLeadersList")
-    @RequiresPermissions("admin:account")
-    public R UserList(@RequestParam  Map<String, Object> params) {
-
-        return R.ok().put("user", accountService.leadersList(params));
-    }
-
-
-
-    @PostMapping("/AgentsLeadersList")
-    @RequiresPermissions("admin:account")
-    public R UserZxList(@RequestParam  Map<String, Object> params) {
-        return R.ok().put("user", accountService.zxLeadersList(params));
-    }
-
-
-
-    @PostMapping("/orderAgentsLeadersList")
-    @RequiresPermissions("admin:account")
-    public R OrderAgentList(@RequestParam  Map<String, Object> params) {
-        return R.ok().put("user", accountService.OrderAgentList(params));
-    }
-
 }
