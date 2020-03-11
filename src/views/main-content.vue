@@ -81,7 +81,7 @@
         }
       },
       siteContentViewHeight () {
-        var height = this.documentClientHeight - 50 - 30 - 2 - 30
+        var height = this.documentClientHeight - 50 - 30 - 2 - 50
         if (this.$route.meta.isTab) {
           height -= 40
           return isURL(this.$route.meta.iframeUrl) ? {height: height + 'px'} : {minHeight: height + 'px'}
