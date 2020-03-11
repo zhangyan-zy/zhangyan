@@ -9,31 +9,26 @@
     <!--</resultMap>-->
     
 <select id="queryUserList"  resultType="java.util.Map" >
-       SELECT
-        count(*) sumLeads,
-        u.username,
-       (select count(*) from tb_leads l where DATE_FORMAT(l.gmt_creat,'%m-%d-%Y') = DATE_FORMAT(NOW(),'%m-%d-%Y') and  l.parent_id = u.user_id
-       ) addLeads,
-       (select count(*)from tb_leads l where l.parent_id = u.user_id and l.status=0)status0,
-       (select count(*)from tb_leads l where l.parent_id = u.user_id and l.status=1)status1,
-       (select count(*)from tb_leads l where l.parent_id = u.user_id and l.status=2)status2,
-       (select count(*)from tb_leads l where l.parent_id = u.user_id and l.status=3)status3,
-       (select count(*)from tb_leads l where l.parent_id = u.user_id and l.status=4)status4,
-       (select count(*)from tb_leads l where l.parent_id = u.user_id and l.status=5)status5,
-       (select count(*)from tb_leads l where l.parent_id = u.user_id and l.status=6)status6
-      from sys_user u
-      inner join tb_leads l ON u.user_id = l.parent_id
-      inner join sys_user_role ur ON ur.user_id = u.user_id
-      and ur.role_id = 4
+    SELECT
+    count(*) sumLeads,
+    u.username username,
+    (select count(*)from tb_leads l where l.parent_id = 12 AND DATE_FORMAT(l.gmt_creat, '%Y-%m-%d') BETWEEN DATE_FORMAT("2020-3-10", '%Y-%m-%d')AND DATE_FORMAT(NOW(), 'yyyy-MM-dd') and l.status=0)status0,
+    (select count(*)from tb_leads l where l.parent_id = 12 AND DATE_FORMAT(l.gmt_creat, '%Y-%m-%d') BETWEEN DATE_FORMAT("2020-3-10", '%Y-%m-%d')AND DATE_FORMAT(NOW(), 'yyyy-MM-dd') and l.status=1)status1,
+    (select count(*)from tb_leads l where l.parent_id = 12 AND DATE_FORMAT(l.gmt_creat, '%Y-%m-%d') BETWEEN DATE_FORMAT("2020-3-10", '%Y-%m-%d')AND DATE_FORMAT(NOW(), 'yyyy-MM-dd') and l.status=2)status2,
+    (select count(*)from tb_leads l where l.parent_id  = 12 AND DATE_FORMAT(l.gmt_creat, '%Y-%m-%d') BETWEEN DATE_FORMAT("2020-3-10", '%Y-%m-%d')AND DATE_FORMAT(NOW(), 'yyyy-MM-dd') and l.status=3)status3,
+    (select count(*)from tb_leads l where l.parent_id = 12 AND DATE_FORMAT(l.gmt_creat, '%Y-%m-%d') BETWEEN DATE_FORMAT("2020-3-10", '%Y-%m-%d')AND DATE_FORMAT(NOW(), 'yyyy-MM-dd') and l.status=4)status4,
+    (select count(*)from tb_leads l where l.parent_id =  12 AND DATE_FORMAT(l.gmt_creat, '%Y-%m-%d') BETWEEN DATE_FORMAT("2020-3-10", '%Y-%m-%d')AND DATE_FORMAT(NOW(), 'yyyy-MM-dd') and l.status=5)status5,
+    (select count(*)from tb_leads l where l.parent_id =  12 AND DATE_FORMAT(l.gmt_creat, '%Y-%m-%d') BETWEEN DATE_FORMAT("2020-3-10", '%Y-%m-%d')AND DATE_FORMAT(NOW(), 'yyyy-MM-dd') and l.status=6)status6
+    FROM tb_leads l
+    INNER JOIN sys_user u on l.parent_id =u.user_id
+    WHERE 1=1
        <if test="parentId != null and parentId != ''">
-           and u.user_id=#{parentId}
+           and l.parent_id=#{parentId}
        </if>
        <if test="date1 != null and date1 != '' and date2 != null and date2 != ''">
-        and  DATE_FORMAT(u.create_time,'%m-%d-%Y')  between DATE_FORMAT(#{date1},'%m-%d-%Y') and DATE_FORMAT(#{date2},'%m-%d-%Y')
+        and  DATE_FORMAT(l.gmt_creat,'%m-%d-%Y')  between DATE_FORMAT(#{date1},'%m-%d-%Y') and DATE_FORMAT(#{date2},'%m-%d-%Y')
        </if>
-      group  by
-        u.user_id
-      LIMIT 10
+    GROUP BY u.user_id
 	</select>
 
 
