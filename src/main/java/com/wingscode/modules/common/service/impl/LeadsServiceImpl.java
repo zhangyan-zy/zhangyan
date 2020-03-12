@@ -40,6 +40,7 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
     @Override
     public PageUtils listByStaff(Map<String, Object> params, Long parentId, Long staffId) {
         String username = (String) params.get("name");
+        String mobile = (String) params.get("mobile");
         String status = (String) params.get("status");
         int amount1 = Integer.valueOf(String.valueOf(params.get("amount1")));
         int amount2 = Integer.valueOf(String.valueOf(params.get("amount2")));
@@ -49,6 +50,7 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
                 new Query<LeadsEntity>().getPage(params),
                 new QueryWrapper<LeadsEntity>()
                         .like(StringUtils.isNotEmpty(username), "name", username)
+                        .like(StringUtils.isNotEmpty(mobile), "phone", mobile)
                         .eq("parent_id", parentId)
                         .eq("dispose_user", staffId)
                         .ge(amount1 != 0, "amount", amount1)
