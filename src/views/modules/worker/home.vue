@@ -50,69 +50,69 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      dataList: [],
-      pageIndex: 1,
-      pageSize: 10,
-      totalPage: 0,
-      dataListLoading: false,
-      dataListSelections: [],
-      asumLeads: 1
-    };
-  },
-  components: {},
-  activated() {
-    this.getDataList();
-  },
-  methods: {
-    // 获取一表格数据列表
-    getDataList() {
-      this.dataListLoading = true;
-      this.$http({
-        url: this.$http.adornUrl("/common/AgentsLeadersList"),
-        method: "post",
-        params: this.$http.adornParams({
-          page: this.pageIndex,
-          limit: this.pageSize
-        })
-      }).then(({ data }) => {
-        console.log("data", data);
-        if (data && data.code === 0) {
-          this.dataList = data.user;
-        } else {
-          this.dataList = [];
-          this.totalPage = 0;
-        }
-        this.dataListLoading = false;
-      });
-    },
-    indexMethod(index) {
-      if (
-        index > 0 &&
-        this.dataList[index - 1].asumLeads === this.dataList[index].asumLeads
-      ) {
-        this.dataList[index].index = this.dataList[index - 1].index + 1;
-      } else {
-        this.dataList[index].index = -1;
+  export default {
+    data () {
+      return {
+        dataList: [],
+        pageIndex: 1,
+        pageSize: 10,
+        totalPage: 0,
+        dataListLoading: false,
+        dataListSelections: [],
+        asumLeads: 1
       }
-      index = index - this.dataList[index].index;
-      return index;
     },
-    // 每页数
-    sizeChangeHandle1(val) {
-      this.pageSize = val;
-      this.pageIndex = 1;
-      this.getDataList();
+    components: {},
+    activated () {
+      this.getDataList()
     },
-    // 当前页
-    currentChangeHandle1(val) {
-      this.pageIndex = val;
-      this.getDataList();
+    methods: {
+      // 获取一表格数据列表
+      getDataList () {
+        this.dataListLoading = true
+        this.$http({
+          url: this.$http.adornUrl('/common/AgentsLeadersList'),
+          method: 'post',
+          params: this.$http.adornParams({
+            page: this.pageIndex,
+            limit: this.pageSize
+          })
+        }).then(({data}) => {
+          console.log('data', data)
+          if (data && data.code === 0) {
+            this.dataList = data.user
+          } else {
+            this.dataList = []
+            this.totalPage = 0
+          }
+          this.dataListLoading = false
+        })
+      },
+      indexMethod (index) {
+        if (
+          index > 0 &&
+          this.dataList[index - 1].asumLeads === this.dataList[index].asumLeads
+        ) {
+          this.dataList[index].index = this.dataList[index - 1].index + 1
+        } else {
+          this.dataList[index].index = -1
+        }
+        index = index - this.dataList[index].index
+        return index
+      },
+      // 每页数
+      sizeChangeHandle1 (val) {
+        this.pageSize = val
+        this.pageIndex = 1
+        this.getDataList()
+      },
+      // 当前页
+      currentChangeHandle1 (val) {
+        this.pageIndex = val
+        this.getDataList()
+      }
     }
   }
-};
 </script>
 
 <style></style>

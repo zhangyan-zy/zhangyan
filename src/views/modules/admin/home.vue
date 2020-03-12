@@ -120,85 +120,86 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      dataList: [],
-      pageIndex: 1,
-      pageSize: 10,
-      totalPage: 0,
-      dataListLoading: false,
-      dataListSelections: [],
-      workerList: [],
-      workerId: "",
-      coustomerList: [],
-      coustomerId: "",
-      dataForm: {
-        status: "",
-        date: []
+  export default {
+    data () {
+      return {
+        dataList: [],
+        pageIndex: 1,
+        pageSize: 10,
+        totalPage: 0,
+        dataListLoading: false,
+        dataListSelections: [],
+        workerList: [],
+        workerId: '',
+        coustomerList: [],
+        coustomerId: '',
+        dataForm: {
+          status: '',
+          date: []
+        }
       }
-    };
-  },
-  mounted() {},
+    },
+    mounted () {
+    },
 
-  components: {},
+    components: {},
 
-  activated() {
-    this.getDataList();
-    this.getCoustomerList();
-  },
+    activated () {
+      this.getDataList()
+      this.getCoustomerList()
+    },
 
-  methods: {
-    // 获取一表格数据列表
-    getDataList() {
-      this.dataListLoading = true;
-      this.$http({
-        url: this.$http.adornUrl("/common/coustomerLeadersList"),
-        method: "post",
-        params: this.$http.adornParams({
-          page: this.pageIndex,
-          limit: this.pageSize,
-          parentId: this.coustomerId,
-          date1: this.dataForm.date ? this.dataForm.date[0] : "",
-          date2: this.dataForm.date ? this.dataForm.date[1] : ""
+    methods: {
+      // 获取一表格数据列表
+      getDataList () {
+        this.dataListLoading = true
+        this.$http({
+          url: this.$http.adornUrl('/common/coustomerLeadersList'),
+          method: 'post',
+          params: this.$http.adornParams({
+            page: this.pageIndex,
+            limit: this.pageSize,
+            parentId: this.coustomerId,
+            date1: this.dataForm.date ? this.dataForm.date[0] : '',
+            date2: this.dataForm.date ? this.dataForm.date[1] : ''
+          })
+        }).then(({data}) => {
+          console.log('data', data)
+          if (data && data.code === 0) {
+            this.dataList = data.user
+          } else {
+            this.dataList = []
+            this.totalPage = 0
+          }
+          this.dataListLoading = false
         })
-      }).then(({ data }) => {
-        console.log("data", data);
-        if (data && data.code === 0) {
-          this.dataList = data.user;
-        } else {
-          this.dataList = [];
-          this.totalPage = 0;
-        }
-        this.dataListLoading = false;
-      });
-    },
-    //
-    getCoustomerList() {
-      this.$http({
-        url: this.$http.adornUrl("/common/account/coustomer"),
-        method: "get",
-        params: this.$http.adornParams({})
-      }).then(({ data }) => {
-        if (data && data.code === 0) {
-          this.coustomerList = data.user;
-        }
-      });
-    },
+      },
+      //
+      getCoustomerList () {
+        this.$http({
+          url: this.$http.adornUrl('/common/account/coustomer'),
+          method: 'get',
+          params: this.$http.adornParams({})
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.coustomerList = data.user
+          }
+        })
+      },
 
-    // 每页数
-    sizeChangeHandle1(val) {
-      this.pageSize = val;
-      this.pageIndex = 1;
-      this.getDataList();
-    },
-    // 当前页
-    currentChangeHandle1(val) {
-      this.pageIndex = val;
-      this.getDataList();
+      // 每页数
+      sizeChangeHandle1 (val) {
+        this.pageSize = val
+        this.pageIndex = 1
+        this.getDataList()
+      },
+      // 当前页
+      currentChangeHandle1 (val) {
+        this.pageIndex = val
+        this.getDataList()
+      }
     }
   }
-};
 </script>
 
 <style></style>
