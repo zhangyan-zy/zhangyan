@@ -4,8 +4,7 @@ package com.wingscode.modules.app.controller;
 import com.wingscode.common.utils.R;
 import com.wingscode.modules.common.service.StatisticalService;
 import com.wingscode.modules.sys.controller.AbstractController;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * APP测试接口
@@ -39,7 +41,7 @@ public class AppController   extends AbstractController {
         map.put("date2","2020-3-8");
         map.put("page","1");
         map.put("limit","4");
-        return R.ok().put("user", statisticalService.selectCoustomerList(map));
+        return R.ok().put("user", statisticalService.selectCustomerList(map));
     }
 
 

@@ -10,9 +10,9 @@ import lombok.Data;
 @Data
 public class AgentAddEntity {
 
-   private Integer  asumLeads;
+    private Integer asumLeads;
     private String aname;
     private Integer aaddleads;
-    private Double  avgadd;
+    private Double avgadd;
 
 }

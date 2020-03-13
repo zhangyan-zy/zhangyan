@@ -3,28 +3,28 @@
 
 <mapper namespace="com.wingscode.modules.common.dao.StatisticalDao">
 
-    <select id="selectCoustomerList" resultType="com.wingscode.modules.common.vo.CoustomerCountEntity">
-          SELECT
-          count(*) sumLeads,
-          u.username username,
-         COUNT(CASE l.status WHEN 0 THEN 1 END )as status0,
-         COUNT(CASE l.status WHEN 1 THEN 1 END )as status1,
-         COUNT(CASE l.status WHEN 2 THEN 1 END )as status2,
-         COUNT(CASE l.status WHEN 3 THEN 1 END )as status3,
-         COUNT(CASE l.status WHEN 4 THEN 1 END )as status4,
-         COUNT(CASE l.status WHEN 5 THEN 1 END )as status5,
-         COUNT(CASE l.status WHEN 6 THEN 1 END )as status6
-         FROM
-         tb_leads l
-          INNER JOIN sys_user u on l.parent_id =u.user_id
-           WHERE 1=1
-          <if test="parentId != null and parentId != ''">
+    <select id="selectCustomerList" resultType="com.wingscode.modules.common.vo.AdminCustomerVO">
+        SELECT
+        count(*) sumLeads,
+        u.username username,
+        COUNT(CASE l.status WHEN 0 THEN 1 END )as status0,
+        COUNT(CASE l.status WHEN 1 THEN 1 END )as status1,
+        COUNT(CASE l.status WHEN 2 THEN 1 END )as status2,
+        COUNT(CASE l.status WHEN 3 THEN 1 END )as status3,
+        COUNT(CASE l.status WHEN 4 THEN 1 END )as status4,
+        COUNT(CASE l.status WHEN 5 THEN 1 END )as status5,
+        COUNT(CASE l.status WHEN 6 THEN 1 END )as status6
+        FROM
+        tb_leads l
+        INNER JOIN sys_user u on l.parent_id =u.user_id
+        WHERE 1=1
+        <if test="parentId != null and parentId != ''">
             and l.parent_id=#{parentId}
-          </if>
-          <if test="date1 != null and date1 != '' and date2 != null and date2 != ''">
+        </if>
+        <if test="date1 != null and date1 != '' and date2 != null and date2 != ''">
             and DATE_FORMAT(l.gmt_creat,'%m-%d-%Y') between DATE_FORMAT(#{date1},'%m-%d-%Y') and
             DATE_FORMAT(#{date2},'%m-%d-%Y')
-          </if>
+        </if>
         GROUP BY u.user_id
     </select>
 
@@ -33,10 +33,13 @@
         select
         count(*) asumLeads,
         u.username aname,
-        (select	count(*) from tb_leads l where DATE_FORMAT(l.gmt_creat, '%m-%d-%Y') = DATE_FORMAT(NOW(), '%m-%d-%Y')
+        (select count(*) from tb_leads l where DATE_FORMAT(l.gmt_creat, '%m-%d-%Y') =
+        DATE_FORMAT(NOW(), '%m-%d-%Y')
         and l.worker_id = u.user_id ) aaddleads,
-        ((select count(*)from tb_leads l where DATE_FORMAT(l.gmt_creat, '%m-%d-%Y') < DATE_FORMAT(NOW(), '%m-%d-%Y')and
-        l.worker_id = u.user_id))  avgadd
+        ((select count(*)from tb_leads l where DATE_FORMAT(l.gmt_creat, '%m-%d-%Y')
+        &lt; DATE_FORMAT
+        (NOW(), '%m-%d-%Y')and
+        l.worker_id = u.user_id)) avgadd
         from
         tb_leads l
         inner join sys_user u ON u.user_id = l.worker_id
