@@ -3,13 +3,10 @@ package com.wingscode.modules.common.dao;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.wingscode.modules.common.vo.AdminAgentAddEntityVo;
 import com.wingscode.modules.common.vo.AdminCustomerVO;
-import com.wingscode.modules.common.vo.AgentAddEntity;
-
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
 
 /**
  * Author：张延
@@ -18,9 +15,9 @@ import java.util.List;
  */
 @Mapper
 public interface StatisticalDao extends BaseMapper<AdminCustomerVO> {
-
+    //首页查询
     IPage<AdminCustomerVO> selectCustomerList(Page page, @Param("parentId") Integer parentId, @Param("date1") String date1, @Param("date2") String date2);
-
-    List<AgentAddEntity> selectAgentList(@Param("parentId") Integer parentId, @Param("date1") String date1, @Param("date2") String date2, IPage page);
+   //坐席端查询
+    IPage<AdminAgentAddEntityVo> selectAgentList(Page page, @Param("parentId") Integer parentId, @Param("date1") String date1, @Param("date2") String date2);
 
 }

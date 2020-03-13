@@ -29,7 +29,7 @@
     </select>
 
 
-    <select id="selectAgentList" resultType="com.wingscode.modules.common.vo.AgentAddEntity">
+    <select id="selectAgentList" resultType="com.wingscode.modules.common.vo.AdminAgentAddEntityVo">
         select
         count(*) asumLeads,
         u.username aname,
