@@ -12,11 +12,15 @@ import java.util.Map;
  * Description：<描述>
  */
 public interface StatisticalService {
-     //首页查询
+     /*
+     首页查询
+      */
      PageUtils selectCustomerList(Map<String, Object> params);
 
     PageUtils allWorker(Map<String, Object> params);
-    //坐席端查询
+    /*
+    坐席端查询
+     */
     IPage<AdminAgentAddEntityVo> selectAgentList(Map<String, Object> params);
 
 
