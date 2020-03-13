@@ -1,6 +1,6 @@
 package com.wingscode.modules.common.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.wingscode.common.utils.PageUtils;
 import com.wingscode.modules.common.vo.AgentAddEntity;
 
 import java.util.List;
@@ -13,9 +13,9 @@ import java.util.Map;
  */
 public interface StatisticalService {
 
-    IPage selectCustomerList(Map<String, Object> params);
+    PageUtils selectCustomerList(Map<String, Object> params);
 
-    IPage allWorker(Map<String, Object> params);
+    PageUtils allWorker(Map<String, Object> params);
 
     List<AgentAddEntity> selectAgentList(Map<String, Object> params);
 
