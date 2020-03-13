@@ -5,6 +5,9 @@
         <el-form-item>
           <el-input v-model="dataForm.userName" placeholder="客户名称" clearable></el-input>
         </el-form-item>
+        <el-form-item>
+          <el-input v-model="dataForm.mobile" placeholder="客户手机" clearable></el-input>
+        </el-form-item>
         <el-form-item label="金额范围">
           <el-input-number :controls="false" :min="0" v-model="dataForm.ammount1" placeholder="金额"
                            clearable></el-input-number>
@@ -192,6 +195,7 @@
         }],
         dataForm: {
           userName: '',
+          mobile: '',
           ammount1: '',
           ammount2: '',
           status: '',
@@ -236,6 +240,7 @@
             'date1': this.dataForm.date ? this.dataForm.date[0] : '',
             'date2': this.dataForm.date ? this.dataForm.date[1] : '',
             'status': this.dataForm.status,
+            'mobile': this.dataForm.mobile,
             'name': this.dataForm.userName
           })
         }).then(({data}) => {

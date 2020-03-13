@@ -21,6 +21,9 @@
       <el-form-item>
         <el-input v-model="dataForm.userName" placeholder="Leads名称" clearable></el-input>
       </el-form-item>
+      <el-form-item>
+        <el-input v-model="dataForm.mobile" placeholder="Leads手机" clearable></el-input>
+      </el-form-item>
       <el-form-item label="金额范围">
         <el-input-number :controls="false" :min="0" v-model="dataForm.ammount1" placeholder="金额"
                          clearable></el-input-number>
@@ -213,6 +216,7 @@
         coustomerId: '',
         dataForm: {
           userName: '',
+          mobile: '',
           ammount1: '',
           ammount2: '',
           status: '',
@@ -274,6 +278,7 @@
               'amount2': this.dataForm.ammount2,
               'workerId': this.workerId,
               'status': this.dataForm.status,
+              'mobile': this.dataForm.mobile,
               'date1': this.dataForm.date ? this.dataForm.date[0] : '',
               'date2': this.dataForm.date ? this.dataForm.date[1] : '',
               'parentId': this.coustomerId,
