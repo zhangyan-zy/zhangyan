@@ -8,6 +8,8 @@ import com.wingscode.modules.common.dao.StatisticalDao;
 import com.wingscode.modules.common.service.StatisticalService;
 import com.wingscode.modules.common.vo.AdminAgentAddEntityVo;
 import com.wingscode.modules.common.vo.AdminCustomerVO;
+import com.wingscode.modules.common.vo.AdminWorkerVO;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -33,12 +35,18 @@ public class StatisticalSericeImpl extends ServiceImpl<StatisticalDao, AdminCust
         String date2 = (String) params.get("date2");
 
         Page<AdminCustomerVO> pages = new Page<>(page, limit);
-        return new PageUtils(baseMapper.selectCustomerList(pages,parentId, date1, date2));
+        return new PageUtils(baseMapper.selectCustomerList(pages, parentId, date1, date2));
     }
 
     @Override
     public PageUtils allWorker(Map<String, Object> params) {
-        return new PageUtils(baseMapper.selectCustomerList(pages,parentId, date1, date2));
+        Integer page = Integer.parseInt((String) params.get("page"));
+        Integer limit = Integer.parseInt((String) params.get("limit"));
+        String date1 = (String) params.get("date1");
+        String date2 = (String) params.get("date2");
+        Long parentId = Long.parseLong(org.springframework.util.StringUtils.isEmpty(params.get("parentId")) ? "0" : (String) params.get("parentId"));
+        Page<AdminWorkerVO> pages = new Page<>(page, limit);
+        return new PageUtils(baseMapper.allWorker(pages, parentId, date1, date2));
     }
 
     @Override
@@ -59,7 +67,7 @@ public class StatisticalSericeImpl extends ServiceImpl<StatisticalDao, AdminCust
         String date2 = (String) params.get("date2");
 
         Page<AdminAgentAddEntityVo> pages = new Page<>(page, limit);
-        IPage pagess = baseMapper.selectAgentList( pages,parentId, date1, date2);
+        IPage pagess = baseMapper.selectAgentList(pages, parentId, date1, date2);
         return pagess;
     }
 

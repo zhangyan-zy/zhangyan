@@ -29,6 +29,32 @@
     </select>
 
 
+    <select id="allWorker" resultType="com.wingscode.modules.common.vo.AdminWorkerVO">
+        SELECT
+        count(*) sumLeads,
+        u.username username,
+        COUNT(CASE l.status WHEN 0 THEN 1 END )as status0,
+        COUNT(CASE l.status WHEN 1 THEN 1 END )as status1,
+        COUNT(CASE l.status WHEN 2 THEN 1 END )as status2,
+        COUNT(CASE l.status WHEN 3 THEN 1 END )as status3,
+        COUNT(CASE l.status WHEN 4 THEN 1 END )as status4,
+        COUNT(CASE l.status WHEN 5 THEN 1 END )as status5,
+        COUNT(CASE l.status WHEN 6 THEN 1 END )as status6
+        FROM
+        tb_leads l
+        INNER JOIN sys_user u on l.parent_id =u.user_id
+        WHERE 1=1
+        <if test="parentId != null and parentId != ''">
+            and l.parent_id=#{parentId}
+        </if>
+        <if test="date1 != null and date1 != '' and date2 != null and date2 != ''">
+            and DATE_FORMAT(l.gmt_creat,'%m-%d-%Y') between DATE_FORMAT(#{date1},'%m-%d-%Y') and
+            DATE_FORMAT(#{date2},'%m-%d-%Y')
+        </if>
+        GROUP BY u.user_id
+    </select>
+
+
     <select id="selectAgentList" resultType="com.wingscode.modules.common.vo.AdminAgentAddEntityVo">
         select
         count(*) asumLeads,
