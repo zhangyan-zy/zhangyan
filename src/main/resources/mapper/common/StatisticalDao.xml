@@ -30,19 +30,15 @@
 
 
     <select id="selectAgentList" resultType="com.wingscode.modules.common.vo.AdminAgentAddEntityVo">
+        select username aname,avg(avgleads) avgadd,aaddleads,asumLeads from
+        (
         select
-        count(*) asumLeads,
-        u.username aname,
-        (select count(*) from tb_leads l where DATE_FORMAT(l.gmt_creat, '%m-%d-%Y') =
-        DATE_FORMAT(NOW(), '%m-%d-%Y')
-        and l.worker_id = u.user_id ) aaddleads,
-        ((select count(*)from tb_leads l where DATE_FORMAT(l.gmt_creat, '%m-%d-%Y')
-        &lt; DATE_FORMAT
-        (NOW(), '%m-%d-%Y')and
-        l.worker_id = u.user_id)) avgadd
-        from
-        tb_leads l
-        inner join sys_user u ON u.user_id = l.worker_id
+         worker_id, u.username username, count(*) avgleads,
+        (select count(*) from tb_leads l where  l.worker_id = u.user_id)asumLeads,
+        (select count(*) from tb_leads l where DATE_FORMAT(l.gmt_creat, '%m-%d-%Y') = DATE_FORMAT(NOW(), '%m-%d-%Y')and
+         l.worker_id = u.user_id) aaddleads
+        from tb_leads l INNER JOIN sys_user u on l.worker_id=u.user_id
+         where 1=1
         <if test="parentId != null and parentId != ''">
             and l.parent_id=#{parentId}
         </if>
@@ -50,9 +46,11 @@
             and DATE_FORMAT(l.gmt_creat,'%m-%d-%Y') between DATE_FORMAT(#{date1},'%m-%d-%Y') and
             DATE_FORMAT(#{date2},'%m-%d-%Y')
         </if>
-        GROUP BY u.user_id
-        order by
-        asumLeads DESC
+        group by date_format(gmt_creat, '%Y-%m-%d'),u.user_id,worker_id
+        ) a
+        GROUP BY worker_id,asumLeads
+         order by
+      	asumLeads DESC
     </select>
 
 </mapper>
