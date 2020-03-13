@@ -25,10 +25,8 @@ public class StatisticalSericeImpl extends ServiceImpl<StatisticalDao, AdminCust
 
     @Override
     public PageUtils selectCustomerList(Map<String, Object> params) {
-
         Integer page = Integer.parseInt((String) params.get("page"));
         Integer limit = Integer.parseInt((String) params.get("limit"));
-
         Integer parentId = null;
         if (StringUtils.isNotEmpty((String) params.get("parentId"))) {
             parentId = Integer.parseInt((String) params.get("parentId"));
@@ -38,12 +36,11 @@ public class StatisticalSericeImpl extends ServiceImpl<StatisticalDao, AdminCust
 
         Page<AdminCustomerVO> pages = new Page<>(page, limit);
         return new PageUtils(baseMapper.selectCustomerList(pages,parentId, date1, date2));
-
     }
 
     @Override
     public PageUtils allWorker(Map<String, Object> params) {
-        return null;
+        return new PageUtils(baseMapper.selectCustomerList(pages,parentId, date1, date2));
     }
 
     @Override
