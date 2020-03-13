@@ -1,9 +1,9 @@
 package com.wingscode.modules.common.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.wingscode.common.utils.PageUtils;
-import com.wingscode.modules.common.vo.AgentAddEntity;
+import com.wingscode.modules.common.vo.AdminAgentAddEntityVo;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,12 +12,12 @@ import java.util.Map;
  * Description：<描述>
  */
 public interface StatisticalService {
-
-    PageUtils selectCustomerList(Map<String, Object> params);
+     //首页查询
+     PageUtils selectCustomerList(Map<String, Object> params);
 
     PageUtils allWorker(Map<String, Object> params);
-
-    List<AgentAddEntity> selectAgentList(Map<String, Object> params);
+    //坐席端查询
+    IPage<AdminAgentAddEntityVo> selectAgentList(Map<String, Object> params);
 
 
 }

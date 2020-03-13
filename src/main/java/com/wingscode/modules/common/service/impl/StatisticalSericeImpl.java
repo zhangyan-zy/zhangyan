@@ -6,13 +6,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wingscode.common.utils.PageUtils;
 import com.wingscode.modules.common.dao.StatisticalDao;
 import com.wingscode.modules.common.service.StatisticalService;
+import com.wingscode.modules.common.vo.AdminAgentAddEntityVo;
 import com.wingscode.modules.common.vo.AdminCustomerVO;
-import com.wingscode.modules.common.vo.AgentAddEntity;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,7 +42,7 @@ public class StatisticalSericeImpl extends ServiceImpl<StatisticalDao, AdminCust
     }
 
     @Override
-    public List<AgentAddEntity> selectAgentList(Map<String, Object> params) {
+    public IPage<AdminAgentAddEntityVo> selectAgentList(Map<String, Object> params) {
 
 
         System.out.println(params + "090909");
@@ -60,8 +58,8 @@ public class StatisticalSericeImpl extends ServiceImpl<StatisticalDao, AdminCust
         String date1 = (String) params.get("date1");
         String date2 = (String) params.get("date2");
 
-        IPage<AgentAddEntity> pages = new Page<>(page, limit);
-        List pagess = baseMapper.selectAgentList(parentId, date1, date2, pages);
+        Page<AdminAgentAddEntityVo> pages = new Page<>(page, limit);
+        IPage pagess = baseMapper.selectAgentList( pages,parentId, date1, date2);
         return pagess;
     }
 
