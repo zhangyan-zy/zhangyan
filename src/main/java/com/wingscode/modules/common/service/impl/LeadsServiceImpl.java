@@ -66,6 +66,7 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
     @Override
     public PageUtils listByWorker(Map<String, Object> params, Long parentId, Long workerId) {
         String username = (String) params.get("name");
+        String mobile = (String) params.get("mobile");
         String status = (String) params.get("status");
         int amount1 = Integer.valueOf(String.valueOf(params.get("amount1")));
         int amount2 = Integer.valueOf(String.valueOf(params.get("amount2")));
@@ -75,6 +76,7 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
                 new Query<LeadsEntity>().getPage(params),
                 new QueryWrapper<LeadsEntity>()
                         .like(StringUtils.isNotEmpty(username), "name", username)
+                        .like(StringUtils.isNotEmpty(mobile), "phone", mobile)
                         .eq("parent_id", parentId)
                         .ge(amount1 != 0, "amount", amount1)
                         .le(amount2 != 0, "amount", amount2)
@@ -90,6 +92,7 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
     @Override
     public PageUtils listByCustomer(Map<String, Object> params, Long parentId) {
         String username = (String) params.get("name");
+        String mobile = (String) params.get("mobile");
         int amount1 = Integer.valueOf(String.valueOf(params.get("amount1")));
         int amount2 = Integer.valueOf(String.valueOf(params.get("amount2")));
         String date1 = (String) params.get("date1");
@@ -100,6 +103,7 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
                 new Query<LeadsEntity>().getPage(params),
                 new QueryWrapper<LeadsEntity>()
                         .like(StringUtils.isNotEmpty(username), "name", username)
+                        .like(StringUtils.isNotEmpty(mobile), "phone", mobile)
                         .eq("parent_id", parentId)
                         .eq(StringUtils.isNotEmpty(status), "status", status)
                         .eq(StringUtils.isNotEmpty(staff), "dispose_user", staff)
@@ -120,6 +124,7 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
     @Override
     public PageUtils listByAdmin(Map<String, Object> params, Long parentId) {
         String username = (String) params.get("name");
+        String mobile = (String) params.get("mobile");
         int amount1 = Integer.valueOf(String.valueOf(params.get("amount1")));
         int amount2 = Integer.valueOf(String.valueOf(params.get("amount2")));
         String date1 = (String) params.get("date1");
@@ -130,6 +135,7 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
                 new Query<LeadsEntity>().getPage(params),
                 new QueryWrapper<LeadsEntity>()
                         .like(StringUtils.isNotEmpty(username), "name", username)
+                        .like(StringUtils.isNotEmpty(mobile), "phone", mobile)
                         .eq(parentId != 0, "parent_id", parentId)
                         .eq(StringUtils.isNotEmpty(status), "status", status)
                         .eq(StringUtils.isNotEmpty(workerId), "worker_id", workerId)
