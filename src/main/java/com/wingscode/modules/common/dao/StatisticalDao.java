@@ -1,12 +1,13 @@
 package com.wingscode.modules.common.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.wingscode.modules.app.entity.UserEntity;
-import com.wingscode.modules.common.entity.LeadsEntity;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.wingscode.modules.common.vo.AgentAddEntity;
 import com.wingscode.modules.common.vo.CoustomerCountEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * Author：张延
@@ -14,17 +15,10 @@ import org.apache.ibatis.annotations.Param;
  * Description：<描述>
  */
 @Mapper
-public interface StatisticalDao extends BaseMapper<UserEntity> {
+public interface StatisticalDao extends BaseMapper<CoustomerCountEntity> {
 
-    Page<CoustomerCountEntity> selectCoustomerList(@Param("parentId") Integer parentId, @Param("date1") String date1, @Param("date2") String date2, Page page);
+    List<CoustomerCountEntity> selectCoustomerList(@Param("parentId") Integer parentId, @Param("date1") String date1, @Param("date2") String date2, IPage page);
 
-    Page<LeadsEntity> selectAgentList(@Param("parentId") Long parentId, @Param("date1") String date1, @Param("date2") String date2, Page page);
-    // List  queryZxLeadersList(Map<String, Object> params);
-    //
-    // List  addAndShowLeadsList(Map<String, Object> params);
-    //
-    // List queryCostumerList(Map<String, Object> params);
-    //
-    // List queryAgentsList(Map<String, Object> params);
+    List<AgentAddEntity> selectAgentList(@Param("parentId") Integer parentId,@Param("date1") String date1, @Param("date2") String date2, IPage page);
 
 }
