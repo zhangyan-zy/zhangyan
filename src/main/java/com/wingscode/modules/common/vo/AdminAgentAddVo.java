@@ -8,7 +8,7 @@ import lombok.Data;
  * Description：<描述>
  */
 @Data
-public class AdminAgentAddEntityVo {
+public class AdminAgentAddVo {
 
     /**
     增加总数

@@ -31,52 +31,26 @@
 
     <select id="allWorker" resultType="com.wingscode.modules.common.vo.AdminWorkerVO">
         SELECT
-        count(*) sumLeads,
-        u.username username,
-        COUNT(CASE l.status WHEN 0 THEN 1 END )as status0,
-        COUNT(CASE l.status WHEN 1 THEN 1 END )as status1,
-        COUNT(CASE l.status WHEN 2 THEN 1 END )as status2,
-        COUNT(CASE l.status WHEN 3 THEN 1 END )as status3,
-        COUNT(CASE l.status WHEN 4 THEN 1 END )as status4,
-        COUNT(CASE l.status WHEN 5 THEN 1 END )as status5,
-        COUNT(CASE l.status WHEN 6 THEN 1 END )as status6
+        (SELECT username FROM sys_user su WHERE su.user_id = l.parent_id) as username,
+        u.username as leadsname ,
+        (SELECT COUNT(1) FROM tb_leads tl WHERE tl.worker_id = l.worker_id ) as sumLeads,
+        COUNT(1) as addDaily,
+        COUNT(distinct DATE_FORMAT(l.gmt_creat,'%Y-%m-%d')),
+        (COUNT(1)/COUNT(distinct DATE_FORMAT(l.gmt_creat,'%Y-%m-%d'))) as addVag
         FROM
         tb_leads l
-        INNER JOIN sys_user u on l.parent_id =u.user_id
+        inner JOIN sys_user u on u.user_id = l.worker_id and u.`status` = 1
+        LEFT JOIN sys_user_role r on r.user_id = u.user_id
+        AND r.role_id = 5
+        AND u.`status` = '1'
+        and l.parent_id=#{parentId}
         WHERE 1=1
-        <if test="parentId != null and parentId != ''">
-            and l.parent_id=#{parentId}
-        </if>
         <if test="date1 != null and date1 != '' and date2 != null and date2 != ''">
-            and DATE_FORMAT(l.gmt_creat,'%m-%d-%Y') between DATE_FORMAT(#{date1},'%m-%d-%Y') and
-            DATE_FORMAT(#{date2},'%m-%d-%Y')
+        and DATE_FORMAT(l.gmt_creat,'%m-%d-%Y') between DATE_FORMAT(#{date1},'%m-%d-%Y') and
+        DATE_FORMAT(#{date2},'%m-%d-%Y')
         </if>
-        GROUP BY u.user_id
+        GROUP BY l.worker_id
     </select>
 
-
-    <select id="selectAgentList" resultType="com.wingscode.modules.common.vo.AdminAgentAddEntityVo">
-        select username aname,avg(avgleads) avgadd,aaddleads,asumLeads from
-        (
-        select
-         worker_id, u.username username, count(*) avgleads,
-        (select count(*) from tb_leads l where  l.worker_id = u.user_id)asumLeads,
-        (select count(*) from tb_leads l where DATE_FORMAT(l.gmt_creat, '%m-%d-%Y') = DATE_FORMAT(NOW(), '%m-%d-%Y')and
-         l.worker_id = u.user_id) aaddleads
-        from tb_leads l INNER JOIN sys_user u on l.worker_id=u.user_id
-         where 1=1
-        <if test="parentId != null and parentId != ''">
-            and l.parent_id=#{parentId}
-        </if>
-        <if test="date1 != null and date1 != '' and date2 != null and date2 != ''">
-            and DATE_FORMAT(l.gmt_creat,'%m-%d-%Y') between DATE_FORMAT(#{date1},'%m-%d-%Y') and
-            DATE_FORMAT(#{date2},'%m-%d-%Y')
-        </if>
-        group by date_format(gmt_creat, '%Y-%m-%d'),u.user_id,worker_id
-        ) a
-        GROUP BY worker_id,asumLeads
-         order by
-      	asumLeads DESC
-    </select>
 
 </mapper>

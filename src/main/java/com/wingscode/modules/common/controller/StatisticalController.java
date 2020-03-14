@@ -55,13 +55,12 @@ public class StatisticalController  extends AbstractController {
     }
 
     /**
-     * 坐席排序
+     * 坐席端查询
      */
     @PostMapping("/AgentsLeadersList")
     @RequiresPermissions("admin:account")
-    public R AgentList(@RequestParam  Map<String, Object> params) {
-        return R.ok().put("user", statisticalService.selectAgentList(params));
+    public R WorkerList(@RequestParam  Map<String, Object> params) {
+        return R.ok().put("user", statisticalService.allWorker(params));
     }
-
 
 }

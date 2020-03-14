@@ -13,6 +13,7 @@ import java.util.Map;
  * @date 2019-11-18 12:20:12
  */
 public interface AccountService extends IService<SysUserEntity> {
+
     PageUtils queryPage(Map<String, Object> params);
 
     List<SysUserEntity> allList(Long roleId, Long parentId);

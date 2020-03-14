@@ -36,28 +36,28 @@ public class AppController   extends AbstractController {
     @ApiOperation("所有客户的统计情况")
     public R UserList(@RequestParam Map<String, Object> params) {
         Map map =new HashMap();
-        map.put("parentId","40");
+        map.put("parentId","12");
         map.put("date1","2020-3-5");
         map.put("date2","2020-3-8");
-        map.put("page","1");
-        map.put("limit","4");
+        map.put("page","0");
+        map.put("limit","12");
         return R.ok().put("user", statisticalService.selectCustomerList(map));
     }
 
 
     /**
-     * 坐席排序
+     * 坐席端查询
      */
-    @PostMapping("/AgentsLeadersList")
+    @PostMapping("/WorkList")
     @ApiOperation("所有leads排序的统计情况")
     public R AgentList(@RequestParam  Map<String, Object> params) {
         Map map =new HashMap();
         map.put("parentId","40");
         map.put("date1","2020-3-5");
         map.put("date2","2020-3-8");
-        map.put("page","1");
+        map.put("page","0");
         map.put("limit","12");
-        return R.ok().put("user", statisticalService.selectAgentList(map));
+        return R.ok().put("user", statisticalService.allWorker(map));
     }
 
 
