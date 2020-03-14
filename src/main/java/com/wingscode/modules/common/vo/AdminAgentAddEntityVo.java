@@ -10,19 +10,19 @@ import lombok.Data;
 @Data
 public class AdminAgentAddEntityVo {
 
-    /*
+    /**
     增加总数
      */
     private Integer asumLeads;
-    /*
+    /**
     姓名
      */
     private String aname;
-    /*
+    /**
     每日新增
      */
     private Integer aaddleads;
-    /*
+    /**
     平均每日新增
      */
     private Double avgadd;

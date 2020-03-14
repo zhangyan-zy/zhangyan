@@ -1,6 +1,5 @@
 package com.wingscode.modules.common.service.impl;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wingscode.common.utils.PageUtils;
@@ -9,7 +8,6 @@ import com.wingscode.modules.common.service.StatisticalService;
 import com.wingscode.modules.common.vo.AdminAgentAddEntityVo;
 import com.wingscode.modules.common.vo.AdminCustomerVO;
 import com.wingscode.modules.common.vo.AdminWorkerVO;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -50,15 +48,11 @@ public class StatisticalSericeImpl extends ServiceImpl<StatisticalDao, AdminCust
     }
 
     @Override
-    public IPage<AdminAgentAddEntityVo> selectAgentList(Map<String, Object> params) {
+    public PageUtils selectAgentList(Map<String, Object> params) {
 
-
-        System.out.println(params + "090909");
         Integer page = Integer.parseInt((String) params.get("page"));
         Integer limit = Integer.parseInt((String) params.get("limit"));
 
-        System.out.println("121212" + page);
-        System.out.println("121212" + limit);
         Integer parentId = null;
         if (StringUtils.isNotEmpty((String) params.get("parentId"))) {
             parentId = Integer.parseInt((String) params.get("parentId"));
@@ -67,8 +61,7 @@ public class StatisticalSericeImpl extends ServiceImpl<StatisticalDao, AdminCust
         String date2 = (String) params.get("date2");
 
         Page<AdminAgentAddEntityVo> pages = new Page<>(page, limit);
-        IPage pagess = baseMapper.selectAgentList(pages, parentId, date1, date2);
-        return pagess;
+        return new PageUtils( baseMapper.selectAgentList(pages, parentId, date1, date2));
     }
 
 }

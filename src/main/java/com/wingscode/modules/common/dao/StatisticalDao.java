@@ -17,12 +17,16 @@ import org.apache.ibatis.annotations.Param;
  */
 @Mapper
 public interface StatisticalDao extends BaseMapper<AdminCustomerVO> {
-    //首页查询
+    /**
+     * 首页查询
+     */
     IPage<AdminCustomerVO> selectCustomerList(Page page, @Param("parentId") Integer parentId, @Param("date1") String date1, @Param("date2") String date2);
 
     IPage<AdminWorkerVO> allWorker(Page page, @Param("parentId") Long parentId, @Param("date1") String date1, @Param("date2") String date2);
 
-    //坐席端查询
+    /**
+     * 坐席端查询
+     */
     IPage<AdminAgentAddEntityVo> selectAgentList(Page page, @Param("parentId") Integer parentId, @Param("date1") String date1, @Param("date2") String date2);
 
 }
