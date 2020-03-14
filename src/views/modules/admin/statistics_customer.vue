@@ -42,62 +42,67 @@
         class="tab1"
         :data="dataList"
         border
-        v-loading="dataListLoading"
-      >
+        v-loading="dataListLoading">
         <el-table-column
           prop="username"
           header-align="center"
           align="center"
-          label="客户名称"
-        ></el-table-column>
+          label="客户名称">
+        </el-table-column>
         <el-table-column
           prop="sumLeads"
           header-align="center"
           align="center"
-          label="leads数量"
-        ></el-table-column>
+          label="leads数量">
+        </el-table-column>
         <el-table-column
           prop="status1"
           header-align="center"
           align="center"
-          label="待分配"
-        ></el-table-column>
+          label="待分配">
+        </el-table-column>
         <el-table-column
           prop="status2"
           header-align="center"
           align="center"
-          label="待处理"
-        ></el-table-column>
+          label="待处理">
+        </el-table-column>
         <el-table-column
           prop="status3"
           header-align="center"
           align="center"
-          label="已加微"
-        ></el-table-column>
+          label="已加微">
+        </el-table-column>
         <el-table-column
           prop="status4"
           header-align="center"
           align="center"
-          label="已响应"
-        ></el-table-column>
+          label="已响应">
+        </el-table-column>
         <el-table-column
           prop="status5"
           header-align="center"
           align="center"
-          label="已成单"
-        ></el-table-column>
+          label="已成单">
+        </el-table-column>
         <el-table-column
           prop="status6"
           header-align="center"
           align="center"
-          label="未成单"
-        ></el-table-column>
+          label="未成单">
+        </el-table-column>
         <el-table-column
           prop="status0"
           header-align="center"
           align="center"
-          label="已关闭"
-        ></el-table-column>
+          label="已关闭">
+        </el-table-column>
+        <el-table-column
+          prop="time1"
+          header-align="center"
+          align="center"
+          label="平均处理时间(h)">
+        </el-table-column>
       </el-table>
     </div>
 
@@ -110,8 +115,8 @@
           @current-change="currentChangeHandle"
           :current-page="pageIndex"
           :page-sizes="[10, 20, 50, 100]"
-          :page-size="pageSize1"
-          :total="totalPage1"
+          :page-size="pageSize"
+          :total="totalPage"
           layout="total, sizes, prev, pager, next, jumper"
         ></el-pagination>
       </div>
@@ -166,7 +171,8 @@
         }).then(({data}) => {
           console.log('data', data)
           if (data && data.code === 0) {
-            this.dataList = data.user
+            this.totalPage = data.user.totalCount
+            this.dataList = data.user.list
           } else {
             this.dataList = []
             this.totalPage = 0
@@ -174,7 +180,16 @@
           this.dataListLoading = false
         })
       },
-      //
+      sizeChangeHandle (val) {
+        this.pageSize = val
+        this.pageIndex = 1
+        this.getDataList()
+      },
+      // 当前页
+      currentChangeHandle (val) {
+        this.pageIndex = val
+        this.getDataList()
+      },
       getCoustomerList () {
         this.$http({
           url: this.$http.adornUrl('/common/account/coustomer'),

@@ -5,7 +5,7 @@
   window.SITE_CONFIG = {}
 
   // api接口请求地址
-  window.SITE_CONFIG['baseUrl'] = 'http://localhost:8081';
+  window.SITE_CONFIG['baseUrl'] = 'http://localhost:8080';
   // window.SITE_CONFIG['baseUrl'] = 'https://call.wingscode.com/callServer'
   // window.SITE_CONFIG['baseUrl'] = 'http://192.168.1.116:8081'
   //window.SITE_CONFIG["baseUrl"] = "http://192.168.1.119:8080/swagger-ui.html#/";

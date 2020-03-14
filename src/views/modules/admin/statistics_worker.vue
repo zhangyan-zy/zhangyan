@@ -3,23 +3,19 @@
     <el-form
       :inline="true"
       :model="dataForm"
-      @keyup.enter.native="getDataList()"
-    >
+      @keyup.enter.native="getDataList()">
       <el-select
         v-model="coustomerId"
         clearable
         filterable
-        placeholder="请选择客户"
-      >
+        placeholder="请选择客户">
         <el-option
           v-for="item in coustomerList"
           :key="item.userId"
           :label="item.username"
-          :value="item.userId"
-        >
+          :value="item.userId">
         </el-option>
       </el-select>
-
       <el-form-item>
         <el-date-picker
           v-model="dataForm.date"
@@ -27,11 +23,9 @@
           value-format="yyyy-MM-dd"
           range-separator="——"
           start-placeholder="开始日期"
-          end-placeholder="结束日期"
-        >
+          end-placeholder="结束日期">
         </el-date-picker>
       </el-form-item>
-
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
       </el-form-item>
@@ -42,62 +36,42 @@
         class="tab1"
         :data="dataList"
         border
-        v-loading="dataListLoading"
-      >
+        v-loading="dataListLoading">
+        <el-table-column
+          type="index"
+          :index="indexMethod"
+          label="排名">
+        </el-table-column>
         <el-table-column
           prop="username"
           header-align="center"
           align="center"
-          label="客户名称"
-        ></el-table-column>
+          label="客户名称">
+        </el-table-column>
+        <el-table-column
+          prop="leadsname"
+          header-align="center"
+          align="center"
+          label="坐席名称">
+        </el-table-column>
         <el-table-column
           prop="sumLeads"
           header-align="center"
           align="center"
-          label="leads数量"
-        ></el-table-column>
+          label="leads数量">
+        </el-table-column>
         <el-table-column
-          prop="status1"
+          prop="addTime"
           header-align="center"
           align="center"
-          label="待分配"
-        ></el-table-column>
+          label="新增">
+        </el-table-column>
         <el-table-column
-          prop="status2"
+          prop="addVagDaliy"
           header-align="center"
           align="center"
-          label="待处理"
-        ></el-table-column>
-        <el-table-column
-          prop="status3"
-          header-align="center"
-          align="center"
-          label="已加微"
-        ></el-table-column>
-        <el-table-column
-          prop="status4"
-          header-align="center"
-          align="center"
-          label="已响应"
-        ></el-table-column>
-        <el-table-column
-          prop="status5"
-          header-align="center"
-          align="center"
-          label="已成单"
-        ></el-table-column>
-        <el-table-column
-          prop="status6"
-          header-align="center"
-          align="center"
-          label="未成单"
-        ></el-table-column>
-        <el-table-column
-          prop="status0"
-          header-align="center"
-          align="center"
-          label="已关闭"
-        ></el-table-column>
+          label="平均每日新增">
+        </el-table-column>
       </el-table>
     </div>
 
@@ -110,8 +84,8 @@
           @current-change="currentChangeHandle"
           :current-page="pageIndex"
           :page-sizes="[10, 20, 50, 100]"
-          :page-size="pageSize1"
-          :total="totalPage1"
+          :page-size="pageSize"
+          :total="totalPage"
           layout="total, sizes, prev, pager, next, jumper"
         ></el-pagination>
       </div>
@@ -154,7 +128,7 @@
       getDataList () {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/common/coustomerLeadersList'),
+          url: this.$http.adornUrl('/common/admin/allWorker'),
           method: 'post',
           params: this.$http.adornParams({
             page: this.pageIndex,
@@ -166,13 +140,33 @@
         }).then(({data}) => {
           console.log('data', data)
           if (data && data.code === 0) {
-            this.dataList = data.user
+            this.dataList = data.list.list
+            this.totalPage = data.list.totalCount
           } else {
             this.dataList = []
             this.totalPage = 0
           }
           this.dataListLoading = false
         })
+      },
+      sizeChangeHandle (val) {
+        this.pageSize = val
+        this.pageIndex = 1
+        this.getDataList()
+      },
+      // 当前页
+      currentChangeHandle (val) {
+        this.pageIndex = val
+        this.getDataList()
+      },
+      indexMethod (index) {
+        if (index > 0 && this.dataList[index - 1].addTime === this.dataList[index].addTime) {
+          this.dataList[index].index = this.dataList[index - 1].index + 1
+        } else {
+          this.dataList[index].index = -1
+        }
+        index = index - this.dataList[index].index
+        return index
       },
       //
       getCoustomerList () {
