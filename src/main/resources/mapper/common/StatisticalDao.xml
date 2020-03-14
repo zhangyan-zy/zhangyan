@@ -35,9 +35,9 @@
         (SELECT username FROM sys_user su WHERE su.user_id = l.parent_id) as username,
         u.username as leadsname ,
         (SELECT COUNT(1) FROM tb_leads tl WHERE tl.worker_id = l.worker_id ) as sumLeads,
-        COUNT(1) as addDaily,
+        COUNT(1) as addTime,
         COUNT(distinct DATE_FORMAT(l.gmt_creat,'%Y-%m-%d')),
-        (COUNT(1)/COUNT(distinct DATE_FORMAT(l.gmt_creat,'%Y-%m-%d'))) as addVag
+        (COUNT(1)/COUNT(distinct DATE_FORMAT(l.gmt_creat,'%Y-%m-%d'))) as addVagDaliy
         FROM
         tb_leads l
         INNER JOIN sys_user u on u.user_id = l.worker_id AND u.`status` = 1

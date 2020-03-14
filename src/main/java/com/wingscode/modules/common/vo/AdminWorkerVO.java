@@ -23,13 +23,13 @@ public class AdminWorkerVO {
      */
     private Integer sumLeads;
     /**
-     * 每日新增
+     * 时间段增加的量
      */
-    private Integer addDaily;
+    private Integer addTime;
     /**
-     * 每日平均
+     * 每日平均增加的量
      */
-    private Integer addVag;
+    private Integer addVagDaliy;
 
 
 }
