@@ -30,7 +30,8 @@
 
 
     <select id="allWorker" resultType="com.wingscode.modules.common.vo.AdminWorkerVO">
-        SELECT
+
+         SELECT
         (SELECT username FROM sys_user su WHERE su.user_id = l.parent_id) as username,
         u.username as leadsname ,
         (SELECT COUNT(1) FROM tb_leads tl WHERE tl.worker_id = l.worker_id ) as sumLeads,
@@ -39,18 +40,19 @@
         (COUNT(1)/COUNT(distinct DATE_FORMAT(l.gmt_creat,'%Y-%m-%d'))) as addVag
         FROM
         tb_leads l
-        inner JOIN sys_user u on u.user_id = l.worker_id and u.`status` = 1
+        INNER JOIN sys_user u on u.user_id = l.worker_id AND u.`status` = 1
         LEFT JOIN sys_user_role r on r.user_id = u.user_id
         AND r.role_id = 5
-        AND u.`status` = '1'
-        and l.parent_id=#{parentId}
         WHERE 1=1
+        <if test="parentId != 0">
+            AND u.parent_id=#{parentId}
+        </if>
         <if test="date1 != null and date1 != '' and date2 != null and date2 != ''">
-        and DATE_FORMAT(l.gmt_creat,'%m-%d-%Y') between DATE_FORMAT(#{date1},'%m-%d-%Y') and
-        DATE_FORMAT(#{date2},'%m-%d-%Y')
+            AND DATE_FORMAT(l.gmt_creat,'%m-%d-%Y') BETWEEN DATE_FORMAT(#{date1},'%m-%d-%Y') AND
+            DATE_FORMAT(#{date2},'%m-%d-%Y')
         </if>
         GROUP BY l.worker_id
+        ORDER BY sumLeads DESC
     </select>
-
 
 </mapper>
