@@ -13,10 +13,12 @@
         COUNT(CASE l.status WHEN 3 THEN 1 END )as status3,
         COUNT(CASE l.status WHEN 4 THEN 1 END )as status4,
         COUNT(CASE l.status WHEN 5 THEN 1 END )as status5,
-        COUNT(CASE l.status WHEN 6 THEN 1 END )as status6
+        COUNT(CASE l.status WHEN 6 THEN 1 END )as status6,
+        avg(TIMESTAMPDIFF(HOUR,l.gmt_creat,log.gmt_creat))as time1
         FROM
         tb_leads l
         INNER JOIN sys_user u on l.parent_id =u.user_id
+        INNER JOIN tb_leads_log log on l.id =log.leads_id and log.status_old = 1
         WHERE 1=1
         <if test="parentId != null and parentId != ''">
             and l.parent_id=#{parentId}

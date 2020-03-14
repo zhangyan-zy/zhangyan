@@ -19,6 +19,7 @@ public class AdminCustomerVO {
     private Integer status4;
     private Integer status5;
     private Integer status6;
+    private String time1;
 
 
 }
