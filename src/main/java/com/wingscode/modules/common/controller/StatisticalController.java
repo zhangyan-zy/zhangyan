@@ -63,4 +63,13 @@ public class StatisticalController  extends AbstractController {
         return R.ok().put("user", statisticalService.allWorker(params));
     }
 
+    /**
+     * 坐席端每日新增
+     */
+    @PostMapping("/AddAgentsLeadersList")
+    @RequiresPermissions("admin:account")
+    public R WorkerList1(@RequestParam  Map<String, Object> params) {
+        return R.ok().put("data", statisticalService.allWorker1(params));
+    }
+
 }

@@ -31,5 +31,19 @@ public class AdminWorkerVO {
      */
     private Integer addVagDaliy;
 
+    /**
+     * 总响应数量
+     */
+    private  Integer ResponseRate;
 
+    /**
+     * total响应率
+     */
+    private  Double SumAvg;
+
+    /**
+     * 新增响应率
+     */
+
+    private  Double addTimeResponce;
 }

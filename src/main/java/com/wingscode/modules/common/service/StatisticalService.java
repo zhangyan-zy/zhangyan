@@ -19,10 +19,12 @@ public interface StatisticalService {
      * 查询所有坐席端列表
      */
      PageUtils allWorker(Map<String, Object> params);
-    // /**
-    //  *坐席端查询
-    //  */
-    //  PageUtils selectAgentList(Map<String, Object> params);
+
+    /**
+     * 坐席端每日新增
+     */
+    PageUtils allWorker1(Map<String, Object> params);
+
 
 
 }

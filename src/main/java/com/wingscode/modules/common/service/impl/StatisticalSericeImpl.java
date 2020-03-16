@@ -46,6 +46,17 @@ public class StatisticalSericeImpl extends ServiceImpl<StatisticalDao, AdminCust
         return new PageUtils(baseMapper.allWorker(pages, parentId, date1, date2));
     }
 
+    @Override
+    public PageUtils allWorker1(Map<String, Object> params) {
+        Integer page = Integer.parseInt((String) params.get("page"));
+        Integer limit = Integer.parseInt((String) params.get("limit"));
+        String date = (String) params.get("date");
+        Long parentId = Long.parseLong(org.springframework.util.StringUtils.isEmpty(params.get("parentId")) ? "0" : (String) params.get("parentId"));
+        Page<AdminWorkerVO> pages = new Page<>(page, limit);
+        return new PageUtils(baseMapper.allWorker1(pages, parentId, date));
+
+        }
+
 }
 
 
