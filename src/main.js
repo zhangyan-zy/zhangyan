@@ -26,6 +26,8 @@ Vue.prototype.isAuth = isAuth     // 权限方法
 // 保存整站vuex本地储存初始状态
 window.SITE_CONFIG['storeState'] = cloneDeep(store.state)
 
+// eslint-disable-next-line
+/* eslint-disable */
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

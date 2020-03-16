@@ -18,12 +18,9 @@
       </el-select>
       <el-form-item>
         <el-date-picker
-          v-model="dataForm.date"
-          type="daterange"
-          value-format="yyyy-MM-dd"
-          range-separator="——"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期">
+          v-model="date"
+          type="date"
+          placeholder="选择日期">
         </el-date-picker>
       </el-form-item>
       <el-form-item>
@@ -36,13 +33,15 @@
         class="tab1"
         :data="dataList"
         border
+        show-summary
         v-loading="dataListLoading">
         <el-table-column
+          width="60px"
           type="index"
-          label="排名"
           align="center"
-          width="65px"
-        >
+          :index="indexMethod"
+          label="排名">
+
         </el-table-column>
         <el-table-column
           prop="username"
@@ -57,46 +56,10 @@
           label="坐席名称">
         </el-table-column>
         <el-table-column
-          prop="sumLeads"
-          header-align="center"
-          align="center"
-          label="leads数量">
-        </el-table-column>
-        <el-table-column
-          prop="responseRate"
-          header-align="center"
-          align="center"
-          label="响应数量">
-        </el-table-column>
-        <el-table-column
-          prop="sumAvg"
-          header-align="center"
-          align="center"
-          label="响应率">
-        </el-table-column>
-        <el-table-column
           prop="addTime"
           header-align="center"
           align="center"
-          label="新增">
-        </el-table-column>
-        <el-table-column
-          prop="addTimeResponce"
-          header-align="center"
-          align="center"
-          label="新增响应数量">
-        </el-table-column>
-        <el-table-column
-          prop="added"
-          header-align="center"
-          align="center"
-          label="新增响应率">
-        </el-table-column>
-        <el-table-column
-          prop="addVagDaliy"
-          header-align="center"
-          align="center"
-          label="平均每日新增">
+          label="新增数量">
         </el-table-column>
       </el-table>
     </div>
@@ -123,6 +86,7 @@
   export default {
     data() {
       return {
+        date:new Date(),
         dataList: [],
         pageIndex: 1,
         pageSize: 10,
@@ -136,7 +100,8 @@
         dataForm: {
           status: '',
           date: []
-        }
+        },
+        num: 12
       }
     },
     mounted() {
@@ -154,26 +119,19 @@
       getDataList() {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/common/admin/allWorker'),
+          url: this.$http.adornUrl('/common/AddAgentsLeadersList'),
           method: 'post',
           params: this.$http.adornParams({
             page: this.pageIndex,
             limit: this.pageSize,
             parentId: this.coustomerId,
-            date1: this.dataForm.date ? this.dataForm.date[0] : '',
-            date2: this.dataForm.date ? this.dataForm.date[1] : ''
+            date:this.date
           })
         }).then(({data}) => {
           console.log('data', data)
           if (data && data.code === 0) {
-            this.dataList = data.list.list
-            this.totalPage = data.list.totalCount
-            let added=0;
-            this.dataList.forEach((el, i) => {
-              el.sumAvg = (el.sumAvg.toFixed(2))*100+'%'
-              added=((el.addTimeResponce/el.addTime).toFixed(2))*100+"%"
-              el.added=added
-            })
+            this.dataList = data.data.list
+            this.totalPage = data.data.totalCount
           } else {
             this.dataList = []
             this.totalPage = 0
@@ -191,17 +149,17 @@
         this.pageIndex = val
         this.getDataList()
       },
-      // indexMethod(index) {
-      //   if (index > 0 && this.dataList[index - 1].addTime === this.dataList[index].addTime) {
-      //     this.dataList[index].index = this.dataList[index - 1].index + 1
-      //   } else {
-      //     this.dataList[index].index = -1
-      //     index = index - this.dataList[index].index
-      //   }
-      //   return index
-      // },
+      indexMethod(index) {
+        if (index > 0 && this.dataList[index - 1].addTime === this.dataList[index].addTime) {
+          this.dataList[index].index = this.dataList[index - 1].index + 1
+        } else {
+          this.dataList[index].index = -1
+        }
+        index = index - this.dataList[index].index
+        return index
+      },
       //
-      getCoustomerList(){
+      getCoustomerList() {
         this.$http({
           url: this.$http.adornUrl('/common/account/coustomer'),
           method: 'get',
