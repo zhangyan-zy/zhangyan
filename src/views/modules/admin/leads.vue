@@ -10,9 +10,17 @@
           :value="item.userId">
         </el-option>
       </el-select>
-      <el-select v-model="coustomerId" clearable filterable placeholder="请选择客户">
+      <el-select v-model="coustomerId" @change="getStaff(coustomerId)" clearable filterable placeholder="请选择客户">
         <el-option
           v-for="item in coustomerList"
+          :key="item.userId"
+          :label="item.username"
+          :value="item.userId">
+        </el-option>
+      </el-select>
+      <el-select v-model="staff"  clearable filterable placeholder="请选择员工">
+        <el-option
+          v-for="item in staffList"
           :key="item.userId"
           :label="item.username"
           :value="item.userId">
@@ -71,6 +79,7 @@
         align="center"
         label="客户名称">
       </el-table-column>
+
       <el-table-column
         prop="name"
         header-align="center"
@@ -186,7 +195,7 @@
   import AddOrUpdate from './leads-add-or-update'
 
   export default {
-    data () {
+    data() {
       return {
         options: [{
           value: 0,
@@ -213,7 +222,7 @@
         workerList: [],
         workerId: '',
         coustomerList: [],
-        coustomerId: '',
+        coustomerId:'',
         dataForm: {
           userName: '',
           mobile: '',
@@ -228,20 +237,24 @@
         totalPage: 0,
         dataListLoading: false,
         dataListSelections: [],
-        addOrUpdateVisible: false
+        addOrUpdateVisible: false,
+        staffList:[],
+        staff:''
       }
     },
     components: {
       AddOrUpdate
     },
-    activated () {
+    activated() {
       this.getCoustomerList()
       this.getworkerList()
       this.getDataList()
+      this.getStaff();
     },
+
     methods: {
       // 获取数据列表
-      getworkerList () {
+      getworkerList() {
         this.$http({
           url: this.$http.adornUrl('/common/account/worker'),
           method: 'get',
@@ -252,7 +265,7 @@
           }
         })
       },
-      getCoustomerList () {
+      getCoustomerList() {
         this.$http({
           url: this.$http.adornUrl('/common/account/coustomer'),
           method: 'get',
@@ -263,7 +276,24 @@
           }
         })
       },
-      getDataList () {
+      getStaff(e) {
+        this.staff=''
+        this.$http({
+          url: this.$http.adornUrl('/common/account/adminAtaff'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'parentId': this.coustomerId?this.coustomerId:0
+          })
+        }).then(({data}) => {
+          console.log("getStaff", data);
+          if (data && data.code === 0) {
+            this.staffList = data.data
+          } else {
+            this.staffList = []
+          }
+        })
+      },
+      getDataList() {
         if (this.dataForm.ammount1 > this.dataForm.ammount2) {
           this.$message.error('请输入正确的金额范围')
         } else {
@@ -282,7 +312,8 @@
               'date1': this.dataForm.date ? this.dataForm.date[0] : '',
               'date2': this.dataForm.date ? this.dataForm.date[1] : '',
               'parentId': this.coustomerId,
-              'name': this.dataForm.userName
+              'name': this.dataForm.userName,
+              'staff':this.staff
             })
           }).then(({data}) => {
             if (data && data.code === 0) {
@@ -297,29 +328,29 @@
         }
       },
       // 每页数
-      sizeChangeHandle (val) {
+      sizeChangeHandle(val) {
         this.pageSize = val
         this.pageIndex = 1
         this.getDataList()
       },
       // 当前页
-      currentChangeHandle (val) {
+      currentChangeHandle(val) {
         this.pageIndex = val
         this.getDataList()
       },
       // 多选
-      selectionChangeHandle (val) {
+      selectionChangeHandle(val) {
         this.dataListSelections = val
       },
       // 新增 / 修改
-      addOrUpdateHandle (id) {
+      addOrUpdateHandle(id) {
         this.addOrUpdateVisible = true
         this.$nextTick(() => {
           this.$refs.addOrUpdate.init(id)
         })
       },
       // 删除
-      deleteHandle (id) {
+      deleteHandle(id) {
         this.$confirm(`确定对进行删除操作?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
