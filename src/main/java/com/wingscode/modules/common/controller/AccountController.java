@@ -13,7 +13,10 @@ import com.wingscode.modules.sys.service.SysUserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
@@ -58,6 +61,14 @@ public class AccountController extends AbstractController {
     public R staffList() {
         return R.ok().put("user", accountService.allList((long) 7, getUserId()));
     }
+
+
+    @RequestMapping("/adminAtaff")
+    @RequiresPermissions("admin:coustomer")
+    public R adminAtaff(@RequestParam Long parentId) {
+        return R.ok().put("data", accountService.allList((long) 7, parentId));
+    }
+
 
     @RequestMapping("/worker")
     @RequiresPermissions("admin:account")

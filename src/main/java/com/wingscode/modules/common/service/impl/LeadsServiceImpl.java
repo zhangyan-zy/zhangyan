@@ -131,6 +131,7 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
         String date2 = (String) params.get("date2");
         String status = (String) params.get("status");
         String workerId = (String) params.get("workerId");
+        String staff = (String) params.get("staff");
         IPage<LeadsEntity> page = this.page(
                 new Query<LeadsEntity>().getPage(params),
                 new QueryWrapper<LeadsEntity>()
@@ -139,6 +140,7 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
                         .eq(parentId != 0, "parent_id", parentId)
                         .eq(StringUtils.isNotEmpty(status), "status", status)
                         .eq(StringUtils.isNotEmpty(workerId), "worker_id", workerId)
+                        .eq(StringUtils.isNotEmpty(staff), "dispose_user", staff)
                         .ge(amount1 != 0, "amount", amount1)
                         .le(amount2 != 0, "amount", amount2)
                         .ge(StringUtils.isNotEmpty(date1), "gmt_creat", date1)
