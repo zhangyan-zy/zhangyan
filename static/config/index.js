@@ -5,9 +5,9 @@
   window.SITE_CONFIG = {}
 
   // api接口请求地址
-  // window.SITE_CONFIG['baseUrl'] = 'http://localhost:8080';
+  window.SITE_CONFIG['baseUrl'] = 'http://localhost:8080';
   // window.SITE_CONFIG['baseUrl'] = 'https://call.wingscode.com/callServer'
-  window.SITE_CONFIG['baseUrl'] = 'http://192.168.1.111:8080'
+  // window.SITE_CONFIG['baseUrl'] = 'http://192.168.1.111:8080'
   // window.SITE_CONFIG["baseUrl"] = "http://192.168.1.119:8080/swagger-ui.html#/";
 
   // cdn地址 = 域名 + 版本号
