@@ -36,11 +36,10 @@
         (SELECT username FROM sys_user su WHERE su.user_id = l.parent_id) as username,
         u.username as leadsname ,
         (SELECT COUNT(1) FROM tb_leads tl WHERE tl.worker_id = l.worker_id ) as sumLeads,
-        (SELECT COUNT(1) FROM tb_leads tl WHERE tl.worker_id = l.worker_id and tl.status in (3,4,5,6) ) as ResponseRate,
-        ((SELECT COUNT(1) FROM tb_leads tl WHERE tl.worker_id = l.worker_id and tl.status in (3,4,5,6) )/(SELECT COUNT(1) FROM tb_leads tl WHERE tl.worker_id = l.worker_id )) SumAvg,
+        (SELECT COUNT(1) FROM tb_leads tl WHERE tl.worker_id = l.worker_id and tl.status in (4,5,6) ) as ResponseRate,
+        ((SELECT COUNT(1) FROM tb_leads tl WHERE tl.worker_id = l.worker_id and tl.status in (4,5,6) )/(SELECT COUNT(1) FROM tb_leads tl WHERE tl.worker_id = l.worker_id )) SumAvg,
         COUNT(1) as addTime,
-        COUNT( CASE l.status WHEN 3 THEN 1
-                             WHEN 4 THEN 1
+        COUNT( CASE l.status WHEN 4 THEN 1
                              WHEN 5 THEN 1
                              WHEN 6 THEN 1  END) as addTimeResponce,
         (COUNT(1)/COUNT(distinct DATE_FORMAT(l.gmt_creat,'%Y-%m-%d'))) as addVagDaliy
