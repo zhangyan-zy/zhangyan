@@ -30,7 +30,10 @@ public class LeadsLogServiceImpl extends ServiceImpl<LeadsLogDao, LeadsLogEntity
         List<Long> ids = leadsService.queryList(parentId, "%" + params.get("name") + "%");
         IPage<LeadsLogEntity> page = this.page(
                 new Query<LeadsLogEntity>().getPage(params),
-                new QueryWrapper<LeadsLogEntity>().in("leads_id", ids).orderByDesc("id")
+                new QueryWrapper<LeadsLogEntity>()
+                        .eq(ids.size() == 0, "leads_id", 0)
+                        .in("leads_id", ids)
+                        .orderByDesc("id")
         );
         for (LeadsLogEntity leadsLogEntity : page.getRecords()) {
             leadsLogEntity.setLeadsName(leadsService.getById(leadsLogEntity.getLeadsId()).getName());
