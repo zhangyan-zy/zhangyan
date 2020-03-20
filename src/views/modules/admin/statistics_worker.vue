@@ -148,7 +148,11 @@
       this.getDataList()
       this.getCoustomerList()
     },
+    computed: {
+      added(e) {
 
+      }
+    },
     methods: {
       // 获取一表格数据列表
       getDataList() {
@@ -168,11 +172,11 @@
           if (data && data.code === 0) {
             this.dataList = data.list.list
             this.totalPage = data.list.totalCount
-            let added=0;
+            let added = 0;
             this.dataList.forEach((el, i) => {
-              el.sumAvg = (el.sumAvg.toFixed(2))*100+'%'
-              added=((el.addTimeResponce/el.addTime).toFixed(2))*100+"%"
-              el.added=added
+              el.sumAvg = ((parseFloat(el.sumAvg)) * 100).toFixed(2) + '%'
+              added = ((parseFloat(el.addTimeResponce / el.addTime)) * 100).toFixed(2) + "%"
+              el.added = added
             })
           } else {
             this.dataList = []
@@ -191,17 +195,8 @@
         this.pageIndex = val
         this.getDataList()
       },
-      // indexMethod(index) {
-      //   if (index > 0 && this.dataList[index - 1].addTime === this.dataList[index].addTime) {
-      //     this.dataList[index].index = this.dataList[index - 1].index + 1
-      //   } else {
-      //     this.dataList[index].index = -1
-      //     index = index - this.dataList[index].index
-      //   }
-      //   return index
-      // },
-      //
-      getCoustomerList(){
+
+      getCoustomerList() {
         this.$http({
           url: this.$http.adornUrl('/common/account/coustomer'),
           method: 'get',
