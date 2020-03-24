@@ -14,7 +14,6 @@ public interface StatisticalService {
       * 首页查询
       */
      PageUtils selectCustomerList(Map<String, Object> params);
-
     /**
      * 查询所有坐席端列表
      */
@@ -25,6 +24,8 @@ public interface StatisticalService {
      */
     PageUtils allWorker1(Map<String, Object> params);
 
-
-
+    /**
+     * 统计所有员工
+     */
+    PageUtils allStaff(Map<String, Object> params);
 }

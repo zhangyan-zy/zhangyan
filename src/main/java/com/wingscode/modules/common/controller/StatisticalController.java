@@ -45,6 +45,14 @@ public class StatisticalController  extends AbstractController {
     }
 
 
+    @PostMapping("/admin/allStaff")
+    @ApiOperation("统计所有员工")
+    @RequiresPermissions("admin:account")
+    public R allStaff(@RequestParam Map<String, Object> params) {
+        return R.ok().put("list", statisticalService.allStaff(params));
+    }
+
+
     /**
      * 客户leads查询
      */

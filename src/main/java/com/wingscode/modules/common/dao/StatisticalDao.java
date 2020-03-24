@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wingscode.modules.common.vo.AdminAgentAddVo;
 import com.wingscode.modules.common.vo.AdminCustomerVO;
+import com.wingscode.modules.common.vo.AdminStaffVo;
 import com.wingscode.modules.common.vo.AdminWorkerVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -31,4 +32,8 @@ public interface StatisticalDao extends BaseMapper<AdminCustomerVO> {
      */
     IPage<AdminAgentAddVo> allWorker1(Page page, @Param("parentId") Long parentId, @Param("date") String date);
 
+    /**
+     * 统计员工
+     */
+    IPage<AdminStaffVo>  allStaff(Page page, @Param("parentId") Long parentId, @Param("date1") String date1, @Param("date2") String date2);
 }

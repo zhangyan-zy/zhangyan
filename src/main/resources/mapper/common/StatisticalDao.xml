@@ -61,62 +61,31 @@
     </select>
 
 
-    <!--<select id="allWorker" resultType="com.wingscode.modules.common.vo.AdminWorkerVO">-->
-        <!--select a.username ,-->
-        <!--a.leadsname ,-->
-        <!--a.sumLeads ,-->
-        <!--a.ResponseRate ,-->
-        <!--a.SumAvg ,-->
-        <!--a.addTime ,-->
-        <!--b.addTimeResponce ,-->
-        <!--a.addVagDaliy-->
-        <!--from-->
-        <!--(  SELECT-->
-        <!--(SELECT username FROM sys_user su WHERE su.user_id = l.parent_id) as username,-->
-        <!--u.username as leadsname ,-->
-        <!--(SELECT COUNT(1) FROM tb_leads tl WHERE tl.worker_id = l.worker_id ) as sumLeads,-->
-        <!--(SELECT COUNT(1) FROM tb_leads tl WHERE tl.worker_id = l.worker_id and tl.status in (3,4,5,6) ) as ResponseRate,-->
-        <!--((SELECT COUNT(1) FROM tb_leads tl WHERE tl.worker_id = l.worker_id and tl.status in (3,4,5,6) )/(SELECT COUNT(1) FROM tb_leads tl WHERE tl.worker_id = l.worker_id )) SumAvg,-->
-        <!--COUNT(1) as addTime,-->
-        <!--(COUNT(1)/COUNT(distinct DATE_FORMAT(l.gmt_creat,'%Y-%m-%d'))) as addVagDaliy-->
-        <!--FROM-->
-        <!--tb_leads l-->
-        <!--INNER JOIN sys_user u on u.user_id = l.worker_id AND u.`status` = 1-->
-        <!--LEFT JOIN sys_user_role r on r.user_id = u.user_id-->
-        <!--AND r.role_id = 5-->
-        <!--WHERE 1=1-->
-        <!--<if test="parentId != 0">-->
-            <!--AND u.parent_id=#{parentId}-->
-        <!--</if>-->
-        <!--<if test="date1 != null and date1 != '' and date2 != null and date2 != ''">-->
-            <!--AND DATE_FORMAT(l.gmt_creat,'%m-%d-%Y') BETWEEN DATE_FORMAT(#{date1},'%m-%d-%Y') AND-->
-            <!--DATE_FORMAT(#{date2},'%m-%d-%Y')-->
-        <!--</if>-->
-        <!--GROUP BY l.worker_id-->
-        <!--) a-->
-        <!--LEFT JOIN (-->
-        <!--SELECT-->
-        <!--COUNT(1) as addTimeResponce ,-->
-        <!--u.username as leadsname-->
-        <!--FROM-->
-        <!--tb_leads l-->
-        <!--INNER JOIN sys_user u on u.user_id = l.worker_id  AND u.`status` = 1-->
-        <!--LEFT JOIN sys_user_role r on r.user_id = u.user_id-->
-        <!--AND r.role_id = 5-->
-        <!--WHERE 1=1-->
-        <!--AND  l.status in (3,4,5,6)-->
-        <!--<if test="parentId != 0">-->
-            <!--AND u.parent_id=#{parentId}-->
-        <!--</if>-->
-        <!--<if test="date1 != null and date1 != '' and date2 != null and date2 != ''">-->
-            <!--AND DATE_FORMAT(l.gmt_creat,'%m-%d-%Y') BETWEEN DATE_FORMAT(#{date1},'%m-%d-%Y') AND-->
-            <!--DATE_FORMAT(#{date2},'%m-%d-%Y')-->
-        <!--</if>-->
-        <!--GROUP BY l.worker_id-->
-        <!--ORDER BY addTimeResponce DESC) b-->
-        <!--on a.leadsname=b.leadsname-->
-    <!--</select>-->
 
+     <select id="allStaff" resultType="com.wingscode.modules.common.vo.AdminStaffVo">
+            SELECT
+         u.username as leadsname ,
+         sum(l.dispose_user) quantum,
+        (SELECT COUNT(1) FROM tb_leads tl WHERE tl.worker_id = l.worker_id and tl.status in (4,5,6) ) as ResponseRate,
+        ((SELECT COUNT(1) FROM tb_leads tl WHERE tl.worker_id = l.worker_id and tl.status in (4,5,6) )/(SELECT COUNT(1) FROM tb_leads tl WHERE tl.worker_id = l.worker_id )) responseAvg,
+        sum(l.amount) as SumAmount ,
+        (SELECT COUNT(1) FROM tb_leads tl WHERE tl.worker_id = l.worker_id and tl.status in (5))/(SELECT COUNT(1) FROM tb_leads tl WHERE tl.worker_id = l.worker_id ) SigningRate
+        FROM
+        tb_leads l
+        INNER JOIN sys_user u on u.user_id = l.worker_id AND u.`status` = 1
+        LEFT JOIN sys_user_role r on r.user_id = u.user_id
+        AND r.role_id = 7
+        WHERE 1=1
+         <if test="parentId != 0">
+             AND u.parent_id=#{parentId}
+         </if>
+         <if test="date1 != null and date1 != '' and date2 != null and date2 != ''">
+             AND DATE_FORMAT(l.gmt_creat,'%m-%d-%Y') BETWEEN DATE_FORMAT(#{date1},'%m-%d-%Y') AND
+             DATE_FORMAT(#{date2},'%m-%d-%Y')
+         </if>
+        GROUP BY l.worker_id
+        ORDER BY quantum DESC
+     </select>
 
 
 
