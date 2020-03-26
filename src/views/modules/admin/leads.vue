@@ -296,12 +296,7 @@
     methods: {
       // 选择城市的index
       selectIndex(val) {
-        console.log(val)
         if (val != '') {
-          // this.$nextTick(() => {
-          //   this.$refs.city.query = ''
-          // })
-          // console.log(this.$refs.city.query)
           let idx = this.provinceList.findIndex((item) => item.province == val)
           this.cityList = this.provinceList[idx].city
         } else {
@@ -315,7 +310,6 @@
           method: 'post',
           params: this.$http.adornParams({})
         }).then(({data}) => {
-          console.log('111', data)
           if (data && data.code === 0) {
             this.provinceList = data.list
             let arr = []
