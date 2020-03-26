@@ -7,16 +7,14 @@ import com.wingscode.modules.common.entity.LeadsEntity;
 import com.wingscode.modules.common.entity.LeadsLogEntity;
 import com.wingscode.modules.common.service.LeadsLogService;
 import com.wingscode.modules.common.service.LeadsService;
+import com.wingscode.modules.common.vo.AdminProvinceCityVo;
 import com.wingscode.modules.sys.controller.AbstractController;
-
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
@@ -30,6 +28,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("common/leads")
+@Api("leads")
 public class LeadsController extends AbstractController {
     @Autowired
     private LeadsService leadsService;
@@ -140,6 +139,7 @@ public class LeadsController extends AbstractController {
      */
     @RequestMapping("/save")
     @RequiresPermissions("leads:save")
+    @ApiOperation("保存")
     public R save(@RequestBody LeadsEntity leadsEntity) {
         leadsEntity.setGmtCreat(new Date());
         leadsEntity.setGmtModified(new Date());
@@ -148,6 +148,7 @@ public class LeadsController extends AbstractController {
         leadsEntity.setDisposeUser((long) 0);
         leadsEntity.setWorkerId(getUserId());
         leadsService.save(leadsEntity);
+        leadsService.saveIphone(leadsEntity.getId());
         return R.ok();
     }
 
@@ -190,4 +191,13 @@ public class LeadsController extends AbstractController {
         leadsLogService.remove(new QueryWrapper<LeadsLogEntity>().eq("leads_id", id));
         return R.ok();
     }
+
+
+    @RequestMapping("/provinceCity")
+    @RequiresPermissions("leads:list")
+    public R provinceCity() {
+        List<AdminProvinceCityVo> list= leadsService.selectProvinceCity();
+        return R.ok().put("list",list);
+    }
+
 }

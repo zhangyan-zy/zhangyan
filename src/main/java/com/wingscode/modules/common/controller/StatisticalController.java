@@ -49,6 +49,7 @@ public class StatisticalController  extends AbstractController {
     @ApiOperation("统计所有员工")
     @RequiresPermissions("admin:account")
     public R allStaff(@RequestParam Map<String, Object> params) {
+             params.put("userId",getUserId());
         return R.ok().put("list", statisticalService.allStaff(params));
     }
 
@@ -78,6 +79,8 @@ public class StatisticalController  extends AbstractController {
     @RequiresPermissions("admin:account")
     public R WorkerList1(@RequestParam  Map<String, Object> params) {
         return R.ok().put("data", statisticalService.allWorker1(params));
+
     }
+
 
 }

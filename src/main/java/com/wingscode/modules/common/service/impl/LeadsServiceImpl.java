@@ -9,6 +9,7 @@ import com.wingscode.modules.common.dao.LeadsDao;
 import com.wingscode.modules.common.entity.LeadsEntity;
 import com.wingscode.modules.common.service.AccountService;
 import com.wingscode.modules.common.service.LeadsService;
+import com.wingscode.modules.common.vo.AdminProvinceCityVo;
 import com.wingscode.modules.sys.entity.SysUserEntity;
 import com.wingscode.modules.sys.service.SysUserService;
 import com.wingscode.util.MyTimeUtil;
@@ -132,6 +133,8 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
         String status = (String) params.get("status");
         String workerId = (String) params.get("workerId");
         String staff = (String) params.get("staff");
+        String province = (String) params.get("province");
+        String city = (String) params.get("city");
         IPage<LeadsEntity> page = this.page(
                 new Query<LeadsEntity>().getPage(params),
                 new QueryWrapper<LeadsEntity>()
@@ -146,13 +149,20 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
                         .ge(StringUtils.isNotEmpty(date1), "gmt_creat", date1)
                         .le(StringUtils.isNotEmpty(date2), "gmt_creat", MyTimeUtil.addDay(date2, 1))
                         .orderByDesc("id")
+                        .eq(StringUtils.isNotEmpty(province),"province",province)
+                        .eq(StringUtils.isNotEmpty(city),"city",city)
         );
         for (LeadsEntity leadsEntity : page.getRecords()) {
             if (leadsEntity.getDisposeUser() != 0) {
                 leadsEntity.setDisposeUserName(sysUserService.getById(leadsEntity.getDisposeUser()).getUsername());
             }
+            if (leadsEntity.getParentId() != 0) {
             leadsEntity.setParentName(sysUserService.getById(leadsEntity.getParentId()).getUsername());
+            }
+            if (leadsEntity.getWorkerId() != 0) {
             leadsEntity.setWorkerName(sysUserService.getById(leadsEntity.getWorkerId()).getUsername());
+            }
+
         }
         return new PageUtils(page);
     }
@@ -196,6 +206,31 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
             }
         });
         return mapList;
+    }
+
+    @Override
+    public void saveIphone(Long leadsId) {
+           baseMapper.addiphone(leadsId);
+    }
+
+    @Override
+    public List<AdminProvinceCityVo>  selectProvinceCity() {
+
+        List<AdminProvinceCityVo> list=new ArrayList<>();
+
+           //查询所有省份
+           List<String> list1= baseMapper.selectProvince();
+
+            for(int i=0;i<list1.size();i++){
+                AdminProvinceCityVo adminProvinceCityVo=new AdminProvinceCityVo();
+                //查询省份城市
+                    List list3 = baseMapper.selectCity(list1.get(i));
+                    adminProvinceCityVo.setProvince(list1.get(i));
+                    adminProvinceCityVo.setCity(list3);
+                    list.add(adminProvinceCityVo);
+         }
+
+        return list;
     }
 
 }

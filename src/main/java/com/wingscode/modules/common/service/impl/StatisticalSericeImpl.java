@@ -66,15 +66,26 @@ public class StatisticalSericeImpl extends ServiceImpl<StatisticalDao, AdminCust
         // map = gson.fromJson((String) params.get("params"), map.getClass());
         // Integer page =  Integer.parseInt((String) map.get("page"));
         // Integer limit = Integer.parseInt((String) map.get("limit"));
-        // Long  parentId1 =Long.parseLong((String) map.get("parentId"));
-        // Long parentId = Long.parseLong(org.springframework.util.StringUtils.isEmpty(parentId1) ? "0" : String.valueOf(parentId1));
+        // Long  userId =Long.parseLong((String) map.get("userId"));
+        // Long userId1 = Long.parseLong(org.springframework.util.StringUtils.isEmpty(userId) ? "0" : String.valueOf(userId));
+        // Page<AdminStaffVo> pages = new Page<>(page, limit);
+        // return new PageUtils(baseMapper.allStaff(pages,userId1,date1,date2,like));
+
+
         String date1 = (String) params.get("date1");
         String date2 = (String) params.get("date2");
         Integer page = Integer.parseInt((String) params.get("page"));
         Integer limit = Integer.parseInt((String) params.get("limit"));
-        Long parentId = Long.parseLong(org.springframework.util.StringUtils.isEmpty(params.get("parentId")) ? "0" : (String) params.get("parentId"));
+        Long userId= (Long) params.get("userId");
+        String like=null;
+        if(StringUtils.isNotEmpty((String)params.get("key"))){
+            like =(String)params.get("key") ;
+        }
+
+       Long userId1 = Long.parseLong(org.springframework.util.StringUtils.isEmpty(userId) ? "0" :String.valueOf(userId));
+
         Page<AdminStaffVo> pages = new Page<>(page, limit);
-        return new PageUtils(baseMapper.allStaff(pages,parentId,date1,date2));
+        return new PageUtils(baseMapper.allStaff(pages,userId1,date1,date2,like));
     }
 
 }

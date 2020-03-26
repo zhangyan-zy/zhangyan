@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.wingscode.modules.common.entity.LeadsEntity;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,4 +19,13 @@ public interface LeadsDao extends BaseMapper<LeadsEntity> {
 
 //    IPage<AdminCustomerVO> selectCoustomerList(@Param("parentId") Integer parentId, @Param("date1") String date1, @Param("date2") String date2, Page page);
 
+    void addiphone(@Param("leadsId") Long leadsId);
+
+    /**
+     * 查询所有省份
+     * @return
+     */
+    List<String> selectProvince();
+
+    List<String> selectCity(@Param("province") String province);
 }

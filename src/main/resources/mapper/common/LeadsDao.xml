@@ -6,4 +6,22 @@
 	<select id="queryList" resultType="long">
 		select id from tb_leads where parent_id = #{parentId} and name like #{name}
 	</select>
+
+
+	<insert id="addiphone">
+		UPDATE tb_leads l , tb_mobile m
+        SET l.province = m.province,l.city =m.city , l.area_code =  m.area_code
+        where m.mobile = left(l.phone, 7)  and l.id=#{leadsId}
+	</insert>
+
+
+	<select id="selectProvince" resultType="String">
+		 SELECT DISTINCT(province) from tb_leads where province  is not null
+	</select>
+
+	<select id="selectCity" resultType="String">
+		 SELECT DISTINCT(city) from tb_leads
+		 where   province=#{province}
+	</select>
+
 </mapper>

@@ -35,5 +35,5 @@ public interface StatisticalDao extends BaseMapper<AdminCustomerVO> {
     /**
      * 统计员工
      */
-    IPage<AdminStaffVo>  allStaff(Page page, @Param("parentId") Long parentId, @Param("date1") String date1, @Param("date2") String date2);
+    IPage<AdminStaffVo>  allStaff(Page page, @Param("userId") Long userId, @Param("date1") String date1, @Param("date2") String date2, @Param("like") String like );
 }
