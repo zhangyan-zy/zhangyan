@@ -4,23 +4,21 @@
       :inline="true"
       :model="dataForm"
       @keyup.enter.native="getDataList()">
-      <el-select
-        v-model="coustomerId"
-        clearable
-        filterable
-        placeholder="请选择客户">
-        <el-option
-          v-for="item in coustomerList"
-          :key="item.userId"
-          :label="item.username"
-          :value="item.userId">
-        </el-option>
-      </el-select>
+      <el-form-item>
+        <el-input
+          v-model="key"
+          placeholder="员工名称"
+          clearable>
+        </el-input>
+      </el-form-item>
       <el-form-item>
         <el-date-picker
-          v-model="date"
-          type="date"
-          placeholder="选择日期">
+          v-model="dataForm.date"
+          type="daterange"
+          value-format="yyyy-MM-dd"
+          range-separator="——"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期">
         </el-date-picker>
       </el-form-item>
       <el-form-item>
@@ -33,33 +31,49 @@
         class="tab1"
         :data="dataList"
         border
-        show-summary
         v-loading="dataListLoading">
         <el-table-column
-          width="60px"
           type="index"
+          label="排名"
           align="center"
-          :index="indexMethod"
-          label="排名">
-
-        </el-table-column>
-        <el-table-column
-          prop="username"
-          header-align="center"
-          align="center"
-          label="客户名称">
+          width="65px"
+        >
         </el-table-column>
         <el-table-column
           prop="leadsname"
           header-align="center"
           align="center"
-          label="坐席名称">
+          label="员工">
         </el-table-column>
         <el-table-column
-          prop="addTime"
+          prop="quantum"
           header-align="center"
           align="center"
-          label="新增数量">
+          label="分配量">
+        </el-table-column>
+        <el-table-column
+          prop="responseRate"
+          header-align="center"
+          align="center"
+          label="加微以响应">
+        </el-table-column>
+        <el-table-column
+          prop="responseAvg"
+          header-align="center"
+          align="center"
+          label="响应率">
+        </el-table-column>
+        <el-table-column
+          prop="sumAmount"
+          header-align="center"
+          align="center"
+          label="签单金额">
+        </el-table-column>
+        <el-table-column
+          prop="signingRate"
+          header-align="center"
+          align="center"
+          label="签单率">
         </el-table-column>
       </el-table>
     </div>
@@ -86,7 +100,7 @@
   export default {
     data() {
       return {
-        date: new Date(),
+        key: '',
         dataList: [],
         pageIndex: 1,
         pageSize: 10,
@@ -99,9 +113,9 @@
         coustomerId: '',
         dataForm: {
           status: '',
-          date: []
-        },
-        num: 12
+          date: [],
+          leadsname: ''
+        }
       }
     },
     mounted() {
@@ -112,26 +126,35 @@
     activated() {
       this.getDataList()
       this.getCoustomerList()
-    },
 
+    },
     methods: {
       // 获取一表格数据列表
       getDataList() {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/common/AddAgentsLeadersList'),
+          url: this.$http.adornUrl('/common/admin/allStaff'),
           method: 'post',
           params: this.$http.adornParams({
             page: this.pageIndex,
             limit: this.pageSize,
             parentId: this.coustomerId,
-            date: this.date
+            key: this.key,
+            date1: this.dataForm.date ? this.dataForm.date[0] : '',
+            date2: this.dataForm.date ? this.dataForm.date[1] : ''
           })
         }).then(({data}) => {
           console.log('data', data)
           if (data && data.code === 0) {
-            this.dataList = data.data.list
-            this.totalPage = data.data.totalCount
+            this.dataList = data.list.list
+            this.totalPage = data.list.totalCount
+            let signingRate = 0;
+            this.dataList.forEach((el, i) => {
+              if (el.signingRate != 0) {
+                signingRate = (parseInt(el.signingRate * 10000)) / 100 + '%'
+                this.dataList[i].signingRate = signingRate
+              }
+            })
           } else {
             this.dataList = []
             this.totalPage = 0
@@ -149,19 +172,10 @@
         this.pageIndex = val
         this.getDataList()
       },
-      indexMethod(index) {
-        if (index > 0 && this.dataList[index - 1].addTime === this.dataList[index].addTime) {
-          this.dataList[index].index = this.dataList[index - 1].index + 1
-        } else {
-          this.dataList[index].index = -1
-        }
-        index = index - this.dataList[index].index
-        return index
-      },
-      //
+
       getCoustomerList() {
         this.$http({
-          url: this.$http.adornUrl('/common/account/coustomer'),
+          url: this.$http.adornUrl('/common/account/staff'),
           method: 'get',
           params: this.$http.adornParams({})
         }).then(({data}) => {

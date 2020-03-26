@@ -1,31 +1,52 @@
 <template>
   <div class="mod-user">
-
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
-      <el-select v-model="workerId" clearable filterable placeholder="请选择坐席">
-        <el-option
-          v-for="item in workerList"
-          :key="item.userId"
-          :label="item.username"
-          :value="item.userId">
-        </el-option>
-      </el-select>
-      <el-select v-model="coustomerId" @change="getStaff(coustomerId)" clearable filterable placeholder="请选择客户">
-        <el-option
-          v-for="item in coustomerList"
-          :key="item.userId"
-          :label="item.username"
-          :value="item.userId">
-        </el-option>
-      </el-select>
-      <el-select v-model="staff"  clearable filterable placeholder="请选择员工">
-        <el-option
-          v-for="item in staffList"
-          :key="item.userId"
-          :label="item.username"
-          :value="item.userId">
-        </el-option>
-      </el-select>
+      <el-form-item>
+        <el-select v-model="workerId" clearable filterable placeholder="请选择坐席">
+          <el-option
+            v-for="item in workerList"
+            :key="item.userId"
+            :label="item.username"
+            :value="item.userId">
+          </el-option>
+        </el-select>
+        <el-select v-model="coustomerId" @change="getStaff(coustomerId)" clearable filterable placeholder="请选择客户">
+          <el-option
+            v-for="item in coustomerList"
+            :key="item.userId"
+            :label="item.username"
+            :value="item.userId">
+          </el-option>
+        </el-select>
+        <el-select v-model="staff" clearable filterable placeholder="请选择员工">
+          <el-option
+            v-for="item in staffList"
+            :key="item.userId"
+            :label="item.username"
+            :value="item.userId">
+          </el-option>
+        </el-select>
+        <el-select v-model="dataForm.province" clearable filterable
+                   @change="selectIndex(dataForm.province)"
+                   placeholder="请选择省份">
+          <el-option
+            v-for="item in provinceList"
+            :key="item.value"
+            :label="item.province"
+            :value="item.province">
+          </el-option>
+        </el-select>
+        <el-select v-model="dataForm.city" ref="city" clearable filterable
+                   placeholder="请选择城市">
+          <el-option
+            v-for="item in cityList"
+            :key="item.value"
+            :label="item"
+            :value="item">
+          </el-option>
+        </el-select>
+      </el-form-item>
+
       <el-form-item>
         <el-input v-model="dataForm.userName" placeholder="Leads名称" clearable></el-input>
       </el-form-item>
@@ -97,6 +118,16 @@
         header-align="center"
         align="center"
         label="Leads电话">
+      </el-table-column>
+      <el-table-column
+        prop="province"
+        header-align="center"
+        align="center"
+        label="Leads归属地">
+        <template slot-scope="scope">
+          <span v-html="scope.row.province"></span>
+          <span v-html="scope.row.city"></span>
+        </template>
       </el-table-column>
       <el-table-column
         prop="webchat"
@@ -197,6 +228,8 @@
   export default {
     data() {
       return {
+        cityList: [],
+        provinceList: [],
         options: [{
           value: 0,
           label: '已关闭'
@@ -222,14 +255,17 @@
         workerList: [],
         workerId: '',
         coustomerList: [],
-        coustomerId:'',
+        coustomerId: '',
         dataForm: {
           userName: '',
           mobile: '',
           ammount1: '',
           ammount2: '',
           status: '',
-          date: []
+          date: [],
+          province: '',
+          city: ''
+
         },
         dataList: [],
         pageIndex: 1,
@@ -238,8 +274,8 @@
         dataListLoading: false,
         dataListSelections: [],
         addOrUpdateVisible: false,
-        staffList:[],
-        staff:''
+        staffList: [],
+        staff: ''
       }
     },
     components: {
@@ -249,10 +285,51 @@
       this.getCoustomerList()
       this.getworkerList()
       this.getDataList()
-      this.getStaff();
+      this.getStaff()
+      this.getCityList()
     },
-
+    watch: {
+      'dataForm.province': function (newValue, oldValue) {
+        this.dataForm.city = ''
+      }
+    },
     methods: {
+      // 选择城市的index
+      selectIndex(val) {
+        console.log(val)
+        if (val != '') {
+          // this.$nextTick(() => {
+          //   this.$refs.city.query = ''
+          // })
+          // console.log(this.$refs.city.query)
+          let idx = this.provinceList.findIndex((item) => item.province == val)
+          this.cityList = this.provinceList[idx].city
+        } else {
+          this.getCityList()
+        }
+      },
+      // 获取省市列表
+      getCityList() {
+        this.$http({
+          url: this.$http.adornUrl('/common/leads/provinceCity'),
+          method: 'post',
+          params: this.$http.adornParams({})
+        }).then(({data}) => {
+          console.log('111', data)
+          if (data && data.code === 0) {
+            this.provinceList = data.list
+            let arr = []
+            data.list.forEach((el, i) => {
+              if (el.city) {
+                el.city.forEach((e, idx) => {
+                  arr.push(e)
+                })
+                this.cityList = arr
+              }
+            })
+          }
+        })
+      },
       // 获取数据列表
       getworkerList() {
         this.$http({
@@ -277,12 +354,12 @@
         })
       },
       getStaff(e) {
-        this.staff=''
+        this.staff = ''
         this.$http({
           url: this.$http.adornUrl('/common/account/adminAtaff'),
           method: 'get',
           params: this.$http.adornParams({
-            'parentId': this.coustomerId?this.coustomerId:0
+            'parentId': this.coustomerId ? this.coustomerId : 0
           })
         }).then(({data}) => {
           console.log("getStaff", data);
@@ -313,9 +390,12 @@
               'date2': this.dataForm.date ? this.dataForm.date[1] : '',
               'parentId': this.coustomerId,
               'name': this.dataForm.userName,
-              'staff':this.staff
+              'staff': this.staff,
+              'province': this.dataForm.province,
+              'city': this.dataForm.city,
             })
           }).then(({data}) => {
+            console.log("data", data);
             if (data && data.code === 0) {
               this.dataList = data.page.list
               this.totalPage = data.page.totalCount
