@@ -37,7 +37,7 @@
         v-loading="dataListLoading">
         <el-table-column
           width="60px"
-          type="index"
+          prop="idx"
           align="center"
           :index="indexMethod"
           label="排名">
@@ -99,7 +99,8 @@
         coustomerId: '',
         dataForm: {
           status: '',
-          date: []
+          date: [],
+          idx: 0
         },
         num: 12
       }
@@ -132,6 +133,9 @@
           if (data && data.code === 0) {
             this.dataList = data.data.list
             this.totalPage = data.data.totalCount
+            this.dataList.forEach((el, i) => {
+              this.dataList[i].idx = i + 1
+            })
           } else {
             this.dataList = []
             this.totalPage = 0
