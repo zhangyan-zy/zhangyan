@@ -152,7 +152,7 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
                         .eq(StringUtils.isNotEmpty(province),"province",province)
                         .eq(StringUtils.isNotEmpty(city),"city",city)
         );
-        for (LeadsEntity leadsEntity : page.getRecords()) {
+           for (LeadsEntity leadsEntity : page.getRecords()) {
             if (leadsEntity.getDisposeUser() != 0) {
                 leadsEntity.setDisposeUserName(sysUserService.getById(leadsEntity.getDisposeUser()).getUsername());
             }
@@ -231,6 +231,50 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
          }
 
         return list;
+    }
+
+    @Override
+    public List<LeadsEntity> listByAdminExcel(Map<String, Object> params, Long parentId) {
+        String username = (String) params.get("name");
+        String mobile = (String) params.get("mobile");
+        int amount1 = Integer.valueOf(String.valueOf(params.get("amount1")));
+        int amount2 = Integer.valueOf(String.valueOf(params.get("amount2")));
+        String date1 = (String) params.get("date1");
+        String date2 = (String) params.get("date2");
+        String status = (String) params.get("status");
+        String workerId = (String) params.get("workerId");
+        String staff = (String) params.get("staff");
+        String province = (String) params.get("province");
+        String city = (String) params.get("city");
+        List<LeadsEntity> leadsList =this.list(
+                       new QueryWrapper<LeadsEntity>()
+                        .like(StringUtils.isNotEmpty(username), "name", username)
+                        .like(StringUtils.isNotEmpty(mobile), "phone", mobile)
+                        .eq(parentId != 0, "parent_id", parentId)
+                        .eq(StringUtils.isNotEmpty(status), "status", status)
+                        .eq(StringUtils.isNotEmpty(workerId), "worker_id", workerId)
+                        .eq(StringUtils.isNotEmpty(staff), "dispose_user", staff)
+                        .ge(amount1 != 0, "amount", amount1)
+                        .le(amount2 != 0, "amount", amount2)
+                        .ge(StringUtils.isNotEmpty(date1), "gmt_creat", date1)
+                        .le(StringUtils.isNotEmpty(date2), "gmt_creat", MyTimeUtil.addDay(date2, 1))
+                        .orderByDesc("id")
+                        .eq(StringUtils.isNotEmpty(province),"province",province)
+                        .eq(StringUtils.isNotEmpty(city),"city",city)
+        );
+        for (LeadsEntity leadsEntity :leadsList) {
+            if (leadsEntity.getDisposeUser() != 0) {
+                leadsEntity.setDisposeUserName(sysUserService.getById(leadsEntity.getDisposeUser()).getUsername());
+            }
+            if (leadsEntity.getParentId() != 0) {
+                leadsEntity.setParentName(sysUserService.getById(leadsEntity.getParentId()).getUsername());
+            }
+            if (leadsEntity.getWorkerId() != 0) {
+                leadsEntity.setWorkerName(sysUserService.getById(leadsEntity.getWorkerId()).getUsername());
+            }
+
+        }
+        return leadsList;
     }
 
 }

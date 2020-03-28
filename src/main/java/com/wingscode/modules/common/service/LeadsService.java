@@ -32,5 +32,8 @@ public interface LeadsService extends IService<LeadsEntity> {
      void  saveIphone(Long leadsId);
 
     List<AdminProvinceCityVo> selectProvinceCity();
+
+
+    List<LeadsEntity> listByAdminExcel(Map<String, Object> params, Long parentId);
 }
 
