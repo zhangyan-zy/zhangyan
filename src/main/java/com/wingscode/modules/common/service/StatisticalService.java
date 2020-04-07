@@ -1,7 +1,9 @@
 package com.wingscode.modules.common.service;
 
 import com.wingscode.common.utils.PageUtils;
+import com.wingscode.modules.common.vo.AdminWorkerVO;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,6 +20,13 @@ public interface StatisticalService {
      * 查询所有坐席端列表
      */
      PageUtils allWorker(Map<String, Object> params);
+
+
+    /**
+     * 查询所有坐席端列表不带分页
+     */
+    List<AdminWorkerVO> allWorkerExcel(Map<String, Object> params);
+
 
     /**
      * 坐席端每日新增

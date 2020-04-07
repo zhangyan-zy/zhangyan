@@ -11,6 +11,7 @@ import com.wingscode.modules.common.vo.AdminWorkerVO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,6 +46,14 @@ public class StatisticalSericeImpl extends ServiceImpl<StatisticalDao, AdminCust
         Long parentId = Long.parseLong(org.springframework.util.StringUtils.isEmpty(params.get("parentId")) ? "0" : (String) params.get("parentId"));
         Page<AdminWorkerVO> pages = new Page<>(page, limit);
         return new PageUtils(baseMapper.allWorker(pages, parentId, date1, date2));
+    }
+
+    @Override
+    public List<AdminWorkerVO> allWorkerExcel(Map<String, Object> params) {
+        String date1 = (String) params.get("date1");
+        String date2 = (String) params.get("date2");
+        Long parentId = Long.parseLong(org.springframework.util.StringUtils.isEmpty(params.get("parentId")) ? "0" : (String) params.get("parentId"));
+        return baseMapper.allWorkerExcel(parentId, date1, date2);
     }
 
     @Override
