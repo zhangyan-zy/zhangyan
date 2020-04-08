@@ -110,7 +110,7 @@ public class ExcelController  {
         }
         HSSFWorkbook wb = ExcelOutUtil.getHSSFWorkbook(sheetName, title, content, null);
         try {
-            String ctxPath = "/root";
+            String ctxPath = "/call/excel";
             String name = new SimpleDateFormat("ddHHmmss").format(new Date());
             String fileName=name+"leads.xlsx";
             String bizPath = "files";
@@ -170,7 +170,7 @@ public class ExcelController  {
         }
         HSSFWorkbook wb = ExcelOutUtil.getHSSFWorkbook(sheetName, title, content, null);
         try {
-            String ctxPath = "/root";
+            String ctxPath = "/call/excel";
             String name = new SimpleDateFormat("ddHHmmss").format(new Date());
             String fileName=name+"StatisticalLeads.xlsx";
             String bizPath = "files";
