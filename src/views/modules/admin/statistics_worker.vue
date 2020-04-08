@@ -29,6 +29,9 @@
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
       </el-form-item>
+      <el-form-item>
+        <el-button @click="getExcel()">导出Excel</el-button>
+      </el-form-item>
     </el-form>
 
     <div class="tab">
@@ -100,9 +103,7 @@
         </el-table-column>
       </el-table>
     </div>
-
     <!-- 下栏列表1 -->
-
     <el-col>
       <div>
         <el-pagination
@@ -136,13 +137,12 @@
         dataForm: {
           status: '',
           date: [],
-          idx: 0,
+          idx: 0
         }
       }
     },
     mounted() {
     },
-
     components: {},
 
     activated() {
@@ -155,8 +155,22 @@
       }
     },
     methods: {
+      // 导出excel
+      getExcel() {
+        this.$http({
+          url: this.$http.adornUrl('/excel/excelOutleads'),
+          method: 'post',
+          params: this.$http.adornParams({
+            'date1': this.dataForm.date ? this.dataForm.date[0] : '',
+            'date2': this.dataForm.date ? this.dataForm.date[1] : '',
+            'parentId': this.coustomerId,
+          })
+        }).then(({data}) => {
+
+        })
+      },
       // 获取一表格数据列表
-      getDataList() {
+      getDataList () {
         this.dataListLoading = true
         this.$http({
           url: this.$http.adornUrl('/common/admin/allWorker'),
@@ -187,18 +201,18 @@
           this.dataListLoading = false
         })
       },
-      sizeChangeHandle(val) {
+      sizeChangeHandle (val) {
         this.pageSize = val
         this.pageIndex = 1
         this.getDataList()
       },
       // 当前页
-      currentChangeHandle(val) {
+      currentChangeHandle (val) {
         this.pageIndex = val
         this.getDataList()
       },
 
-      getCoustomerList() {
+      getCoustomerList () {
         this.$http({
           url: this.$http.adornUrl('/common/account/coustomer'),
           method: 'get',

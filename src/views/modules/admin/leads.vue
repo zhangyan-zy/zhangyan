@@ -87,6 +87,9 @@
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
       </el-form-item>
+      <el-form-item>
+        <el-button @click="getExcel()">导出Excel</el-button>
+      </el-form-item>
     </el-form>
     <el-table
       :data="dataList"
@@ -294,6 +297,29 @@
       }
     },
     methods: {
+      // 导出excel
+      getExcel() {
+        this.$http({
+          url: this.$http.adornUrl('/excel/excelOut'),
+          method: 'post',
+          params: this.$http.adornParams({
+            'amount1': this.dataForm.ammount1,
+            'amount2': this.dataForm.ammount2,
+            'workerId': this.workerId,
+            'status': this.dataForm.status,
+            'mobile': this.dataForm.mobile,
+            'date1': this.dataForm.date ? this.dataForm.date[0] : '',
+            'date2': this.dataForm.date ? this.dataForm.date[1] : '',
+            'parentId': this.coustomerId,
+            'name': this.dataForm.userName,
+            'staff': this.staff,
+            'province': this.dataForm.province,
+            'city': this.dataForm.city
+          })
+        }).then(({data}) => {
+
+        })
+      },
       // 选择城市的index
       selectIndex(val) {
         if (val != '') {
