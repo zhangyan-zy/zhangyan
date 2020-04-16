@@ -24,4 +24,13 @@
 		 where   province=#{province}
 	</select>
 
+	<insert id="addTracs" parameterType="com.wingscode.modules.common.entity.TraceEntity">
+          insert  into tb_trace(gmt_creat,gmt_modified,leads_id,content)
+          values
+          (#{traceEntity.gmtCreat},#{traceEntity.gmtModified},#{traceEntity.leadsId},#{traceEntity.content})
+      </insert>
+
+	 <select id="selectTrace" resultType="com.wingscode.modules.common.entity.TraceEntity">
+		 select * from tb_trace where leads_id=#{leadsId}
+	 </select>
 </mapper>

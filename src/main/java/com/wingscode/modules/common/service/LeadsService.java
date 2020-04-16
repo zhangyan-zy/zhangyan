@@ -3,6 +3,7 @@ package com.wingscode.modules.common.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wingscode.common.utils.PageUtils;
 import com.wingscode.modules.common.entity.LeadsEntity;
+import com.wingscode.modules.common.entity.TraceEntity;
 import com.wingscode.modules.common.vo.AdminProvinceCityVo;
 import com.wingscode.modules.sys.entity.SysUserEntity;
 
@@ -35,5 +36,9 @@ public interface LeadsService extends IService<LeadsEntity> {
 
 
     List<LeadsEntity> listByAdminExcel(Map<String, Object> params, Long parentId);
+
+   void  addTrace(TraceEntity traceEntity);
+
+    PageUtils selectTrace(Map<String, Object> params);
 }
 

@@ -1,8 +1,10 @@
 package com.wingscode.modules.common.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wingscode.modules.common.entity.LeadsEntity;
-
+import com.wingscode.modules.common.entity.TraceEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -28,4 +30,8 @@ public interface LeadsDao extends BaseMapper<LeadsEntity> {
     List<String> selectProvince();
 
     List<String> selectCity(@Param("province") String province);
+
+    void addTracs(@Param("traceEntity") TraceEntity traceEntity);
+
+    IPage<TraceEntity> selectTrace(Page page ,@Param("leadsId") Integer leadsId);
 }

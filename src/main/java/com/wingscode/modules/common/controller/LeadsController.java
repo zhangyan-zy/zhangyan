@@ -5,6 +5,7 @@ import com.wingscode.common.utils.PageUtils;
 import com.wingscode.common.utils.R;
 import com.wingscode.modules.common.entity.LeadsEntity;
 import com.wingscode.modules.common.entity.LeadsLogEntity;
+import com.wingscode.modules.common.entity.TraceEntity;
 import com.wingscode.modules.common.service.LeadsLogService;
 import com.wingscode.modules.common.service.LeadsService;
 import com.wingscode.modules.common.vo.AdminProvinceCityVo;
@@ -200,5 +201,20 @@ public class LeadsController extends AbstractController {
         return R.ok().put("list",list);
     }
 
+    @RequestMapping("/addTrace")
+    @RequiresPermissions("leads:addTrace")
+    public R saveTrace(@RequestBody TraceEntity traceEntity) {
+        traceEntity.setGmtCreat(new Date());
+        traceEntity.setGmtModified(new Date());
+        leadsService.addTrace(traceEntity);
+        return R.ok();
+    }
+
+    @RequestMapping("/traceList")
+    @RequiresPermissions("leads:traceList")
+    public R traceList(@RequestParam Map<String, Object> params) {
+        PageUtils page = leadsService.selectTrace(params);
+        return R.ok().put("page", page);
+    }
 
 }

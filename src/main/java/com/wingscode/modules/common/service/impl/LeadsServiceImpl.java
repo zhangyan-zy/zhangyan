@@ -2,11 +2,13 @@ package com.wingscode.modules.common.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wingscode.common.utils.PageUtils;
 import com.wingscode.common.utils.Query;
 import com.wingscode.modules.common.dao.LeadsDao;
 import com.wingscode.modules.common.entity.LeadsEntity;
+import com.wingscode.modules.common.entity.TraceEntity;
 import com.wingscode.modules.common.service.AccountService;
 import com.wingscode.modules.common.service.LeadsService;
 import com.wingscode.modules.common.vo.AdminProvinceCityVo;
@@ -14,16 +16,11 @@ import com.wingscode.modules.sys.entity.SysUserEntity;
 import com.wingscode.modules.sys.service.SysUserService;
 import com.wingscode.util.MyTimeUtil;
 import com.wingscode.util.MyUtilTime;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Service("leadsService")
@@ -275,6 +272,21 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
 
         }
         return leadsList;
+    }
+
+    @Override
+    public void addTrace(TraceEntity traceEntity) {
+          baseMapper.addTracs(traceEntity);
+    }
+
+    @Override
+    public PageUtils selectTrace(Map<String, Object> params) {
+        Integer page = Integer.parseInt((String) params.get("page"));
+        Integer limit = Integer.parseInt((String) params.get("limit"));
+        Integer leadsId =Integer.parseInt((String) params.get("id"));
+        Page<TraceEntity> pages = new Page<>(page, limit);
+        return new PageUtils(baseMapper.selectTrace(pages,leadsId));
+
     }
 
 }
