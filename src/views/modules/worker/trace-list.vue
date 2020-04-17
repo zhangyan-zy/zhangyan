@@ -24,12 +24,12 @@
           align="center"
           label="创建时间">
         </el-table-column>
-        <el-table-column
-          prop="gmtModified"
-          header-align="center"
-          align="center"
-          label="修改时间">
-        </el-table-column>
+        <!--<el-table-column-->
+          <!--prop="gmtModified"-->
+          <!--header-align="center"-->
+          <!--align="center"-->
+          <!--label="修改时间">-->
+        <!--</el-table-column>-->
         <el-table-column
           :show-overflow-tooltip="true"
           prop="content"
@@ -104,11 +104,10 @@
               'id': id
             })
           }).then(({data}) => {
-            console.log('修改', data)
             this.dataListLoading = false
             if (data && data.code === 0) {
               this.dataList = data.page.list
-              this.totalPage = data.page.total
+              this.totalPage = data.page.totalCount
             } else {
               this.dataList = []
               this.totalPage = 0

@@ -239,7 +239,7 @@
     activated () {
       this.getDataList()
       this.tips()
-      this.getTrace()
+     // this.getTrace()
     },
     methods: {
       // 获取数据列表
@@ -348,7 +348,6 @@
       },
        // 查看详情
       TraceHandle (id) {
-        console.log("11111111")
         this.traceLists = true
         this.$nextTick(() => {
           this.$refs.TraceList.init(id)
