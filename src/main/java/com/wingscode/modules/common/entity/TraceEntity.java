@@ -1,5 +1,6 @@
 package com.wingscode.modules.common.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
@@ -40,4 +41,10 @@ public class TraceEntity {
      * 跟进内容
      */
     private String  content;
+
+    /**
+     * leads姓名
+     */
+    @TableField(exist = false)
+    private String  leadsName;
 }

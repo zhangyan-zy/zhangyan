@@ -31,6 +31,37 @@
       </insert>
 
 	 <select id="selectTrace" resultType="com.wingscode.modules.common.entity.TraceEntity">
-		 select * from tb_trace where leads_id=#{leadsId}
+		 select * from tb_trace where 1=1
+		 <if test="leadsId !=null and leadsId !=''">
+		    and leads_id=#{leadsId}
+		 </if>
+		 order by gmt_creat desc
 	 </select>
+
+	<select id="selectTraceByWorker" resultType="com.wingscode.modules.common.entity.TraceEntity">
+      SELECT
+	    t.* , l.name leadsName
+      FROM
+	    tb_trace t
+	       LEFT JOIN tb_leads l ON t.leads_id = l.id
+	    where 1=1
+	    <if test="username !=null and username !=''">
+			and  l.name  like
+			concat('%',#{username},'%')
+    	</if>
+		<if test="mobile !=null and mobile !=''">
+			and  l.phone  like
+			concat('%',#{mobile},'%')
+		</if>
+		<if test="amount1 !=null and amount1 !='' and amount1 !=0 and amount2 !=null and amount2 !='' and amount2 !=0 ">
+           and  l.amount between  #{amount1} and #{amount2}
+		</if>
+		<if test="status !=null and status !=''">
+			and  l.status=#{status}
+		</if>
+		<if test="date1 !=null and date1 !='' and date2 !=null and date2 !='' ">
+            and  t.gmt_creat between #{date1} and #{date2}
+		</if>
+		order by t.gmt_creat desc
+	</select>
 </mapper>

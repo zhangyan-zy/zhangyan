@@ -217,4 +217,12 @@ public class LeadsController extends AbstractController {
         return R.ok().put("page", page);
     }
 
+
+    @RequestMapping("/listTraceByWorker")
+    @RequiresPermissions("leads:list")
+    public R listTraceByWorker(@RequestParam Map<String, Object> params) {
+        PageUtils page = leadsService.listTraceByWorker(params);
+        return R.ok().put("page", page);
+    }
+
 }

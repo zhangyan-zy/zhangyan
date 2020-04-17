@@ -16,6 +16,7 @@ import com.wingscode.modules.sys.entity.SysUserEntity;
 import com.wingscode.modules.sys.service.SysUserService;
 import com.wingscode.util.MyTimeUtil;
 import com.wingscode.util.MyUtilTime;
+import io.netty.util.internal.StringUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -86,6 +87,44 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
         );
         return new PageUtils(page);
     }
+
+    @Override
+    public PageUtils listTraceByWorker(Map<String, Object> params) {
+        Integer page = Integer.parseInt((String) params.get("page"));
+        Integer limit = Integer.parseInt((String) params.get("limit"));
+        String username =null;
+        if(!StringUtil.isNullOrEmpty((String) params.get("name"))){
+            username = (String) params.get("name");
+        }
+        String mobile =null;
+        if(!StringUtil.isNullOrEmpty((String) params.get("mobile"))){
+            mobile = (String) params.get("mobile");
+        }
+        String status =null;
+        if(!StringUtil.isNullOrEmpty((String) params.get("status"))){
+            status = (String) params.get("status");
+        }
+        Integer amount1 =null;
+        if(!StringUtil.isNullOrEmpty((String) params.get("amount1"))){
+            amount1 = Integer.parseInt((String) params.get("amount1"));
+        }
+        Integer amount2 =null;
+        if(!StringUtil.isNullOrEmpty((String) params.get("amount2"))){
+            amount2 = Integer.parseInt((String) params.get("amount2"));
+        }
+        String date1 =null;
+        if(!StringUtil.isNullOrEmpty((String) params.get("date1"))){
+            date1 = (String) params.get("date1");
+        }
+        String date2 =null;
+        if(!StringUtil.isNullOrEmpty((String) params.get("date2"))){
+            date2 = (String) params.get("date2");
+            date2= MyTimeUtil.addDay(date2, 1);
+        }
+        Page<TraceEntity> pages = new Page<>(page, limit);
+        return new PageUtils(baseMapper.selectTraceByWorker(pages,username,mobile,status,amount1,amount2,date1,date2));
+    }
+
 
     @Override
     public PageUtils listByCustomer(Map<String, Object> params, Long parentId) {
@@ -283,7 +322,10 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
     public PageUtils selectTrace(Map<String, Object> params) {
         Integer page = Integer.parseInt((String) params.get("page"));
         Integer limit = Integer.parseInt((String) params.get("limit"));
-        Integer leadsId =Integer.parseInt((String) params.get("id"));
+        Integer leadsId=null;
+        if(!StringUtil.isNullOrEmpty((String) params.get("id"))){
+            leadsId =Integer.parseInt((String) params.get("id"));
+        }
         Page<TraceEntity> pages = new Page<>(page, limit);
         return new PageUtils(baseMapper.selectTrace(pages,leadsId));
 
