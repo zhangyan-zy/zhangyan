@@ -126,6 +126,12 @@
           <el-button v-if="scope.row.status !== 0" type="text" size="small"
                      @click="addOrUpdateHandle(scope.row.id)">修改
           </el-button>
+          <el-button v-if="scope.row.status !== 0" type="text" size="small"
+                     @click="addTraceHandle(scope.row.id)">添加跟进
+          </el-button>
+          <el-button v-if="scope.row.status !== 0" type="text" size="small"
+                     @click="TraceHandle(scope.row.id)">跟进详情
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -141,12 +147,17 @@
     <!-- 弹窗,  -->
     <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate"
                    @refreshDataList="getDataList"></add-or-update>
+    <add-trace v-if="addOrUpdateTrace" ref="addTrace"
+               @refreshDataList="getDataList"></add-trace>
+    <trace-list v-if="traceLists" ref="TraceList"
+                @refreshDataList="getTrace"></trace-list>
   </div>
 </template>
 
 <script>
   import AddOrUpdate from './leads-add-or-update'
-
+  import addTrace from '../worker/trace-add'
+  import TraceList from '../worker/trace-list'
   export default {
     data () {
       return {
@@ -188,7 +199,9 @@
         totalPage: 0,
         dataListLoading: false,
         dataListSelections: [],
-        addOrUpdateVisible: false
+        addOrUpdateVisible: false,
+        addOrUpdateTrace: false,
+        traceLists: false
       }
     },
     mounted () {
@@ -198,13 +211,42 @@
       clearInterval(this.timer)
     },
     components: {
-      AddOrUpdate
+      AddOrUpdate,
+      addTrace,
+      TraceList
     },
     activated () {
       this.getDataList()
       this.tips()
     },
     methods: {
+      getTrace () {
+        this.dataListLoading = true
+        this.$http({
+          url: this.$http.adornUrl('/common/leads/traceList'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'page': this.pageIndex,
+            'limit': this.pageSize,
+            'gmtCreat': this.dataForm.gmtCreat,
+            'gmtModified': this.dataForm.gmtModified,
+            'content': this.dataForm.content
+            // 'date2': this.dataForm.date ? this.dataForm.date[1] : '',
+            // 'status': this.dataForm.status,
+            // 'mobile': this.dataForm.mobile,
+            // 'name': this.dataForm.userName
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.dataList = data.page.list
+            this.totalPage = data.page.totalCount
+          } else {
+            this.dataList = []
+            this.totalPage = 0
+          }
+          this.dataListLoading = false
+        })
+      },
       // 获取数据列表
       getDataList () {
         this.dataListLoading = true
@@ -284,6 +326,20 @@
         this.addOrUpdateVisible = true
         this.$nextTick(() => {
           this.$refs.addOrUpdate.init(id)
+        })
+      },
+      // 添加跟进
+      addTraceHandle (id) {
+        this.addOrUpdateTrace = true
+        this.$nextTick(() => {
+          this.$refs.addTrace.init(id)
+        })
+      },
+      // 查看详情
+      TraceHandle (id) {
+        this.traceLists = true
+        this.$nextTick(() => {
+          this.$refs.TraceList.init(id)
         })
       }
     }

@@ -122,12 +122,12 @@
             <el-button v-if="scope.row.status <3&&scope.row.status !==0" type="text" size="small"
                        @click="addOrUpdateHandle(scope.row.id)">修改
             </el-button>
-            <el-button v-if="scope.row.status !== 0" type="text" size="small"
-                       @click="addTraceHandle(scope.row.id)">添加跟进
-            </el-button>
-            <el-button v-if="scope.row.status !== 0" type="text" size="small"
-                       @click="TraceHandle(scope.row.id)">跟进详情
-            </el-button>
+            <!--<el-button v-if="scope.row.status !== 0" type="text" size="small"-->
+                       <!--@click="addTraceHandle(scope.row.id)">添加跟进-->
+            <!--</el-button>-->
+            <!--<el-button v-if="scope.row.status !== 0" type="text" size="small"-->
+                       <!--@click="TraceHandle(scope.row.id)">跟进详情-->
+            <!--</el-button>-->
           </template>
         </el-table-column>
       </el-table>
