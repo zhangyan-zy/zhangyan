@@ -89,7 +89,7 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
     }
 
     @Override
-    public PageUtils listTraceByWorker(Map<String, Object> params) {
+    public PageUtils listTraceByCustomer(Map<String, Object> params) {
         Integer page = Integer.parseInt((String) params.get("page"));
         Integer limit = Integer.parseInt((String) params.get("limit"));
         String username =null;
@@ -122,7 +122,7 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
             date2= MyTimeUtil.addDay(date2, 1);
         }
         Page<TraceEntity> pages = new Page<>(page, limit);
-        return new PageUtils(baseMapper.selectTraceByWorker(pages,username,mobile,status,amount1,amount2,date1,date2));
+        return new PageUtils(baseMapper.selectTraceByCustomer(pages,username,mobile,status,amount1,amount2,date1,date2));
     }
 
 

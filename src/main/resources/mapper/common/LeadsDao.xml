@@ -38,7 +38,7 @@
 		 order by gmt_creat desc
 	 </select>
 
-	<select id="selectTraceByWorker" resultType="com.wingscode.modules.common.entity.TraceEntity">
+	<select id="selectTraceByCustomer" resultType="com.wingscode.modules.common.entity.TraceEntity">
       SELECT
 	    t.* , l.name leadsName
       FROM

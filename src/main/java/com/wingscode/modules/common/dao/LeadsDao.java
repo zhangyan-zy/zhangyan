@@ -35,7 +35,7 @@ public interface LeadsDao extends BaseMapper<LeadsEntity> {
 
     IPage<TraceEntity> selectTrace(Page page ,@Param("leadsId") Integer leadsId);
 
-    IPage<TraceEntity> selectTraceByWorker(@Param("page")Page page ,@Param("username") String username,@Param("mobile") String mobile,
+    IPage<TraceEntity> selectTraceByCustomer(@Param("page")Page page ,@Param("username") String username,@Param("mobile") String mobile,
                               @Param("status") String status,@Param("amount1") Integer amount1,
                               @Param("amount2") Integer amount2,@Param("date1") String date1,
                               @Param("date2") String date2);

@@ -22,7 +22,7 @@ public interface LeadsService extends IService<LeadsEntity> {
 
     PageUtils listByWorker(Map<String, Object> params, Long parentId, Long workerId);
 
-    PageUtils listTraceByWorker(Map<String, Object> params);
+    PageUtils listTraceByCustomer(Map<String, Object> params);
 
     PageUtils listByCustomer(Map<String, Object> params, Long parentId);
 
