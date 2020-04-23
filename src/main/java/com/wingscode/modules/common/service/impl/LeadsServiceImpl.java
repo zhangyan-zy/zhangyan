@@ -45,6 +45,7 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
         int amount2 = Integer.valueOf(String.valueOf(params.get("amount2")));
         String date1 = (String) params.get("date1");
         String date2 = (String) params.get("date2");
+        String need = (String) params.get("need");
         IPage<LeadsEntity> page = this.page(
                 new Query<LeadsEntity>().getPage(params),
                 new QueryWrapper<LeadsEntity>()
@@ -57,6 +58,7 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
                         .ge(StringUtils.isNotEmpty(date1), "gmt_creat", date1)
                         .le(StringUtils.isNotEmpty(date2), "gmt_creat", MyTimeUtil.addDay(date2, 1))
                         .eq(StringUtils.isNotEmpty(status), "status", status)
+                        .eq(StringUtils.isNotEmpty(need), "need", need)
                         .orderByDesc("id")
         );
         return new PageUtils(page);
@@ -136,6 +138,7 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
         String date2 = (String) params.get("date2");
         String status = (String) params.get("status");
         String staff = (String) params.get("staff");
+        String need = (String) params.get("need");
         IPage<LeadsEntity> page = this.page(
                 new Query<LeadsEntity>().getPage(params),
                 new QueryWrapper<LeadsEntity>()
@@ -148,6 +151,7 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
                         .le(amount2 != 0, "amount", amount2)
                         .ge(StringUtils.isNotEmpty(date1), "gmt_creat", date1)
                         .le(StringUtils.isNotEmpty(date2), "gmt_creat", MyTimeUtil.addDay(date2, 1))
+                        .eq(StringUtils.isNotEmpty(need), "need", need)
                         .orderByDesc("id")
         );
         for (LeadsEntity leadsEntity : page.getRecords()) {
@@ -206,12 +210,14 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
     @Override
     public PageUtils waitList(Map<String, Object> params, Long parentId) {
         String username = (String) params.get("name");
+        String need = (String) params.get("need");
         IPage<LeadsEntity> page = this.page(
                 new Query<LeadsEntity>().getPage(params),
                 new QueryWrapper<LeadsEntity>()
                         .like(StringUtils.isNotBlank(username), "name", username)
                         .eq("parent_id", parentId)
                         .eq("status", 1)
+                        .eq(StringUtils.isNotEmpty(need),"need",need)
                         .orderByDesc("id")
         );
         return new PageUtils(page);
