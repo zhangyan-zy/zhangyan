@@ -29,6 +29,11 @@
         </el-date-picker>
       </el-form-item>
       <el-form-item>
+        <el-select v-model="dataForm.need" clearable placeholder="是否意向">
+          <el-option v-for="item in need" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
         <el-select v-model="dataForm.staff" clearable filterable placeholder="请选择员工">
           <el-option
             v-for="item in staffList"
@@ -206,8 +211,20 @@
           ammount2: '',
           status: '',
           staff: '',
+          need: '',
           date: []
         },
+        need:[{
+          value:'2',
+          label:'一般',
+        },{
+          value:'1',
+          label:'有意向',
+        },{
+          value:'0',
+          label:'无意向',
+        }],
+        statusvalue:'',
         dataList: [],
         pageIndex: 1,
         pageSize: 10,
@@ -244,7 +261,8 @@
               'mobile': this.dataForm.mobile,
               'date1': this.dataForm.date ? this.dataForm.date[0] : '',
               'date2': this.dataForm.date ? this.dataForm.date[1] : '',
-              'name': this.dataForm.userName
+              'name': this.dataForm.userName,
+              'need': this.dataForm.need
             })
           }).then(({data}) => {
             if (data && data.code === 0) {
