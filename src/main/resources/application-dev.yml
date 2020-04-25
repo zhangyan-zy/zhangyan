@@ -3,9 +3,9 @@ spring:
         type: com.alibaba.druid.pool.DruidDataSource
         druid:
             driver-class-name: com.mysql.jdbc.Driver
-            url: jdbc:mysql://47.102.135.59:3306/call_wingscode_c?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
-            username: call_wingscode_c
-            password: CNa7XnJZiDFfrHMB
+            url: jdbc:mysql://192.168.1.149:3306/202003_call?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+            username: root
+            password: 123654
             initial-size: 10
             max-active: 100
             min-idle: 10

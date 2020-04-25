@@ -42,5 +42,6 @@ public interface LeadsService extends IService<LeadsEntity> {
    void  addTrace(TraceEntity traceEntity);
 
     PageUtils selectTrace(Map<String, Object> params);
+
 }
 

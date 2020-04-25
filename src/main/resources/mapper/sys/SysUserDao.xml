@@ -23,4 +23,12 @@
 	<select id="queryUserIdList" resultType="long">
 		select user_id from sys_user where parent_id = #{value}
 	</select>
+
+	<select id="selectCustomerList" resultType="com.wingscode.modules.sys.entity.SysUserEntity">
+		select * from sys_user u left join sys_user_role sur on u.user_id=sur.user_id where sur.role_id=4
+	</select>
+
+	<select id="selectCustomer" resultType="com.wingscode.modules.sys.entity.SysUserEntity" >
+		select * from sys_user where user_id=#{customerId}
+	</select>
 </mapper>

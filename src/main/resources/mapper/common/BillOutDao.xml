@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wingscode.modules.common.dao.BillOutDao">
+
+   <select id="selectAllList" resultType="com.wingscode.modules.common.entity.BillOutEntity" >
+       select bo.*,s.name stationName from tb_bill_out bo left join tb_station s on bo.station=s.id
+        where 1=1
+         <if test="station !=-1">
+             and  bo.station=#{station}
+         </if>
+   </select>
+
+
+</mapper>

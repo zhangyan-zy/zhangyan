@@ -144,4 +144,15 @@ public class SysUserController extends AbstractController {
 
 		return R.ok();
 	}
+
+
+	/**
+	 * 所有用户列表
+	 */
+	@PostMapping("/selectCustomerList")
+	public R selectCustomerList(){
+		List<SysUserEntity> list = sysUserService.selectCustomerList();
+		return R.ok().put("list", list);
+	}
+
 }

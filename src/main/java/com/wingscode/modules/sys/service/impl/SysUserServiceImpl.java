@@ -119,6 +119,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 		return baseMapper.queryUserIdList(parentId);
 	}
 
+	@Override
+	public List<SysUserEntity> selectCustomerList() {
+		return baseMapper.selectCustomerList();
+	}
+
 	/**
 	 * 检查角色是否越权
 	 */

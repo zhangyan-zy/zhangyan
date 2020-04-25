@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.wingscode.modules.sys.entity.SysUserEntity;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -33,4 +34,16 @@ public interface SysUserDao extends BaseMapper<SysUserEntity> {
     SysUserEntity queryByUserName(String username);
 
     List<Long> queryUserIdList(Long parentId);
+
+    /**
+     * 查询所有的客户
+     */
+    List<SysUserEntity> selectCustomerList();
+
+    /**
+     * 根据客户Id查询客户
+     * @param customerId
+     * @return
+     */
+    SysUserEntity selectCustomer(@Param("customerId") Long customerId);
 }

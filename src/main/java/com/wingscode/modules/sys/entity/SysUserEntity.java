@@ -5,14 +5,13 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.wingscode.common.validator.group.AddGroup;
 import com.wingscode.common.validator.group.UpdateGroup;
-
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
+import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
-
-import lombok.Data;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 系统用户
@@ -85,4 +84,9 @@ public class SysUserEntity implements Serializable {
 
     @TableField(exist = false)
     private Integer todayNum;
+
+    /**
+     * 提成
+     */
+    private BigDecimal commission;
 }

@@ -1,0 +1,36 @@
+package com.wingscode.modules.common.service.impl;
+
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.wingscode.common.utils.PageUtils;
+import com.wingscode.common.utils.Query;
+import com.wingscode.modules.common.dao.BillInInfoDao;
+import com.wingscode.modules.common.entity.BillInInfoEntity;
+import com.wingscode.modules.common.service.BillInInfoService;
+import io.netty.util.internal.StringUtil;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
+
+@Service("billInInfoService")
+public class BillInInfoServiceImpl extends ServiceImpl<BillInInfoDao, BillInInfoEntity> implements BillInInfoService {
+
+    @Override
+    public PageUtils queryPage(Map<String, Object> params) {
+        IPage<BillInInfoEntity> page = this.page(
+                new Query<BillInInfoEntity>().getPage(params),
+                new QueryWrapper<BillInInfoEntity>()
+                .eq("bill_id",StringUtil.isNullOrEmpty((String) params.get("billId")))
+        );
+        return new PageUtils(page);
+    }
+
+    @Override
+    public List<BillInInfoEntity> selectAll(Long billId) {
+        return baseMapper.selectAll(billId);
+    }
+
+}
