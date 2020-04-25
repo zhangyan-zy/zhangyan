@@ -5,6 +5,11 @@
         <el-input v-model="dataForm.userName" placeholder="客户名称" clearable></el-input>
       </el-form-item>
       <el-form-item>
+        <el-form-item>
+          <el-select v-model="dataForm.need" clearable placeholder="是否意向">
+            <el-option v-for="item in need" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          </el-select>
+        </el-form-item>
         <el-button @click="getDataList()">查询</el-button>
         <el-button @click="addOrUpdateHandle()">批量分配</el-button>
       </el-form-item>
@@ -38,6 +43,17 @@
         header-align="center"
         align="center"
         label="客户微信">
+      </el-table-column>
+      <el-table-column
+        prop="need"
+        header-align="center"
+        align="center"
+        label="是否意向">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.need === 0" size="small" type="danger">无意向</el-tag>
+          <el-tag v-if="scope.row.need === 1" size="small">有意向</el-tag>
+          <el-tag v-if="scope.row.need === 2" size="small">一般</el-tag>
+        </template>
       </el-table-column>
       <el-table-column
         prop="remark"
@@ -86,8 +102,19 @@
     data () {
       return {
         dataForm: {
-          userName: ''
+          userName: '',
+          need: ''
         },
+        need:[{
+          value:'2',
+          label:'一般',
+        },{
+          value:'1',
+          label:'有意向',
+        },{
+          value:'0',
+          label:'无意向',
+        }],
         timer: '',
         size: 0,
         dataList: [],
@@ -122,7 +149,8 @@
           params: this.$http.adornParams({
             'page': this.pageIndex,
             'limit': this.pageSize,
-            'name': this.dataForm.userName
+            'name': this.dataForm.userName,
+            'need': this.dataForm.need
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
