@@ -2,16 +2,6 @@
   <div class="home-vue">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-select v-model="dataForm.status" clearable filterable placeholder="状态">
-          <el-option
-            v-for="item in statusList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item>
         <el-select v-model="dataForm.userId" clearable filterable placeholder="选择用户">
           <el-option
             v-for="item in selectCustomerList"
@@ -22,19 +12,10 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-date-picker
-          v-model="dataForm.date"
-          value-format="yyyy-MM-dd"
-          type="date"
-          placeholder="选择日期">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button type="primary" @click="addOrUpdateHandle()">新增</el-button>
+        <el-button type="primary" @click="addOrUpdateHandle()" :disabled="dataListSelections.length <= 0">生成账单</el-button>
       </el-form-item>
     </el-form>
-
     <div class="tab">
       <el-table
         class="tab1"
@@ -48,67 +29,16 @@
           width="50">
         </el-table-column>
         <el-table-column
-          prop="billDate"
+          prop="name"
           header-align="center"
           align="center"
-          label="账单时间">
-        </el-table-column>
-        <!--<el-table-column-->
-          <!--prop="customerUserName"-->
-          <!--header-align="center"-->
-          <!--align="center"-->
-          <!--label="用户名称">-->
-          <!--<template slot-scope="scope">-->
-            <!--<span class="customer" @click="addOrUpdateHandle1(scope.row.id)">{{scope.row.customerUserName}}</span>-->
-          <!--</template>-->
-        <!--</el-table-column>-->
-        <el-table-column
-          prop="customerUserName"
-          header-align="center"
-          align="center"
-          label="客户名称">
-        </el-table-column>
-        <el-table-column
-          prop="num"
-          header-align="center"
-          align="center"
-          label="leads数量">
-          <template slot-scope="scope">
-            <span class="customer" @click="addOrUpdateHandle1(scope.row.id)">{{scope.row.num}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="status"
-          header-align="center"
-          align="center"
-          label="状态">
-          <template slot-scope="scope">
-            <el-tag v-if="scope.row.status===0">已关闭</el-tag>
-            <el-tag v-if="scope.row.status===1">已结算</el-tag>
-            <el-tag v-if="scope.row.status===2">待结算</el-tag>
-          </template>
+          label="leads姓名">
         </el-table-column>
         <el-table-column
           prop="amount"
           header-align="center"
           align="center"
-          label="总额">
-        </el-table-column>
-
-        <el-table-column
-          fixed="right"
-          header-align="center"
-          align="center"
-          width="150"
-          label="操作">
-          <template slot-scope="scope">
-            <el-button type="text" size="small"
-                       @click="addOrUpdateHandle(scope.row.id)">修改
-            </el-button>
-            <el-button type="text" size="small"
-                       @click="deleteHandle(scope.row.id)">删除
-            </el-button>
-          </template>
+          label="金额">
         </el-table-column>
       </el-table>
     </div>
@@ -212,14 +142,12 @@
       getDataList() {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/common/billin/list'),
+          url: this.$http.adornUrl('/common/leads/selectleadsrList'),
           method: 'post',
           params: this.$http.adornParams({
             page: this.pageIndex,
             limit: this.pageSize,
-            status: this.dataForm.status,
-            billDate: this.dataForm.date,
-            customerUserId: this.dataForm.userId
+            customerId: this.dataForm.userId
           })
         }).then(({data}) => {
           console.log('data', data)

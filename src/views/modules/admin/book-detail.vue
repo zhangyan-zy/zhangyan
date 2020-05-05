@@ -21,21 +21,21 @@
           align="center"
           label="总额">
         </el-table-column>
-        <el-table-column
-          fixed="right"
-          header-align="center"
-          align="center"
-          width="150"
-          label="操作">
-          <template slot-scope="scope">
-            <el-button type="text" size="small"
-                       @click="addOrUpdateHandle(scope.row.id)">修改
-            </el-button>
-            <el-button type="text" size="small"
-                       @click="deleteHandle(scope.row.id)">删除
-            </el-button>
-          </template>
-        </el-table-column>
+        <!--<el-table-column-->
+          <!--fixed="right"-->
+          <!--header-align="center"-->
+          <!--align="center"-->
+          <!--width="150"-->
+          <!--label="操作">-->
+          <!--<template slot-scope="scope">-->
+            <!--<el-button type="text" size="small"-->
+                       <!--@click="addOrUpdateHandle(scope.row.id)">修改-->
+            <!--</el-button>-->
+            <!--<el-button type="text" size="small"-->
+                       <!--@click="deleteHandle(scope.row.id)">删除-->
+            <!--</el-button>-->
+          <!--</template>-->
+        <!--</el-table-column>-->
       </el-table>
     </div>
     <!-- 下栏列表1 -->
@@ -81,15 +81,20 @@
         this.billId = id
         this.visible = true
         this.$http({
-          url: this.$http.adornUrl(`/common/billininfo/list`),
+          url: this.$http.adornUrl(`/common/billininfo/selectByBillId`),
           method: 'post',
           params: this.$http.adornParams({
             billId: id
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
-            console.log(data, 'data')
+            this.totalPage = data.page.totalCount
+            this.dataList = data.page.list
+          } else {
+            this.dataList = []
+            this.totalPage = 0
           }
+          this.dataListLoading = false
         })
       },
       sizeChangeHandle(val) {
