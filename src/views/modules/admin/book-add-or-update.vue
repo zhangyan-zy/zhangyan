@@ -26,8 +26,8 @@
       <!--</el-option>-->
       <!--</el-select>-->
       <!--</el-form-item>-->
-      <el-form-item label="leadsId" prop="leadsId">
-        <el-select v-model="dataForm.leadsId" @change="selectStatus" clearable filterable placeholder="选择用户">
+      <el-form-item label="leads" prop="leadsId">
+        <el-select v-model="dataForm.leadsId" @change="selectStatus" clearable filterable placeholder="选择leads">
           <el-option
             v-for="item in selectLeadList"
             :key="item.id"
@@ -101,9 +101,10 @@
           }).then(({data}) => {
             console.log(data)
             if (data && data.code === 0) {
-              // this.dataForm.name = this.billInInfo.leadsId
+              console.log(data.billInInfo,"1111111111")
               this.dataForm.leadsId = data.billInInfo.leadsId
               this.dataForm.amount = data.billInInfo.amount
+              this.dataForm.userId = data.billInInfo.userId
             }
           })
         }
