@@ -81,11 +81,11 @@
         }
       }
     },
-    watch: {
-      'dataForm.userId': function (newValue, oldValue) {
-        this.dataForm.leadsId = ''
-      }
-    },
+    // watch: {
+    //   'dataForm.userId': function (newValue, oldValue) {
+    //     this.dataForm.leadsId = ''
+    //   }
+    // },
     methods: {
       init(id) {
         this.dataForm.id = id || 0
@@ -101,7 +101,7 @@
           }).then(({data}) => {
             console.log(data)
             if (data && data.code === 0) {
-              // this.dataForm.name = this.billInInfo.leadsId
+              this.dataForm.userId = data.billInInfo.userId
               this.dataForm.leadsId = data.billInInfo.leadsId
               this.dataForm.amount = data.billInInfo.amount
             }
@@ -109,7 +109,7 @@
         }
       },
       selectUser(val) {
-        this.selectLeadList = []
+        this.dataForm.leadsId = ''
         this.selectCustomerList.forEach((el, i) => {
           if (val === el.userId) {
             this.selectLeadList = el.leadsEntities
