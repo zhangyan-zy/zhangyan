@@ -225,4 +225,13 @@ public class LeadsController extends AbstractController {
         return R.ok().put("page", page);
     }
 
+
+    /**
+     * 根据客户找到所有的leads
+     */
+    @PostMapping("/selectCustomerList")
+    public R selectLeadsByCustomerId(@RequestParam Long customerId){
+        List<LeadsEntity> list = leadsService.selectLeadsByCustomerId(customerId);
+        return R.ok().put("list", list);
+    }
 }

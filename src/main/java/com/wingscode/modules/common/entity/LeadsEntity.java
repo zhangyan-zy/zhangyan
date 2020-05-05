@@ -92,4 +92,5 @@ public class LeadsEntity implements Serializable {
     private String areaCode;
     private String province;
     private String city;
+    private Integer status1;
 }

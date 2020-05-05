@@ -337,4 +337,9 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
 
     }
 
+    @Override
+    public List<LeadsEntity> selectLeadsByCustomerId(Long customerId) {
+        return baseMapper.selectLeadsByCustomerId(customerId);
+    }
+
 }

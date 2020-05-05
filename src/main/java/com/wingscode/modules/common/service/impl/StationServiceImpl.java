@@ -8,6 +8,7 @@ import com.wingscode.common.utils.Query;
 import com.wingscode.modules.common.dao.StationDao;
 import com.wingscode.modules.common.entity.StationEntity;
 import com.wingscode.modules.common.service.StationService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class StationServiceImpl extends ServiceImpl<StationDao, StationEntity> i
         IPage<StationEntity> page = this.page(
                 new Query<StationEntity>().getPage(params),
                 new QueryWrapper<StationEntity>()
+                .like(StringUtils.isNotBlank((String) params.get("key")),"name", params.get("key"))
         );
 
         return new PageUtils(page);

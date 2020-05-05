@@ -8,18 +8,16 @@ import com.wingscode.modules.common.entity.BillInEntity;
 import com.wingscode.modules.common.entity.BillInInfoEntity;
 import com.wingscode.modules.common.service.BillInInfoService;
 import com.wingscode.modules.common.service.BillInService;
+import com.wingscode.modules.sys.dao.SysUserDao;
+import com.wingscode.modules.sys.entity.SysUserEntity;
+import com.wingscode.util.MyUtilUUID;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-
+import java.util.*;
 
 
 /**
@@ -36,9 +34,10 @@ public class BillInInfoController {
     private BillInInfoService billInInfoService;
     @Resource
     private BillInDao billInDao;
-
     @Autowired
     private BillInService billInService;
+    @Resource
+    private SysUserDao sysUserDao;
     /**
      * 列表
      */
@@ -67,22 +66,51 @@ public class BillInInfoController {
      */
     @RequestMapping("/save")
     @RequiresPermissions("sys:billininfo:save")
-    public R save(@RequestParam Map<String, Object> params){
+    public R save(@RequestBody Map<String, Object> params){
+        //生成客户账单
+        BillInEntity billIn=new BillInEntity();
+        billIn.setGmtCreate(new Date());
+        billIn.setCustomerId(new Long(String.valueOf(params.get("customerId"))));
+        billIn.setGmtModify(new Date());
+        billIn.setBillDate(new Date());
+        billIn.setNum(0);
+        billIn.setStatus(0);
+        //产品编号随机生成，如果重复，重新添加
+        Boolean flag = true;
+        while (flag) {
+            String sn = MyUtilUUID.getCode();
+            Map param = new HashMap();
+            param.put("sn", sn);
+            List<BillInEntity> list = billInService.queryBysn(sn);
+            if (list.size() == 0) {
+                flag = false;
+                billIn.setSn(sn);
+                break;
+            }
+        }
+        billIn.setAmount(new BigDecimal(0));
+        billInService.save(billIn);
+
+        Long billId = billIn.getId();
+
+        //生成leads账单
         BillInInfoEntity billInInfo=new BillInInfoEntity();
         billInInfo.setAmount(new BigDecimal(String.valueOf(params.get("amount"))));
-        billInInfo.setBillId(new Long(String.valueOf(params.get("billId"))) );
+        billInInfo.setBillId(billId);
         billInInfo.setGmtCreate(new Date());
         billInInfo.setGmtModify(new Date());
         billInInfo.setLeadsId(new Long(String.valueOf(params.get("leadsId"))));
         billInInfoService.save(billInInfo);
 
-        BillInEntity billInEntity = billInDao.selectByBillId(new Long(String.valueOf(params.get("billId"))));
+        //根据leads账单找到客户账单
+        BillInEntity billInEntity = billInDao.selectByBillId(billInInfo.getBillId());
         List<BillInInfoEntity> list= billInInfoService.selectAll(billInInfo.getBillId());
-
         billInEntity.setNum(list.get(0).getLeadsNum());
-
-        //还有一个没有写，就是根据传过来的客户的id查询客户，找到提成，然后称一下
-        billInEntity.setAmount( list.get(0).getLeadsCount());
+        SysUserEntity user = sysUserDao.selectCustomer(billInEntity.getCustomerId());
+        BigDecimal commission = user.getCommission();
+        //算出客户账单的Amount
+        BigDecimal newAoumt=list.get(0).getLeadsCount().multiply(commission);
+        billInEntity.setAmount(newAoumt);
         billInService.updateById(billInEntity);
         return R.ok();
     }
@@ -95,7 +123,18 @@ public class BillInInfoController {
     public R update(@RequestBody BillInInfoEntity billInInfo){
         ValidatorUtils.validateEntity(billInInfo);
         billInInfoService.updateById(billInInfo);
-        
+        BillInInfoEntity billInInfo1 = billInInfoService.getById(billInInfo.getId());
+        //根据leads账单找到客户账单
+        BillInEntity billInEntity = billInDao.selectByBillId(billInInfo1.getBillId());
+        List<BillInInfoEntity> list= billInInfoService.selectAll(billInInfo1.getBillId());
+//        billInEntity.setNum(list.get(0).getLeadsNum());
+        SysUserEntity user = sysUserDao.selectCustomer(billInEntity.getCustomerId());
+        BigDecimal commission = user.getCommission();
+        //算出客户账单的Amount
+        BigDecimal newAoumt=list.get(0).getLeadsCount().multiply(commission);
+        billInEntity.setAmount(newAoumt);
+        billInService.updateById(billInEntity);
+
         return R.ok();
     }
 

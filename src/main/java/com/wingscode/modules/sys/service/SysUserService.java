@@ -58,4 +58,5 @@ public interface SysUserService extends IService<SysUserEntity> {
 	List<Long> queryUserIdList(Long parentId);
 
 	List<SysUserEntity> selectCustomerList();
+
 }

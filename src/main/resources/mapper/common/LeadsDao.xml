@@ -65,4 +65,9 @@
 		order by t.gmt_creat desc
 	</select>
 
+    <select id="selectLeadsByCustomerId" resultType="com.wingscode.modules.common.entity.LeadsEntity">
+		select * from tb_leads where parent_id=#{customerId}
+	</select>
+
+
 </mapper>

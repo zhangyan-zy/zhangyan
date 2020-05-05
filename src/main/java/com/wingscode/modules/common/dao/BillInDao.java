@@ -25,4 +25,5 @@ public interface BillInDao extends BaseMapper<BillInEntity> {
    List<BillInEntity> queryBysn(@Param("sn") String sn);
 
    BillInEntity selectByBillId(@Param("billId") Long billId);
+
 }

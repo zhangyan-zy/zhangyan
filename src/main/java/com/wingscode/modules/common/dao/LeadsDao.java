@@ -41,4 +41,7 @@ public interface LeadsDao extends BaseMapper<LeadsEntity> {
                               @Param("date2") String date2);
 
     List<LeadsEntity> selectCustomerLeads(@Param("parentId") Long parentId);
+
+    List<LeadsEntity> selectLeadsByCustomerId(@Param("customerId") Long customerId);
+
 }
