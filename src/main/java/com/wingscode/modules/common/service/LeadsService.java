@@ -44,5 +44,7 @@ public interface LeadsService extends IService<LeadsEntity> {
     PageUtils selectTrace(Map<String, Object> params);
 
     List<LeadsEntity> selectLeadsByCustomerId(Long customerId);
+
+    PageUtils selectleadsrList(Map<String, Object> params);
 }
 

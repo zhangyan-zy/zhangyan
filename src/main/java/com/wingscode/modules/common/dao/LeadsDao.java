@@ -44,4 +44,6 @@ public interface LeadsDao extends BaseMapper<LeadsEntity> {
 
     List<LeadsEntity> selectLeadsByCustomerId(@Param("customerId") Long customerId);
 
+    IPage<LeadsEntity> selectleadsrList(@Param("page")Page page,@Param("customerId") Long customerId);
+
 }

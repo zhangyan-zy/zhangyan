@@ -46,4 +46,7 @@ public interface SysUserDao extends BaseMapper<SysUserEntity> {
      * @return
      */
     SysUserEntity selectCustomer(@Param("customerId") Long customerId);
+
+
+    Integer selectUserNameByleadsId (@Param("leadsId") Long leadsId);
 }

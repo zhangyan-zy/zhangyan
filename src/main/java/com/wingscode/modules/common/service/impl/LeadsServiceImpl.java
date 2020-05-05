@@ -342,4 +342,16 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
         return baseMapper.selectLeadsByCustomerId(customerId);
     }
 
+    @Override
+    public PageUtils selectleadsrList(Map<String, Object> params) {
+        Integer page = Integer.parseInt((String) params.get("page"));
+        Integer limit = Integer.parseInt((String) params.get("limit"));
+        Long customerId=new Long(0);
+        if(!StringUtil.isNullOrEmpty((String) params.get("customerId"))){
+            customerId =new Long((String) params.get("customerId"));
+        }
+        Page<LeadsEntity> pages = new Page<>(page, limit);
+        return new PageUtils(baseMapper.selectleadsrList(pages,customerId));
+    }
+
 }

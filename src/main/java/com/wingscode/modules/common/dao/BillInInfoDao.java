@@ -17,4 +17,11 @@ import java.util.List;
 @Mapper
 public interface BillInInfoDao extends BaseMapper<BillInInfoEntity> {
 	List<BillInInfoEntity> selectAll(@Param("billId") Long billId);
+
+	BillInInfoEntity selectByBillId(@Param("billId") Long billId);
+
+	List<BillInInfoEntity> selectByLeadsId(@Param("leadsId") Long leadsId);
+
+	void deleteByBillId(@Param("billId") Long billId);
+
 }

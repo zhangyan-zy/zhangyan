@@ -5,6 +5,7 @@ import com.wingscode.common.utils.R;
 import com.wingscode.common.validator.ValidatorUtils;
 import com.wingscode.modules.common.dao.LeadsDao;
 import com.wingscode.modules.common.entity.BillInEntity;
+import com.wingscode.modules.common.service.BillInInfoService;
 import com.wingscode.modules.common.service.BillInService;
 import com.wingscode.modules.sys.dao.SysUserDao;
 import com.wingscode.util.MyUtilUUID;
@@ -36,6 +37,8 @@ public class BillInController {
     private SysUserDao sysUserDao;
     @Resource
     private LeadsDao leadsDao;
+    @Autowired
+    private BillInInfoService billInInfoService;
 
     /**
      * 列表
@@ -114,8 +117,11 @@ public class BillInController {
     @RequiresPermissions("sys:billin:delete")
     @ApiOperation("删除")
     public R delete(@RequestBody Long[] ids){
+        for(int i=0;i<ids.length;i++){
+            BillInEntity billInEntity=billInService.getById(ids[i]);
+            billInInfoService.deleteByBillId(billInEntity.getId());
+        }
         billInService.removeByIds(Arrays.asList(ids));
-
         return R.ok();
     }
 

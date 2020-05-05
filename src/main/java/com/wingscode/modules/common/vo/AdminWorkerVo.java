@@ -8,7 +8,7 @@ import lombok.Data;
  * Description：<描述>
  */
 @Data
-public class AdminWorkerVO {
+public class AdminWorkerVo {
 
     /**
      * 客户名

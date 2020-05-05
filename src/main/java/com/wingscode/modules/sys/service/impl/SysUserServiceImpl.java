@@ -7,6 +7,9 @@ import com.wingscode.common.exception.RRException;
 import com.wingscode.common.utils.Constant;
 import com.wingscode.common.utils.PageUtils;
 import com.wingscode.common.utils.Query;
+import com.wingscode.modules.common.dao.LeadsDao;
+import com.wingscode.modules.common.entity.LeadsEntity;
+import com.wingscode.modules.common.vo.AdminSysUserVo;
 import com.wingscode.modules.sys.dao.SysUserDao;
 import com.wingscode.modules.sys.entity.SysUserEntity;
 import com.wingscode.modules.sys.service.SysRoleService;
@@ -19,10 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import javax.annotation.Resource;
+import java.util.*;
 
 
 /**
@@ -36,6 +37,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 	private SysUserRoleService sysUserRoleService;
 	@Autowired
 	private SysRoleService sysRoleService;
+	@Resource
+	private LeadsDao leadsDao;
 
 	@Override
 	public PageUtils queryPage(Map<String, Object> params) {
@@ -120,8 +123,30 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 	}
 
 	@Override
-	public List<SysUserEntity> selectCustomerList() {
-		return baseMapper.selectCustomerList();
+	public List<AdminSysUserVo> selectCustomerList() {
+		List<AdminSysUserVo> arrList=new ArrayList<>();
+
+		//客户的list
+		List<SysUserEntity>  sysUserList=  baseMapper.selectCustomerList();
+        for(int i=0;i<sysUserList.size();i++){
+			AdminSysUserVo adminSysUserVo=new AdminSysUserVo();
+			adminSysUserVo.setUsername(sysUserList.get(i).getUsername());
+			adminSysUserVo.setUserId(sysUserList.get(i).getUserId());
+			adminSysUserVo.setAllNum(sysUserList.get(i).getAllNum());
+			adminSysUserVo.setCommission(sysUserList.get(i).getCommission());
+			adminSysUserVo.setCreateTime(sysUserList.get(i).getCreateTime());
+			adminSysUserVo.setCreateUserId(sysUserList.get(i).getCreateUserId());
+			adminSysUserVo.setParentId(sysUserList.get(i).getParentId());
+			adminSysUserVo.setParentName(sysUserList.get(i).getParentName());
+			adminSysUserVo.setStatus(sysUserList.get(i).getStatus());
+
+			Long userId = adminSysUserVo.getUserId();
+			List<LeadsEntity> leadsEntities = leadsDao.selectLeadsByCustomerId(userId);
+			adminSysUserVo.setLeadsEntities(leadsEntities);
+
+			arrList.add(adminSysUserVo);
+		}
+		return  arrList;
 	}
 
 	/**

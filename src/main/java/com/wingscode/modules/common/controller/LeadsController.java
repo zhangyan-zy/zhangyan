@@ -234,4 +234,15 @@ public class LeadsController extends AbstractController {
         List<LeadsEntity> list = leadsService.selectLeadsByCustomerId(customerId);
         return R.ok().put("list", list);
     }
+
+    /**
+     * 根据客户找到规定的leads
+     */
+    @PostMapping("/selectleadsrList")
+    public R selectleadsrList(@RequestParam Map<String, Object> params){
+        PageUtils page = leadsService.selectleadsrList(params);
+        return R.ok().put("page", page);
+    }
+
+
 }

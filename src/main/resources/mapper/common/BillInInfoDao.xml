@@ -7,4 +7,14 @@
        select count(*) leadsNum,sum(amount) leadsCount from tb_bill_in_info where bill_id=#{billId}
          </select>
 
+     <select id="selectByBillId" resultType="com.wingscode.modules.common.entity.BillInInfoEntity">
+         select * from tb_bill_in_info where  bill_id=#{billId}
+     </select>
+    <select id="selectByLeadsId" resultType="com.wingscode.modules.common.entity.BillInInfoEntity">
+        select * from tb_bill_in_info where leads_id=#{leadsId}
+    </select>
+
+    <delete id="deleteByBillId">
+        delete from tb_bill_in_info where bill_id=#{billId}
+    </delete>
 </mapper>

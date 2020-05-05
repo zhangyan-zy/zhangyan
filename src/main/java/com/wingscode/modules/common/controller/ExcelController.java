@@ -4,7 +4,7 @@ import com.alibaba.druid.util.StringUtils;
 import com.wingscode.modules.common.entity.LeadsEntity;
 import com.wingscode.modules.common.service.LeadsService;
 import com.wingscode.modules.common.service.StatisticalService;
-import com.wingscode.modules.common.vo.AdminWorkerVO;
+import com.wingscode.modules.common.vo.AdminWorkerVo;
 import com.wingscode.util.ExcelOutUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -146,7 +146,7 @@ public class ExcelController  {
 
         // Long parentId= Long.parseLong(StringUtils.isEmpty(String.valueOf(params.get("parentId"))) ? "0" : (String) params.get("parentId"));
         //获取数据
-        List<AdminWorkerVO> list = statisticalService.allWorkerExcel(params);
+        List<AdminWorkerVo> list = statisticalService.allWorkerExcel(params);
         String resultName ="";
         String[] title = {"客户名称","坐席名称","leads数量","响应数量","响应率","新增","新增响应数量","新增响应率","平均每日新增"};
 //        String filename = "jobSet.xls";

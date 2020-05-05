@@ -31,4 +31,8 @@
 	<select id="selectCustomer" resultType="com.wingscode.modules.sys.entity.SysUserEntity" >
 		select * from sys_user where user_id=#{customerId}
 	</select>
+
+	<select id="selectUserNameByleadsId" resultType="int">
+		select user_id from sys_user a left join tb_leads b on a.user_id=b.parent_id where b.id=#{leadsId}
+	</select>
 </mapper>

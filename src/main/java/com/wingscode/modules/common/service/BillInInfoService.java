@@ -19,5 +19,13 @@ public interface BillInInfoService extends IService<BillInInfoEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
     List<BillInInfoEntity> selectAll(Long billId);
+
+    BillInInfoEntity getByBillId(Long billId);
+
+    List<BillInInfoEntity>  selectByLeadsId(Long leadsId);
+
+    void deleteByBillId(Long billId);
+
+    PageUtils selectByBillId(Map<String, Object> params);
 }
 

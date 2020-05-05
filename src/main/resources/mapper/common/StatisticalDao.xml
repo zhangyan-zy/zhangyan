@@ -31,7 +31,7 @@
     </select>
 
 
-    <select id="allWorker" resultType="com.wingscode.modules.common.vo.AdminWorkerVO">
+    <select id="allWorker" resultType="com.wingscode.modules.common.vo.AdminWorkerVo">
         SELECT
         (SELECT username FROM sys_user su WHERE su.user_id = l.parent_id) as username,
         u.username as leadsname ,
@@ -61,7 +61,7 @@
     </select>
 
 
-    <select id="allWorkerExcel" resultType="com.wingscode.modules.common.vo.AdminWorkerVO">
+    <select id="allWorkerExcel" resultType="com.wingscode.modules.common.vo.AdminWorkerVo">
         SELECT
         (SELECT username FROM sys_user su WHERE su.user_id = l.parent_id) as username,
         u.username as leadsname ,
@@ -126,7 +126,7 @@
 
 
 
-    <select id="allWorker1" resultType="com.wingscode.modules.common.vo.AdminWorkerVO">
+    <select id="allWorker1" resultType="com.wingscode.modules.common.vo.AdminWorkerVo">
           SELECT
         (SELECT username FROM sys_user su WHERE su.user_id = l.parent_id) as username,
         u.username as leadsname ,

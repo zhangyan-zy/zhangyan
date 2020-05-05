@@ -1,11 +1,12 @@
 package com.wingscode.modules.common.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import java.math.BigDecimal;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -59,5 +60,6 @@ public class BillInEntity implements Serializable {
 	private Integer status;
 
    //客户名称
-	private String customerUserName;
+   @TableField(exist=false)
+   private String customerUserName;
 }

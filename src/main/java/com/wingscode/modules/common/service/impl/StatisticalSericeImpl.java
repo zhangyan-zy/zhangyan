@@ -7,7 +7,7 @@ import com.wingscode.modules.common.dao.StatisticalDao;
 import com.wingscode.modules.common.service.StatisticalService;
 import com.wingscode.modules.common.vo.AdminCustomerVO;
 import com.wingscode.modules.common.vo.AdminStaffVo;
-import com.wingscode.modules.common.vo.AdminWorkerVO;
+import com.wingscode.modules.common.vo.AdminWorkerVo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -44,12 +44,12 @@ public class StatisticalSericeImpl extends ServiceImpl<StatisticalDao, AdminCust
         String date1 = (String) params.get("date1");
         String date2 = (String) params.get("date2");
         Long parentId = Long.parseLong(org.springframework.util.StringUtils.isEmpty(params.get("parentId")) ? "0" : (String) params.get("parentId"));
-        Page<AdminWorkerVO> pages = new Page<>(page, limit);
+        Page<AdminWorkerVo> pages = new Page<>(page, limit);
         return new PageUtils(baseMapper.allWorker(pages, parentId, date1, date2));
     }
 
     @Override
-    public List<AdminWorkerVO> allWorkerExcel(Map<String, Object> params) {
+    public List<AdminWorkerVo> allWorkerExcel(Map<String, Object> params) {
         String date1 = (String) params.get("date1");
         String date2 = (String) params.get("date2");
         Long parentId = Long.parseLong(org.springframework.util.StringUtils.isEmpty(params.get("parentId")) ? "0" : (String) params.get("parentId"));
@@ -62,7 +62,7 @@ public class StatisticalSericeImpl extends ServiceImpl<StatisticalDao, AdminCust
         Integer limit = Integer.parseInt((String) params.get("limit"));
         String date = (String) params.get("date");
         Long parentId = Long.parseLong(org.springframework.util.StringUtils.isEmpty(params.get("parentId")) ? "0" : (String) params.get("parentId"));
-        Page<AdminWorkerVO> pages = new Page<>(page, limit);
+        Page<AdminWorkerVo> pages = new Page<>(page, limit);
         return new PageUtils(baseMapper.allWorker1(pages, parentId, date));
 
         }

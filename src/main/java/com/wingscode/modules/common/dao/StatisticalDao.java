@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wingscode.modules.common.vo.AdminAgentAddVo;
 import com.wingscode.modules.common.vo.AdminCustomerVO;
 import com.wingscode.modules.common.vo.AdminStaffVo;
-import com.wingscode.modules.common.vo.AdminWorkerVO;
+import com.wingscode.modules.common.vo.AdminWorkerVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -27,12 +27,12 @@ public interface StatisticalDao extends BaseMapper<AdminCustomerVO> {
     /**
      * 坐席端查询
      */
-     IPage<AdminWorkerVO> allWorker(Page page, @Param("parentId") Long parentId, @Param("date1") String date1, @Param("date2") String date2);
+     IPage<AdminWorkerVo> allWorker(Page page, @Param("parentId") Long parentId, @Param("date1") String date1, @Param("date2") String date2);
 
     /**
      * 坐席端统计不带分页
      */
-     List<AdminWorkerVO> allWorkerExcel(@Param("parentId") Long parentId, @Param("date1") String date1, @Param("date2") String date2);
+     List<AdminWorkerVo> allWorkerExcel(@Param("parentId") Long parentId, @Param("date1") String date1, @Param("date2") String date2);
     /**
      * 坐席端每日查询
      */
