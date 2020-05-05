@@ -2,7 +2,7 @@
   <div class="home-vue">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.userName" placeholder="查询" clearable></el-input>
+        <el-input v-model="dataForm.key" placeholder="查询" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
@@ -70,11 +70,13 @@
         pageIndex: 1,
         pageSize: 10,
         totalPage: 0,
+        key: '',
         dataListLoading: false,
         addOrUpdateVisible: false,
         dataForm: {
           status: '',
-          date: []
+          date: [],
+          key: ''
         }
       }
     },
@@ -105,7 +107,8 @@
           method: 'post',
           params: this.$http.adornParams({
             page: this.pageIndex,
-            limit: this.pageSize
+            limit: this.pageSize,
+            key: this.dataForm.key
           })
         }).then(({data}) => {
           console.log('data', data)

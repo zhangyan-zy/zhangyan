@@ -171,6 +171,17 @@
         </template>
       </el-table-column>
       <el-table-column
+        prop="status1"
+        header-align="center"
+        align="center"
+        label="结算状态">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.status1 === 0" size="small" type="danger">已关闭</el-tag>
+          <el-tag v-if="scope.row.status1 === 1" size="small">已结算</el-tag>
+          <el-tag v-if="scope.row.status1 === 2" size="small">未结算</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column
         prop="remark"
         header-align="center"
         align="center"

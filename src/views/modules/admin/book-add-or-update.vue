@@ -6,7 +6,7 @@
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm"
              @keyup.enter.native="dataFormSubmit()" label-width="80px">
       <el-form-item label="用户" prop="userId">
-        <el-select v-model="dataForm.userId" clearable filterable placeholder="选择用户">
+        <el-select v-model="dataForm.name" clearable filterable placeholder="选择用户">
           <el-option
             v-for="item in selectCustomerList"
             :key="item.userId"
@@ -14,6 +14,23 @@
             :value="item.userId">
           </el-option>
         </el-select>
+      </el-form-item>
+      <!--<el-form-item label="leads" prop="leadsId">-->
+        <!--<el-select v-model="dataForm.leadsId" clearable filterable placeholder="选择leads">-->
+          <!--<el-option-->
+            <!--v-for="item in selectLeadsList"-->
+            <!--:key="item.leadsId"-->
+            <!--:label="item.leadsname"-->
+            <!--:value="item.leadsId">-->
+          <!--</el-option>-->
+        <!--</el-select>-->
+      <!--</el-form-item>-->
+      <el-form-item label="leadsId" prop="leadsId">
+        <el-input v-model="dataForm.leadsId" placeholder="leadsId"></el-input>
+      </el-form-item>
+      <el-form-item label="amount" prop="amount">
+        <el-input-number v-model="dataForm.amount" :min="0" placeholder="金额"></el-input-number>
+        <span>元</span>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -37,7 +54,9 @@
         roleList: [],
         dataForm: {
           id: 0,
-          userId: ''
+          userId: 0,
+          leadsId: '',
+          amount: 0
         },
         dataRule: {
           userId: [
@@ -55,12 +74,14 @@
         })
         if (this.dataForm.id) {
           this.$http({
-            url: this.$http.adornUrl(`/common/billin//info/${this.dataForm.id}`),
+            url: this.$http.adornUrl(`/common/billininfo/info/${this.dataForm.id}`),
             method: 'post',
             params: this.$http.adornParams()
           }).then(({data}) => {
             if (data && data.code === 0) {
-              this.dataForm.name = data.station.name
+              this.dataForm.name = this.billInInfo.leadsId
+              this.dataForm.leadsId = data.billInInfo.leadsId
+              this.dataForm.amount = data.billInInfo.amount
             }
           })
         }
@@ -70,11 +91,13 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.$http({
-              url: this.$http.adornUrl(`/common/billin/${!this.dataForm.id ? 'save' : 'update'}`),
+              url: this.$http.adornUrl(`/common/billininfo/${!this.dataForm.id ? 'save' : 'update'}`),
               method: 'post',
               data: this.$http.adornData({
-                'userId': this.dataForm.id || undefined,
-                'customerId': this.dataForm.userId
+                id: this.dataForm.id,
+                leadsId: this.dataForm.leadsId,
+                customerId: this.dataForm.name,
+                amount: this.dataForm.amount
               })
             }).then(({data}) => {
               if (data && data.code === 0) {

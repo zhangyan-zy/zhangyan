@@ -41,25 +41,25 @@
         border
         v-loading="dataListLoading">
         <el-table-column
-          prop="gmtCreate"
-          header-align="center"
-          align="center"
-          label="创建时间">
-        </el-table-column>
-        <el-table-column
           prop="billDate"
           header-align="center"
           align="center"
           label="账单时间">
         </el-table-column>
+        <!--<el-table-column-->
+          <!--prop="customerUserName"-->
+          <!--header-align="center"-->
+          <!--align="center"-->
+          <!--label="用户名称">-->
+          <!--<template slot-scope="scope">-->
+            <!--<span class="customer" @click="addOrUpdateHandle1(scope.row.id)">{{scope.row.customerUserName}}</span>-->
+          <!--</template>-->
+        <!--</el-table-column>-->
         <el-table-column
           prop="customerUserName"
           header-align="center"
           align="center"
-          label="用户名称">
-          <template slot-scope="scope">
-            <span class="customer" @click="addOrUpdateHandle1(scope.row.id)">{{scope.row.customerUserName}}</span>
-          </template>
+          label="客户名称">
         </el-table-column>
         <el-table-column
           prop="num"
@@ -84,12 +84,7 @@
           align="center"
           label="总额">
         </el-table-column>
-        <el-table-column
-          prop="customerUserName"
-          header-align="center"
-          align="center"
-          label="用户名称">
-        </el-table-column>
+
         <el-table-column
           fixed="right"
           header-align="center"
@@ -158,7 +153,7 @@
         dataForm: {
           name: '',
           userId: null,
-          date: new Date(),
+          date: '',
           status: ''
         }
       }
@@ -214,7 +209,7 @@
             limit: this.pageSize,
             status: this.dataForm.status,
             billDate: this.dataForm.date,
-            name: this.dataForm.userId
+            customerUserId: this.dataForm.userId
           })
         }).then(({data}) => {
           console.log('data', data)
