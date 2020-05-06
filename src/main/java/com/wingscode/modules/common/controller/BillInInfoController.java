@@ -63,64 +63,69 @@ public class BillInInfoController {
         billInInfo.setUserId(userId);
         return R.ok().put("billInInfo", billInInfo);
     }
-
     /**
      * 保存
      */
     @RequestMapping("/save")
     @RequiresPermissions("sys:billininfo:save")
-    public R save(@RequestBody Map<String, Object> params){
-        //新增的时候看看leadsId是否存在
-         List<BillInInfoEntity> billInfoList=  billInInfoService.selectByLeadsId(new Long(String.valueOf(params.get("leadsId"))));
-         if(billInfoList.size()<=0) {
-             //生成客户账单
-             BillInEntity billIn = new BillInEntity();
-             billIn.setGmtCreate(new Date());
-             billIn.setCustomerId(new Long(String.valueOf(params.get("customerId"))));
-             billIn.setGmtModify(new Date());
-             billIn.setBillDate(new Date());
-             billIn.setNum(0);
-             billIn.setStatus((Integer) params.get("status1"));
-             //产品编号随机生成，如果重复，重新添加
-             Boolean flag = true;
-             while (flag) {
-                 String sn = MyUtilUUID.getCode();
-                 Map param = new HashMap();
-                 param.put("sn", sn);
-                 List<BillInEntity> list = billInService.queryBysn(sn);
-                 if (list.size() == 0) {
-                     flag = false;
-                     billIn.setSn(sn);
-                     break;
-                 }
-             }
-             billIn.setAmount(new BigDecimal(0));
-             billInService.save(billIn);
+    public R save(@RequestBody Object[] objects){
+        //生成客户账单
+        BillInEntity billIn = new BillInEntity();
+        billIn.setGmtCreate(new Date());
+        billIn.setCustomerId(new Long(0));
+        billIn.setGmtModify(new Date());
+        billIn.setBillDate(new Date());
+        billIn.setNum(0);
+        billIn.setStatus(1);
+        //产品编号随机生成，如果重复，重新添加
+        Boolean flag = true;
+        while (flag) {
+            String sn = MyUtilUUID.getCode();
+            Map param = new HashMap();
+            param.put("sn", sn);
+            List<BillInEntity> list = billInService.queryBysn(sn);
+            if (list.size() == 0) {
+                flag = false;
+                billIn.setSn(sn);
+                break;
+            }
+        }
+        billIn.setAmount(new BigDecimal(0));
+        billInService.save(billIn);
 
-             Long billId = billIn.getId();
+          BigDecimal newAoumt=new BigDecimal(0);
+          Integer countNum=0;
+           for(int i=0;i<objects.length;i++){
+               Map leadsEntity= (Map) objects[i];
+               long leadsId = Long.valueOf(String.valueOf(leadsEntity.get("id"))).longValue();
+               BigDecimal leadsAmount=new BigDecimal(leadsEntity.get("amount").toString());
+               long customerId = Long.valueOf(String.valueOf(leadsEntity.get("parentId"))).longValue();
+               List<BillInInfoEntity> billInfoList=  billInInfoService.selectByLeadsId(leadsId);
+               if(billInfoList.size()<=0) {
+                   //找到客户的提成
+                   SysUserEntity user = sysUserDao.selectCustomer(customerId);
+                   BigDecimal commission = user.getCommission();
 
-             //生成leads账单
-             BillInInfoEntity billInInfo = new BillInInfoEntity();
-             billInInfo.setAmount(new BigDecimal(String.valueOf(params.get("amount"))));
-             billInInfo.setBillId(billId);
-             billInInfo.setGmtCreate(new Date());
-             billInInfo.setGmtModify(new Date());
-             billInInfo.setLeadsId(new Long(String.valueOf(params.get("leadsId"))));
-             billInInfoService.save(billInInfo);
+                   //生成leads账单
+                   BillInInfoEntity billInInfo = new BillInInfoEntity();
+                   billInInfo.setAmount(leadsAmount.multiply(commission));
+                   billInInfo.setBillId(billIn.getId());
+                   billInInfo.setGmtCreate(new Date());
+                   billInInfo.setGmtModify(new Date());
+                   billInInfo.setLeadsId(leadsId);
+                   billInInfoService.save(billInInfo);
+                   countNum=++countNum;
+                   //根据账单id找到客户账单
+                   BillInEntity billInEntity = billInDao.selectByBillId(billInInfo.getBillId());
 
-             //根据leads账单找到客户账单
-             BillInEntity billInEntity = billInDao.selectByBillId(billInInfo.getBillId());
-             List<BillInInfoEntity> list = billInInfoService.selectAll(billInInfo.getBillId());
-             billInEntity.setNum(list.get(0).getLeadsNum());
-             SysUserEntity user = sysUserDao.selectCustomer(billInEntity.getCustomerId());
-             BigDecimal commission = user.getCommission();
-             //算出客户账单的Amount
-             BigDecimal newAoumt = list.get(0).getLeadsCount().multiply(commission);
-             billInEntity.setAmount(newAoumt);
-             billInService.updateById(billInEntity);
-         }else {
-             return R.error("已存在该记录");
-         }
+                   //算出客户账单的Amount
+                   newAoumt= newAoumt.add(leadsAmount.multiply(commission));
+                   billInEntity.setAmount(newAoumt);
+                   billInEntity.setNum(countNum);
+                   billInEntity.setCustomerId(customerId);
+                   billInService.updateById(billInEntity);
+               }
+           }
         return R.ok();
     }
 
@@ -137,7 +142,7 @@ public class BillInInfoController {
             //根据leads账单找到客户账单
             BillInEntity billInEntity = billInDao.selectByBillId(billInInfo1.getBillId());
             List<BillInInfoEntity> list = billInInfoService.selectAll(billInInfo1.getBillId());
-//        billInEntity.setNum(list.get(0).getLeadsNum());
+//          billInEntity.setNum(list.get(0).getLeadsNum());
             SysUserEntity user = sysUserDao.selectCustomer(billInEntity.getCustomerId());
             BigDecimal commission = user.getCommission();
             //算出客户账单的Amount

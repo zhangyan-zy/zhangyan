@@ -65,4 +65,10 @@ public class BillInInfoEntity implements Serializable {
 	 */
 	@TableField(exist = false)
 	private Integer userId;
+
+	/**
+	 *  leads姓名
+	 */
+	@TableField(exist = false)
+	private  String leadsName;
 }

@@ -66,10 +66,13 @@ public class BillOutController {
     public R save(@RequestBody BillOutEntity billOut){
         billOut.setGmtCreate(new Date());
         billOut.setGmtModify(new Date());
+        Integer num = billOut.getNum();
+        BigDecimal num1 = BigDecimal.valueOf(num.intValue());
         BigDecimal cost1 = billOut.getCost1();
+        BigDecimal numCost=num1.multiply(cost1);
         BigDecimal cost2 = billOut.getCost2();
         BigDecimal cost3 = billOut.getCost3();
-        BigDecimal add = cost1.add(cost2);
+        BigDecimal add = numCost.add(cost2);
         BigDecimal add1 = add.add(cost3);
         billOut.setAllCost(add1);
         billOut.setBillDate(new Date());
@@ -86,6 +89,16 @@ public class BillOutController {
     public R update(@RequestBody BillOutEntity billOut){
         billOut.setGmtModify(new Date());
         ValidatorUtils.validateEntity(billOut);
+        Integer num = billOut.getNum();
+        BigDecimal num1 = BigDecimal.valueOf(num.intValue());
+        BigDecimal cost1 = billOut.getCost1();
+        BigDecimal numCost=num1.multiply(cost1);
+        BigDecimal cost2 = billOut.getCost2();
+        BigDecimal cost3 = billOut.getCost3();
+        BigDecimal add = numCost.add(cost2);
+        BigDecimal add1 = add.add(cost3);
+        billOut.setAllCost(add1);
+        billOut.setBillDate(new Date());
         billOutService.updateById(billOut);
         
         return R.ok();

@@ -1,6 +1,7 @@
 package com.wingscode.modules.common.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wingscode.modules.common.entity.BillInInfoEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -23,5 +24,7 @@ public interface BillInInfoDao extends BaseMapper<BillInInfoEntity> {
 	List<BillInInfoEntity> selectByLeadsId(@Param("leadsId") Long leadsId);
 
 	void deleteByBillId(@Param("billId") Long billId);
+
+	Page<BillInInfoEntity> selectbillInfoByBillId(@Param("page")Page page,@Param("billId")Integer billId);
 
 }
