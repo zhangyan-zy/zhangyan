@@ -44,6 +44,10 @@
         align="center"
         width="180"
         label="提成比例">
+        <template slot-scope="scope">
+          <p v-if="scope.row.commission!=0">{{(scope.row.commission*100).toFixed(2)}}%</p>
+          <p v-else>{{scope.row.commission}}</p>
+        </template>
       </el-table-column>
       <el-table-column
         prop="createTime"

@@ -31,7 +31,7 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button type="primary" @click="addOrUpdateHandle()">新增</el-button>
+        <!--<el-button type="primary" @click="addOrUpdateHandle()">新增</el-button>-->
       </el-form-item>
     </el-form>
 
@@ -226,6 +226,9 @@
           if (data && data.code === 0) {
             this.totalPage = data.page.totalCount
             this.dataList = data.page.list
+            this.dataList.map((item)=>{
+              item.billDate = item.billDate.substring(0,10);
+            })
           } else {
             this.dataList = []
             this.totalPage = 0

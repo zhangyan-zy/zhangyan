@@ -126,7 +126,7 @@
               // this.dataForm.userId = data.billInInfo.userId
               // this.dataForm.leadsId = data.billInInfo.leadsId
               // this.dataForm.amount = data.billInInfo.amount
-              this.dataForm.status = data.billin.status
+              this.dataForm.status = data.billIn.status
             }
           })
         }

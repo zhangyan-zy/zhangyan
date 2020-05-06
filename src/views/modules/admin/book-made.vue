@@ -1,8 +1,8 @@
 <template>
   <div class="home-vue">
-    <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
+    <el-form :inline="true" :model="dataForm">
       <el-form-item>
-        <el-select v-model="dataForm.userId" clearable filterable placeholder="选择用户">
+        <el-select v-model="dataForm.userId" clearable filterable placeholder="选择客户">
           <el-option
             v-for="item in selectCustomerList"
             :key="item.userId"
@@ -13,7 +13,7 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button type="primary" @click="addOrUpdateHandle()" :disabled="dataListSelections.length <= 0">生成账单</el-button>
+        <el-button type="primary" @click="addHandle()" :disabled="dataListSelections.length <= 0">批量生成账单</el-button>
       </el-form-item>
     </el-form>
     <div class="tab">
@@ -21,7 +21,8 @@
         class="tab1"
         :data="dataList"
         border
-        v-loading="dataListLoading">
+        v-loading="dataListLoading"
+        @selection-change="selectionChangeHandle">
         <el-table-column
           type="selection"
           header-align="center"
@@ -39,6 +40,16 @@
           header-align="center"
           align="center"
           label="金额">
+        </el-table-column>
+        <el-table-column
+          fixed="right"
+          header-align="center"
+          align="center"
+          width="150"
+          label="操作">
+          <template slot-scope="scope">
+            <el-button  type="text" size="small" @click="addHandle(scope.row)">生成账单</el-button>
+          </template>
         </el-table-column>
       </el-table>
     </div>
@@ -98,8 +109,6 @@
         }
       }
     },
-    mounted() {
-    },
 
     components: {
       AddOrUpdate,
@@ -107,17 +116,21 @@
     },
 
     activated() {
-      this.getDataList()
       this.getCustomerList()
+      // this.getDataList()
     },
 
     methods: {
       // 新增 / 修改
-      addOrUpdateHandle(id) {
+      addOrUpdateHandle() {
         this.addOrUpdateVisible = true
         this.$nextTick(() => {
           this.$refs.addOrUpdate.init(id)
         })
+      },
+      // 多选
+      selectionChangeHandle (val) {
+        this.dataListSelections = val
       },
       // 详情
       addOrUpdateHandle1(id) {
@@ -135,6 +148,8 @@
         }).then(({data}) => {
           if (data && data.code === 0) {
             this.selectCustomerList = data.list
+            this.dataForm.userId = data.list[0].userId
+            this.getDataList()
           }
         })
       },
@@ -182,20 +197,20 @@
         this.pageIndex = val
         this.getDataList()
       },
-      // 删除
-      deleteHandle(id) {
-        var ids = id ? [id] : this.dataListSelections.map(item => {
-          return item.id
+      // 账单生成
+      addHandle(row) {
+        var rows = row ? [row] : this.dataListSelections.map(item => {
+          return item
         })
-        this.$confirm(`确定对此账本进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
+        this.$confirm(`确定对此账本进行[${rows.id ? '生成账单' : '批量生成账单'}]操作?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           this.$http({
-            url: this.$http.adornUrl('/common/billin/delete'),
+            url: this.$http.adornUrl('/common/billininfo/save'),
             method: 'post',
-            data: this.$http.adornData(ids, false)
+            data: this.$http.adornData(rows, false)
           }).then(({data}) => {
             if (data && data.code === 0) {
               this.$message({

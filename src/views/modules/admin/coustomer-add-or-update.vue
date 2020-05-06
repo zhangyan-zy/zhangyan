@@ -8,6 +8,9 @@
       <el-form-item label="客户名称" prop="userName">
         <el-input v-model="dataForm.userName" placeholder="登录帐号"></el-input>
       </el-form-item>
+      <el-form-item label="提成比例" prop="commission">
+        <el-input v-model="dataForm.commission" placeholder="提成比例"></el-input>
+      </el-form-item>
       <el-form-item label="密码" prop="password" :class="{ 'is-required': !dataForm.id }">
         <el-input v-model="dataForm.password" type="password" placeholder="密码"></el-input>
       </el-form-item>
@@ -55,7 +58,8 @@
           userName: '',
           password: '',
           comfirmPassword: '',
-          status: 1
+          status: 1,
+          commission: 0
         },
         dataRule: {
           userName: [
@@ -103,7 +107,8 @@
                 'password': this.dataForm.password,
                 'parentId': 0,
                 'roleIdList': [4],
-                'status': this.dataForm.status
+                'status': this.dataForm.status,
+                'commission': this.dataForm.commission
               })
             }).then(({data}) => {
               if (data && data.code === 0) {

@@ -1,6 +1,5 @@
 <template>
   <el-dialog
-    :title="!dataForm.id ? '新增' : '修改'"
     :close-on-click-modal="false"
     :visible.sync="visible">
     <div class="tab">
@@ -16,10 +15,16 @@
           label="创建时间">
         </el-table-column>
         <el-table-column
+          prop="leadsName"
+          header-align="center"
+          align="center"
+          label="leads姓名">
+        </el-table-column>
+        <el-table-column
           prop="amount"
           header-align="center"
           align="center"
-          label="总额">
+          label="金额">
         </el-table-column>
         <!--<el-table-column-->
           <!--fixed="right"-->

@@ -170,6 +170,9 @@
           if (data && data.code === 0) {
             this.totalPage = data.page.totalCount
             this.dataList = data.page.list
+            this.dataList.map((item)=>{
+              item.billDate = item.billDate.substring(0,10);
+            })
           } else {
             this.dataList = []
             this.totalPage = 0

@@ -60,7 +60,7 @@
               url: this.$http.adornUrl(`/common/station/${!this.dataForm.id ? 'save' : 'update'}`),
               method: 'post',
               data: this.$http.adornData({
-                'userId': this.dataForm.id || undefined,
+                'id': this.dataForm.id || undefined,
                 'name': this.dataForm.name
               })
             }).then(({data}) => {
