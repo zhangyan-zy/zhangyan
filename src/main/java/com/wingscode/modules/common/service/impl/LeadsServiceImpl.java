@@ -346,7 +346,7 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
     public PageUtils selectleadsrList(Map<String, Object> params) {
         Integer page = Integer.parseInt((String) params.get("page"));
         Integer limit = Integer.parseInt((String) params.get("limit"));
-        Long customerId=new Long(0);
+        Long customerId=null;
         if(!StringUtil.isNullOrEmpty((String) params.get("customerId"))){
             customerId =new Long((String) params.get("customerId"));
         }

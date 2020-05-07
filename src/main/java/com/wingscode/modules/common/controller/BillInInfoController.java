@@ -101,6 +101,9 @@ public class BillInInfoController {
                BigDecimal leadsAmount=new BigDecimal(leadsEntity.get("amount").toString());
                long customerId = Long.valueOf(String.valueOf(leadsEntity.get("parentId"))).longValue();
                List<BillInInfoEntity> billInfoList=  billInInfoService.selectByLeadsId(leadsId);
+               if(objects.length==1 && billInfoList.size()>0 ){
+                   return R.error("该账单已经生成");
+               }
                if(billInfoList.size()<=0) {
                    //找到客户的提成
                    SysUserEntity user = sysUserDao.selectCustomer(customerId);
