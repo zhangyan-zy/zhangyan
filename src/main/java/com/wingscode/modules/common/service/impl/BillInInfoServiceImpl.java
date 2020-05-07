@@ -24,7 +24,6 @@ public class BillInInfoServiceImpl extends ServiceImpl<BillInInfoDao, BillInInfo
         IPage<BillInInfoEntity> page = this.page(
                 new Query<BillInInfoEntity>().getPage(params),
                 new QueryWrapper<BillInInfoEntity>()
-                .eq("bill_id",StringUtil.isNullOrEmpty((String) params.get("billId")))
         );
         return new PageUtils(page);
     }
