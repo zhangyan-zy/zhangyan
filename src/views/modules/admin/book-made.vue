@@ -12,7 +12,7 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button @click="getDataList()">查询</el-button>
+        <el-button @click="selectByCustomer(dataForm.userId)">查询</el-button>
         <el-button type="primary" @click="addHandle()" :disabled="dataListSelections.length <= 0">批量生成账单</el-button>
       </el-form-item>
     </el-form>
@@ -121,6 +121,17 @@
     },
 
     methods: {
+      selectByCustomer(id){
+        if(id == null || id === '') {
+          this.$message({
+            message: '请选择客户',
+            type: 'warning'
+          }),
+            this.getDataList();
+        }else {
+          this.getDataList();
+        }
+      },
       // 新增 / 修改
       addOrUpdateHandle() {
         this.addOrUpdateVisible = true
@@ -148,8 +159,8 @@
         }).then(({data}) => {
           if (data && data.code === 0) {
             this.selectCustomerList = data.list
-            this.dataForm.userId = data.list[0].userId
-            this.getDataList()
+            // this.dataForm.userId = data.list[0].userId
+            // this.getDataList()
           }
         })
       },
