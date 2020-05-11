@@ -85,6 +85,16 @@
         </el-select>
       </el-form-item>
       <el-form-item>
+        <el-select v-model="dataForm.status1" clearable placeholder="结算状态">
+          <el-option
+            v-for="item in options1"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
       </el-form-item>
       <el-form-item>
@@ -265,6 +275,13 @@
           value: 6,
           label: '未成单'
         }],
+        options1: [{
+          value: 0,
+          label: '未结算'
+        }, {
+          value: 1,
+          label: '已结算'
+        }],
         workerList: [],
         workerId: '',
         coustomerList: [],
@@ -423,6 +440,7 @@
               'staff': this.staff,
               'province': this.dataForm.province,
               'city': this.dataForm.city,
+              'status1': this.dataForm.status1
             })
           }).then(({data}) => {
             console.log("data", data);
