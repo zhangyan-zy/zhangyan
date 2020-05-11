@@ -8,13 +8,13 @@ import com.wingscode.common.utils.Constant;
 import com.wingscode.common.utils.PageUtils;
 import com.wingscode.common.utils.Query;
 import com.wingscode.modules.common.dao.LeadsDao;
-import com.wingscode.modules.common.entity.LeadsEntity;
 import com.wingscode.modules.common.vo.AdminSysUserVo;
 import com.wingscode.modules.sys.dao.SysUserDao;
 import com.wingscode.modules.sys.entity.SysUserEntity;
 import com.wingscode.modules.sys.service.SysRoleService;
 import com.wingscode.modules.sys.service.SysUserRoleService;
 import com.wingscode.modules.sys.service.SysUserService;
+
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.crypto.hash.Sha256Hash;
@@ -22,8 +22,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
-import java.util.*;
 
 
 /**
@@ -139,10 +144,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 			adminSysUserVo.setParentId(sysUserList.get(i).getParentId());
 			adminSysUserVo.setParentName(sysUserList.get(i).getParentName());
 			adminSysUserVo.setStatus(sysUserList.get(i).getStatus());
-
-			Long userId = adminSysUserVo.getUserId();
-			List<LeadsEntity> leadsEntities = leadsDao.selectLeadsByCustomerId(userId);
-			adminSysUserVo.setLeadsEntities(leadsEntities);
 
 			arrList.add(adminSysUserVo);
 		}

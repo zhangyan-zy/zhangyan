@@ -70,7 +70,7 @@
 	</select>
 
 	 <select id="selectleadsrList" resultType="com.wingscode.modules.common.entity.LeadsEntity">
-		 select * from tb_leads where status=4 and status1=1 and parent_id=#{customerId}
+		 select * from tb_leads where status=5 and status1=0 and parent_id=#{customerId}
 	 </select>
 
 </mapper>
