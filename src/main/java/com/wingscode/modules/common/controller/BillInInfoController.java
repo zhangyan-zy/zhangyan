@@ -8,6 +8,7 @@ import com.wingscode.modules.common.entity.BillInEntity;
 import com.wingscode.modules.common.entity.BillInInfoEntity;
 import com.wingscode.modules.common.service.BillInInfoService;
 import com.wingscode.modules.common.service.BillInService;
+import com.wingscode.modules.common.service.LeadsService;
 import com.wingscode.modules.sys.dao.SysUserDao;
 import com.wingscode.modules.sys.entity.SysUserEntity;
 import com.wingscode.util.MyUtilUUID;
@@ -38,6 +39,8 @@ public class BillInInfoController {
     private BillInService billInService;
     @Resource
     private SysUserDao sysUserDao;
+    @Autowired
+    private LeadsService leadsService;
     /**
      * 列表
      */
@@ -127,6 +130,7 @@ public class BillInInfoController {
                    billInEntity.setNum(countNum);
                    billInEntity.setCustomerId(customerId);
                    billInService.updateById(billInEntity);
+                   leadsService.updateLeadsStatusByLeadsId(leadsId);
                }
            }
         return R.ok();

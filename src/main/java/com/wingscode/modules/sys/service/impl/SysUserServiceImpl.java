@@ -8,7 +8,6 @@ import com.wingscode.common.utils.Constant;
 import com.wingscode.common.utils.PageUtils;
 import com.wingscode.common.utils.Query;
 import com.wingscode.modules.common.dao.LeadsDao;
-import com.wingscode.modules.common.entity.LeadsEntity;
 import com.wingscode.modules.common.vo.AdminSysUserVo;
 import com.wingscode.modules.sys.dao.SysUserDao;
 import com.wingscode.modules.sys.entity.SysUserEntity;
@@ -139,10 +138,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 			adminSysUserVo.setParentId(sysUserList.get(i).getParentId());
 			adminSysUserVo.setParentName(sysUserList.get(i).getParentName());
 			adminSysUserVo.setStatus(sysUserList.get(i).getStatus());
-
-			Long userId = adminSysUserVo.getUserId();
-			List<LeadsEntity> leadsEntities = leadsDao.selectLeadsByCustomerId(userId);
-			adminSysUserVo.setLeadsEntities(leadsEntities);
 
 			arrList.add(adminSysUserVo);
 		}

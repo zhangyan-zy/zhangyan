@@ -175,6 +175,7 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
         String staff = (String) params.get("staff");
         String province = (String) params.get("province");
         String city = (String) params.get("city");
+        String status1 = (String) params.get("status1");
         IPage<LeadsEntity> page = this.page(
                 new Query<LeadsEntity>().getPage(params),
                 new QueryWrapper<LeadsEntity>()
@@ -191,6 +192,7 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
                         .orderByDesc("id")
                         .eq(StringUtils.isNotEmpty(province),"province",province)
                         .eq(StringUtils.isNotEmpty(city),"city",city)
+                        .eq(StringUtils.isNotEmpty(status1), "status1", status1)
         );
            for (LeadsEntity leadsEntity : page.getRecords()) {
             if (leadsEntity.getDisposeUser() != 0) {
@@ -352,6 +354,11 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
         }
         Page<LeadsEntity> pages = new Page<>(page, limit);
         return new PageUtils(baseMapper.selectleadsrList(pages,customerId));
+    }
+
+    @Override
+    public void updateLeadsStatusByLeadsId(Long leadsId) {
+        baseMapper.updateLeadsStatusByLeadsId(leadsId);
     }
 
 }

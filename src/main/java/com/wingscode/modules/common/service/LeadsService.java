@@ -46,5 +46,7 @@ public interface LeadsService extends IService<LeadsEntity> {
     List<LeadsEntity> selectLeadsByCustomerId(Long customerId);
 
     PageUtils selectleadsrList(Map<String, Object> params);
+
+    void updateLeadsStatusByLeadsId(Long leadsId);
 }
 
