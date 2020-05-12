@@ -153,7 +153,7 @@
       // 获取数据列表
       getCustomerList() {
         this.$http({
-          url: this.$http.adornUrl('/sys/user/selectCustomerList'),
+          url: this.$http.adornUrl('/common/leads/selectCustomersList'),
           method: 'post',
           params: this.$http.adornParams({})
         }).then(({data}) => {
