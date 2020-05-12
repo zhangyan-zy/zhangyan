@@ -8,13 +8,11 @@ import com.wingscode.common.validator.Assert;
 import com.wingscode.common.validator.ValidatorUtils;
 import com.wingscode.common.validator.group.AddGroup;
 import com.wingscode.common.validator.group.UpdateGroup;
-import com.wingscode.modules.common.vo.AdminSysUserVo;
 import com.wingscode.modules.sys.entity.SysUserEntity;
 import com.wingscode.modules.sys.form.PasswordForm;
 import com.wingscode.modules.sys.service.SysUserRoleService;
 import com.wingscode.modules.sys.service.SysUserService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.Sha256Hash;
@@ -148,18 +146,6 @@ public class SysUserController extends AbstractController {
 
 		return R.ok();
 	}
-
-
-	/**
-	 * 所有客户列表
-	 */
-	@PostMapping("/selectCustomerList")
-	@ApiOperation("所有客户列表")
-	public R selectCustomerList(){
-		List<AdminSysUserVo> list = sysUserService.selectCustomerList();
-		return R.ok().put("list", list);
-	}
-
 
 
 }

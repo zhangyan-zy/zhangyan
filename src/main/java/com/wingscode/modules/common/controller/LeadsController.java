@@ -9,7 +9,9 @@ import com.wingscode.modules.common.entity.TraceEntity;
 import com.wingscode.modules.common.service.LeadsLogService;
 import com.wingscode.modules.common.service.LeadsService;
 import com.wingscode.modules.common.vo.AdminProvinceCityVo;
+import com.wingscode.modules.common.vo.AdminSysUserVo;
 import com.wingscode.modules.sys.controller.AbstractController;
+import com.wingscode.modules.sys.service.SysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -35,7 +37,8 @@ public class LeadsController extends AbstractController {
     private LeadsService leadsService;
     @Autowired
     private LeadsLogService leadsLogService;
-
+    @Autowired
+    private SysUserService sysUserService;
     /**
      * 列表
      */
@@ -245,4 +248,13 @@ public class LeadsController extends AbstractController {
     }
 
 
+    /**
+     * 所有客户列表s
+     */
+    @PostMapping("/selectCustomersList")
+    @ApiOperation("所有客户列表")
+    public R selectCustomerList(){
+        List<AdminSysUserVo> list = sysUserService.selectCustomerList();
+        return R.ok().put("list", list);
+    }
 }
