@@ -45,6 +45,8 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
         int amount2 = Integer.valueOf(String.valueOf(params.get("amount2")));
         String date1 = (String) params.get("date1");
         String date2 = (String) params.get("date2");
+        String balanceDate1 = (String) params.get("balanceDate1");
+        String balanceDate2 = (String) params.get("balanceDate2");
         String need = (String) params.get("need");
         IPage<LeadsEntity> page = this.page(
                 new Query<LeadsEntity>().getPage(params),
@@ -57,6 +59,8 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
                         .le(amount2 != 0, "amount", amount2)
                         .ge(StringUtils.isNotEmpty(date1), "gmt_creat", date1)
                         .le(StringUtils.isNotEmpty(date2), "gmt_creat", MyTimeUtil.addDay(date2, 1))
+                        .ge(StringUtils.isNotEmpty(balanceDate1), "balance_time", balanceDate1)
+                        .le(StringUtils.isNotEmpty(balanceDate2), "balance_time", MyTimeUtil.addDay(balanceDate2, 1))
                         .eq(StringUtils.isNotEmpty(status), "status", status)
                         .eq(StringUtils.isNotEmpty(need), "need", need)
                         .orderByDesc("id")
@@ -71,6 +75,8 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
         String status = (String) params.get("status");
         int amount1 = Integer.valueOf(String.valueOf(params.get("amount1")));
         int amount2 = Integer.valueOf(String.valueOf(params.get("amount2")));
+        String balanceDate1 = (String) params.get("balanceDate1");
+        String balanceDate2 = (String) params.get("balanceDate2");
         String date1 = (String) params.get("date1");
         String date2 = (String) params.get("date2");
         IPage<LeadsEntity> page = this.page(
@@ -79,6 +85,8 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
                         .like(StringUtils.isNotEmpty(username), "name", username)
                         .like(StringUtils.isNotEmpty(mobile), "phone", mobile)
                         .eq("parent_id", parentId)
+                        .ge(StringUtils.isNotEmpty(balanceDate1), "balance_time", balanceDate1)
+                        .le(StringUtils.isNotEmpty(balanceDate2), "balance_time", MyTimeUtil.addDay(balanceDate2, 1))
                         .ge(amount1 != 0, "amount", amount1)
                         .le(amount2 != 0, "amount", amount2)
                         .eq(StringUtils.isNotEmpty(status), "status", status)
@@ -136,6 +144,8 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
         int amount2 = Integer.valueOf(String.valueOf(params.get("amount2")));
         String date1 = (String) params.get("date1");
         String date2 = (String) params.get("date2");
+        String balanceDate1 = (String) params.get("balanceDate1");
+        String balanceDate2 = (String) params.get("balanceDate2");
         String status = (String) params.get("status");
         String staff = (String) params.get("staff");
         String need = (String) params.get("need");
@@ -149,6 +159,8 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
                         .eq(StringUtils.isNotEmpty(staff), "dispose_user", staff)
                         .ge(amount1 != 0, "amount", amount1)
                         .le(amount2 != 0, "amount", amount2)
+                        .ge(StringUtils.isNotEmpty(balanceDate1), "balance_time", balanceDate1)
+                        .le(StringUtils.isNotEmpty(balanceDate2), "balance_time", MyTimeUtil.addDay(balanceDate2, 1))
                         .ge(StringUtils.isNotEmpty(date1), "gmt_creat", date1)
                         .le(StringUtils.isNotEmpty(date2), "gmt_creat", MyTimeUtil.addDay(date2, 1))
                         .eq(StringUtils.isNotEmpty(need), "need", need)
@@ -170,6 +182,8 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
         int amount2 = Integer.valueOf(String.valueOf(params.get("amount2")));
         String date1 = (String) params.get("date1");
         String date2 = (String) params.get("date2");
+        String balanceDate1 = (String) params.get("balanceDate1");
+        String balanceDate2 = (String) params.get("balanceDate2");
         String status = (String) params.get("status");
         String workerId = (String) params.get("workerId");
         String staff = (String) params.get("staff");
@@ -189,6 +203,8 @@ public class LeadsServiceImpl extends ServiceImpl<LeadsDao, LeadsEntity> impleme
                         .le(amount2 != 0, "amount", amount2)
                         .ge(StringUtils.isNotEmpty(date1), "gmt_creat", date1)
                         .le(StringUtils.isNotEmpty(date2), "gmt_creat", MyTimeUtil.addDay(date2, 1))
+                        .ge(StringUtils.isNotEmpty(balanceDate1), "balance_time", balanceDate1)
+                        .le(StringUtils.isNotEmpty(balanceDate2), "balance_time", MyTimeUtil.addDay(balanceDate2, 1))
                         .orderByDesc("id")
                         .eq(StringUtils.isNotEmpty(province),"province",province)
                         .eq(StringUtils.isNotEmpty(city),"city",city)
