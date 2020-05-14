@@ -30,7 +30,7 @@
         prop="name"
         header-align="center"
         align="center"
-        label="客户名称">
+        label="内容">
       </el-table-column>
       <el-table-column
         prop="phone"

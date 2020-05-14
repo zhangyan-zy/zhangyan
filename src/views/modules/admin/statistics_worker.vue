@@ -186,11 +186,14 @@
           console.log('data', data)
           if (data && data.code === 0) {
             this.dataList = data.list.list
+            this.dataList.map((item)=>{
+              item.responseRate = item.responseRate || '0'
+            })
             this.totalPage = data.list.totalCount
             let added = 0
             this.dataList.forEach((el, i) => {
               this.dataList[i].idx = i + 1
-              el.sumAvg = ((parseFloat(el.sumAvg)) * 100).toFixed(2) + '%'
+              el.sumAvg = ((parseFloat(el.sumAvg || 0)) * 100).toFixed(2)  + '%'
               added = ((parseFloat(el.addTimeResponce / el.addTime)) * 100).toFixed(2) + "%"
               el.added = added
             })

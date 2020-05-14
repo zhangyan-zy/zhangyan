@@ -54,6 +54,16 @@
         </el-select>
       </el-form-item>
       <el-form-item>
+        <el-date-picker
+          v-model="dataForm.balanceDate"
+          type="daterange"
+          value-format="yyyy-MM-dd"
+          range-separator="——"
+          start-placeholder="成单开始日期"
+          end-placeholder="成单结束日期">
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
       </el-form-item>
     </el-form>
@@ -148,6 +158,12 @@
         label="创建时间">
       </el-table-column>
       <el-table-column
+        prop="balanceTime"
+        header-align="center"
+        align="center"
+        label="成单时间">
+      </el-table-column>
+      <el-table-column
         fixed="right"
         header-align="center"
         align="center"
@@ -212,7 +228,8 @@
           status: '',
           staff: '',
           need: '',
-          date: []
+          date: [],
+          balanceDate: []
         },
         need:[{
           value:'2',
@@ -262,7 +279,9 @@
               'date1': this.dataForm.date ? this.dataForm.date[0] : '',
               'date2': this.dataForm.date ? this.dataForm.date[1] : '',
               'name': this.dataForm.userName,
-              'need': this.dataForm.need
+              'need': this.dataForm.need,
+              'balanceDate1': this.dataForm.balanceDate ? this.dataForm.balanceDate[0] : '',
+              'balanceDate2': this.dataForm.balanceDate ? this.dataForm.balanceDate[1] : ''
             })
           }).then(({data}) => {
             if (data && data.code === 0) {
