@@ -174,6 +174,9 @@ public class LeadsController extends AbstractController {
             leadsLogEntity.setStatusOld(leadsEntity_old.getStatus());
             leadsLogService.save(leadsLogEntity);
         }
+        if(leadsEntity.getStatus()==5){
+           leadsEntity.setBalanceTime(new Date());
+        }
         leadsEntity.setGmtModified(new Date());
         leadsEntity.setParentId(leadsEntity_old.getParentId());
         leadsEntity.setWorkerId(leadsEntity_old.getWorkerId());
