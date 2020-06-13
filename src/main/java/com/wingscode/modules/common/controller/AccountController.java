@@ -102,7 +102,9 @@ public class AccountController extends AbstractController {
     @RequiresPermissions("admin:account")
     public R coustomerUpdate(@RequestBody SysUserEntity user) {
         ValidatorUtils.validateEntity(user, UpdateGroup.class);
-        user.setCreateUserId(getUserId());
+        SysUserEntity sysUserEntity=sysUserService.getById(user.getUserId());
+        user.setCreateUserId(sysUserEntity.getCreateUserId());
+        user.setParentId(sysUserEntity.getParentId());
         user.setSalt(sysUserService.getById(user.getUserId()).getSalt());
         sysUserService.update(user);
         sysUserService.update(new UpdateWrapper<SysUserEntity>().set("status", user.getStatus()).eq("parent_id", user.getUserId()));
