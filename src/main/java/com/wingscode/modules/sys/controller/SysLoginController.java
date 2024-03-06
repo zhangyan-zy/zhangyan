@@ -6,7 +6,6 @@ import com.wingscode.modules.sys.form.SysLoginForm;
 import com.wingscode.modules.sys.service.SysCaptchaService;
 import com.wingscode.modules.sys.service.SysUserService;
 import com.wingscode.modules.sys.service.SysUserTokenService;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Map;
-
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.Map;
 
 /**
  * 登录相关
@@ -91,4 +89,9 @@ public class SysLoginController extends AbstractController {
 		return R.ok();
 	}
 
+	public static void main(String[] args) {
+		String yzcmCZNvbXocrsz9dm8e = new Sha256Hash("977403f5b2ffca4c412f5cf78dae3da3547c8ff79208d9606357ba0c1f6f03b3", "YzcmCZNvbXocrsz9dm8e").toHex();
+		System.out.println(yzcmCZNvbXocrsz9dm8e);
+	}
 }
+

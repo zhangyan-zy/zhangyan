@@ -9,7 +9,6 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -85,8 +84,8 @@ public class SysUserEntity implements Serializable {
     @TableField(exist = false)
     private Integer todayNum;
 
-    /**
-     * 提成
-     */
-    private BigDecimal commission;
+
+    @TableField(exist = false)
+    private String roleName;
+
 }

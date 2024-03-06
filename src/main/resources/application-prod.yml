@@ -2,14 +2,14 @@ spring:
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
         druid:
-            driver-class-name: com.mysql.jdbc.Driver
-            url: jdbc:mysql://localhost:3306/callCenter?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
-            username: callCenter
-            password: 5yh4WenmRYTZmhaP
+            driver-class-name: com.mysql.cj.jdbc.Driver
+            url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=UTF-8
+            username: root
+            password: root
             initial-size: 10
             max-active: 100
             min-idle: 10
-            max-wait: 60000
+            max-wait: 50000
             pool-prepared-statements: true
             max-pool-prepared-statement-per-connection-size: 20
             time-between-eviction-runs-millis: 60000

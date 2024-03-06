@@ -1,8 +1,8 @@
 package com.wingscode.modules.sys.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wingscode.modules.sys.entity.SysUserEntity;
-
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -35,18 +35,6 @@ public interface SysUserDao extends BaseMapper<SysUserEntity> {
 
     List<Long> queryUserIdList(Long parentId);
 
-    /**
-     * 查询所有的客户
-     */
-    List<SysUserEntity> selectCustomerList();
 
-    /**
-     * 根据客户Id查询客户
-     * @param customerId
-     * @return
-     */
-    SysUserEntity selectCustomer(@Param("customerId") Long customerId);
-
-
-    Integer selectUserNameByleadsId (@Param("leadsId") Long leadsId);
+    Page<SysUserEntity> selectByPage(@Param("page") Page page, @Param("name") String name);
 }

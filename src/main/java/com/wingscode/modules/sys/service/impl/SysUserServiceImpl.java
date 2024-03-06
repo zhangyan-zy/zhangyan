@@ -2,18 +2,19 @@ package com.wingscode.modules.sys.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wingscode.common.exception.RRException;
 import com.wingscode.common.utils.Constant;
 import com.wingscode.common.utils.PageUtils;
 import com.wingscode.common.utils.Query;
-import com.wingscode.modules.common.dao.LeadsDao;
-import com.wingscode.modules.common.vo.AdminSysUserVo;
+import com.wingscode.modules.common.entity.GoodsEntity;
 import com.wingscode.modules.sys.dao.SysUserDao;
 import com.wingscode.modules.sys.entity.SysUserEntity;
 import com.wingscode.modules.sys.service.SysRoleService;
 import com.wingscode.modules.sys.service.SysUserRoleService;
 import com.wingscode.modules.sys.service.SysUserService;
+import io.netty.util.internal.StringUtil;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.crypto.hash.Sha256Hash;
@@ -21,8 +22,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -36,22 +39,24 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 	private SysUserRoleService sysUserRoleService;
 	@Autowired
 	private SysRoleService sysRoleService;
-	@Resource
-	private LeadsDao leadsDao;
 
 	@Override
 	public PageUtils queryPage(Map<String, Object> params) {
 		String username = (String)params.get("username");
-		Long createUserId = (Long)params.get("createUserId");
 
-		IPage<SysUserEntity> page = this.page(
-			new Query<SysUserEntity>().getPage(params),
-			new QueryWrapper<SysUserEntity>()
-				.like(StringUtils.isNotBlank(username),"username", username)
-				.eq(createUserId != null,"create_user_id", createUserId)
-		);
+		int page = 1;
+		if(!StringUtil.isNullOrEmpty((String) params.get("page"))){
+			page = Integer.parseInt((String) params.get("page"));
+		}
+		int limit = 10;
+		if(!StringUtil.isNullOrEmpty((String) params.get("limit"))){
+			limit = Integer.parseInt((String) params.get("limit"));
+		}
 
-		return new PageUtils(page);
+		Page<SysUserEntity> pageArt = new Page<>(page, limit);
+
+		return new PageUtils(baseMapper.selectByPage(pageArt,username));
+
 	}
 
 	@Override
@@ -121,28 +126,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 		return baseMapper.queryUserIdList(parentId);
 	}
 
-	@Override
-	public List<AdminSysUserVo> selectCustomerList() {
-		List<AdminSysUserVo> arrList=new ArrayList<>();
-
-		//客户的list
-		List<SysUserEntity>  sysUserList=  baseMapper.selectCustomerList();
-        for(int i=0;i<sysUserList.size();i++){
-			AdminSysUserVo adminSysUserVo=new AdminSysUserVo();
-			adminSysUserVo.setUsername(sysUserList.get(i).getUsername());
-			adminSysUserVo.setUserId(sysUserList.get(i).getUserId());
-			adminSysUserVo.setAllNum(sysUserList.get(i).getAllNum());
-			adminSysUserVo.setCommission(sysUserList.get(i).getCommission());
-			adminSysUserVo.setCreateTime(sysUserList.get(i).getCreateTime());
-			adminSysUserVo.setCreateUserId(sysUserList.get(i).getCreateUserId());
-			adminSysUserVo.setParentId(sysUserList.get(i).getParentId());
-			adminSysUserVo.setParentName(sysUserList.get(i).getParentName());
-			adminSysUserVo.setStatus(sysUserList.get(i).getStatus());
-
-			arrList.add(adminSysUserVo);
-		}
-		return  arrList;
-	}
 
 	/**
 	 * 检查角色是否越权

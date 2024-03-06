@@ -3,13 +3,9 @@ package com.wingscode.modules.app.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.wingscode.modules.app.entity.UserEntity;
-import com.wingscode.common.exception.RRException;
-import com.wingscode.common.validator.Assert;
 import com.wingscode.modules.app.dao.UserDao;
-import com.wingscode.modules.app.form.LoginForm;
+import com.wingscode.modules.app.entity.UserEntity;
 import com.wingscode.modules.app.service.UserService;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
 
 
@@ -21,16 +17,4 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 		return baseMapper.selectOne(new QueryWrapper<UserEntity>().eq("mobile", mobile));
 	}
 
-	@Override
-	public long login(LoginForm form) {
-		UserEntity user = queryByMobile(form.getMobile());
-		Assert.isNull(user, "手机号或密码错误");
-
-		//密码错误
-		if(!user.getPassword().equals(DigestUtils.sha256Hex(form.getPassword()))){
-			throw new RRException("手机号或密码错误");
-		}
-
-		return user.getUserId();
-	}
 }

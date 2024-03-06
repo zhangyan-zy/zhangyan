@@ -2,7 +2,6 @@ package com.wingscode.modules.sys.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wingscode.common.utils.PageUtils;
-import com.wingscode.modules.common.vo.AdminSysUserVo;
 import com.wingscode.modules.sys.entity.SysUserEntity;
 
 import java.util.List;
@@ -58,6 +57,5 @@ public interface SysUserService extends IService<SysUserEntity> {
 	boolean updatePassword(Long userId, String password, String newPassword);
 	List<Long> queryUserIdList(Long parentId);
 
-	List<AdminSysUserVo> selectCustomerList();
 
 }
