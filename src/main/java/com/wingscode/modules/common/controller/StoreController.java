@@ -4,44 +4,42 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.wingscode.common.utils.PageUtils;
 import com.wingscode.common.utils.R;
 import com.wingscode.modules.common.entity.StoreEntity;
-import com.wingscode.modules.common.entity.TypeEntity;
 import com.wingscode.modules.common.service.StoreService;
-import com.wingscode.modules.common.service.TypeService;
 import com.wingscode.modules.sys.controller.AbstractController;
+import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 
 
-
 /**
- * 商品类别
+ * 
  *
  * @author zhangyan
  * @email sunlightcs@gmail.com
- * @date 2023-02-11 21:48:22
+ * @date 2024-12-12 19:10:29
  */
 @RestController
-@RequestMapping("generator/type")
-public class TypeController extends AbstractController {
-    @Autowired
-    private TypeService typeService;
+@RequestMapping("generator/store")
+@Api("商店")
+public class StoreController extends AbstractController {
     @Autowired
     private StoreService storeService;
+
     /**
      * 列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("generator:type:list")
+    @RequiresPermissions("generator:store:list")
     public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = typeService.queryPage(params);
+        PageUtils page = storeService.queryPage(params);
 
-        System.out.println(page.getList());
         return R.ok().put("page", page);
     }
 
@@ -50,24 +48,21 @@ public class TypeController extends AbstractController {
      * 信息
      */
     @RequestMapping("/info/{id}")
-    @RequiresPermissions("generator:type:info")
+    @RequiresPermissions("generator:store:info")
     public R info(@PathVariable("id") Integer id){
-		TypeEntity type = typeService.getById(id);
-        System.out.println(111);
-        if (null !=type){
-            StoreEntity byId = storeService.getById(type.getStoreId());
-            if (null !=byId) type.setStoreName(byId.getName());
-        }
-        return R.ok().put("type", type);
+		StoreEntity store = storeService.getById(id);
+
+        return R.ok().put("store", store);
     }
 
     /**
      * 保存
      */
     @RequestMapping("/save")
-    @RequiresPermissions("generator:type:save")
-    public R save(@RequestBody TypeEntity type){
-		typeService.save(type);
+    @RequiresPermissions("generator:store:save")
+    public R save(@RequestBody StoreEntity store){
+        store.setCreatetime(new Date());
+		storeService.save(store);
 
         return R.ok();
     }
@@ -76,9 +71,9 @@ public class TypeController extends AbstractController {
      * 修改
      */
     @RequestMapping("/update")
-    @RequiresPermissions("generator:type:update")
-    public R update(@RequestBody TypeEntity type){
-		typeService.updateById(type);
+    @RequiresPermissions("generator:store:update")
+    public R update(@RequestBody StoreEntity store){
+		storeService.updateById(store);
 
         return R.ok();
     }
@@ -87,21 +82,20 @@ public class TypeController extends AbstractController {
      * 删除
      */
     @RequestMapping("/delete")
-    @RequiresPermissions("generator:type:delete")
+    @RequiresPermissions("generator:store:delete")
     public R delete(@RequestBody Integer[] ids){
-		typeService.removeByIds(Arrays.asList(ids));
+		storeService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
     }
 
-    /**
-     * 删除
-     */
+
     @RequestMapping("/selectAll")
+    @RequiresPermissions("generator:store:list")
     public R selectAll(){
-        List<TypeEntity> typeEntity =typeService.list(
-                new QueryWrapper<TypeEntity>()
+        List<StoreEntity> storeEntity =storeService.list(
+                new QueryWrapper<StoreEntity>()
         );
-        return R.ok().put("list", typeEntity);
+        return R.ok().put("list", storeEntity);
     }
 }

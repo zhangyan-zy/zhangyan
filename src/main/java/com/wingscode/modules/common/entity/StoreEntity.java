@@ -1,26 +1,26 @@
 package com.wingscode.modules.common.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
- * 商品类别
+ * 
  * 
  * @author zhangyan
  * @email sunlightcs@gmail.com
- * @date 2023-02-11 21:48:22
+ * @date 2024-12-12 19:10:29
  */
 @Data
-@TableName("tb_type")
-public class TypeEntity implements Serializable {
+@TableName("tb_store")
+public class StoreEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * id
+	 * 
 	 */
 	@TableId
 	private Integer id;
@@ -28,10 +28,25 @@ public class TypeEntity implements Serializable {
 	 * 
 	 */
 	private String name;
-
-	private String storeId;
-
-	@TableField(exist = false)
-	private String storeName;
+	/**
+	 * 
+	 */
+	private String no;
+	/**
+	 * 
+	 */
+	private String area;
+	/**
+	 * 
+	 */
+	private String address;
+	/**
+	 * 坐标
+	 */
+	private String coordinate;
+	/**
+	 * 
+	 */
+	private Date createtime;
 
 }

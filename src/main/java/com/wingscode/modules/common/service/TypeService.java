@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * 商品类别
  *
- * @author chenshun
+ * @author zhangyan
  * @email sunlightcs@gmail.com
  * @date 2023-02-11 21:48:22
  */

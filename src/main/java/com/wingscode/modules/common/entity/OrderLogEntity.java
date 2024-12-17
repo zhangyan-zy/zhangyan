@@ -1,6 +1,5 @@
 package com.wingscode.modules.common.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -8,15 +7,15 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * 商品类别
+ * 订单日志
  * 
  * @author zhangyan
  * @email sunlightcs@gmail.com
- * @date 2023-02-11 21:48:22
+ * @date 2024-12-14 17:36:42
  */
 @Data
-@TableName("tb_type")
-public class TypeEntity implements Serializable {
+@TableName("tb_order_log")
+public class OrderLogEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -25,13 +24,12 @@ public class TypeEntity implements Serializable {
 	@TableId
 	private Integer id;
 	/**
-	 * 
+	 * 订单编号
 	 */
-	private String name;
-
-	private String storeId;
-
-	@TableField(exist = false)
-	private String storeName;
+	private String orderNo;
+	/**
+	 * 操作信息
+	 */
+	private String msg;
 
 }

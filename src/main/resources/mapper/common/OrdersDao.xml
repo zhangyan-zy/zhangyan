@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wingscode.modules.common.dao.OrdersDao">
+
+
+    <select id="selectAll" resultType="com.wingscode.modules.common.entity.OrdersEntity">
+        select o.*,g.name goodName ,s.name storeName from tb_orders o
+        left join tb_goods g on o.good_id=g.id
+        left join tb_store s on o.store_id=s.id
+        where 1=1
+        <if test="orderId !=null and orderId !='' ">
+            and o.order_no like concat('%',#{orderId},'%')
+        </if>
+        <if test="goodsName !=null and goodsName !='' ">
+            and g.name like concat('%',#{goodsName},'%')
+        </if>
+        <if test="orderStatus !=null and orderStatus !='' ">
+            and o.state =#{orderStatus}
+        </if>
+        <if test="storeId !=null and storeId !='' ">
+            and o.store_Id =#{storeId}
+        </if>
+    </select>
+
+</mapper>

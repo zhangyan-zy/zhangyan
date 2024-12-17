@@ -3,21 +3,21 @@ package com.wingscode.modules.common.service.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wingscode.common.utils.PageUtils;
-import com.wingscode.modules.common.dao.TypeDao;
-import com.wingscode.modules.common.entity.TypeEntity;
-import com.wingscode.modules.common.service.TypeService;
+import com.wingscode.modules.common.dao.StoreDao;
+import com.wingscode.modules.common.entity.StoreEntity;
+import com.wingscode.modules.common.service.StoreService;
 import io.netty.util.internal.StringUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
 
-@Service("typeService")
-public class TypeServiceImpl extends ServiceImpl<TypeDao, TypeEntity> implements TypeService {
+@Service("storeService")
+public class StoreServiceImpl extends ServiceImpl<StoreDao, StoreEntity> implements StoreService {
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        String storeId = (String) params.get("storeId");
+
         String name = (String) params.get("name");
 
         int page = 1;
@@ -29,9 +29,9 @@ public class TypeServiceImpl extends ServiceImpl<TypeDao, TypeEntity> implements
             limit = Integer.parseInt((String) params.get("limit"));
         }
 
-        Page<TypeEntity> pageArt = new Page<>(page, limit);
+        Page<StoreEntity> pageArt = new Page<>(page, limit);
 
-        return new PageUtils(baseMapper.selectAll(pageArt,storeId,name));
+        return new PageUtils(baseMapper.selectAll(pageArt,name));
     }
 
 }

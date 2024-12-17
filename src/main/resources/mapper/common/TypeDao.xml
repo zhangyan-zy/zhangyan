@@ -10,4 +10,14 @@
     </resultMap>
 
 
+    <select id="selectAll" resultType="com.wingscode.modules.common.entity.TypeEntity">
+        select t.*,s.name storeName from tb_type t left join tb_store s on t.store_id=s.id
+        where 1=1
+        <if test="name !=null and name !='' ">
+            and t.name like concat('%',#{name},'%')
+        </if>
+        <if test="storeId !=null and storeId !='' ">
+            and t.store_id =#{storeId}
+        </if>
+    </select>
 </mapper>
