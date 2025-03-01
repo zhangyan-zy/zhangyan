@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.wingscode.modules.common.dao.CouponDao">
+<mapper namespace="com.wingscode.modules.common.dao.AppuserCouponDao">
 
 
-    <select id="selectAll" resultType="com.wingscode.modules.common.entity.CouponEntity">
-        select * from tb_coupon
+    <select id="selectAll" resultType="com.wingscode.modules.common.entity.AppuserCouponEntity">
+        select * from tb_appuser_coupon
         where 1=1
         <if test="name !=null and name !='' ">
             and  name like concat('%',#{name},'%')
         </if>
     </select>
+
 </mapper>

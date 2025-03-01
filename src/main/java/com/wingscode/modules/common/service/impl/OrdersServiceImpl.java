@@ -17,10 +17,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, OrdersEntity> impl
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        String orderId = (String) params.get("orderId");
-        String goodsName = (String) params.get("goodsName");
-        String orderStatus = (String) params.get("orderStatus");
-        String storeId = (String) params.get("storeId");
+        String goodsName = (String) params.get("key");
 
         int page = 1;
         if(!StringUtil.isNullOrEmpty((String) params.get("page"))){
@@ -33,7 +30,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, OrdersEntity> impl
 
         Page<OrdersEntity> pageArt = new Page<>(page, limit);
 
-        return new PageUtils(baseMapper.selectAll(pageArt,orderId,goodsName,orderStatus,storeId));
+        return new PageUtils(baseMapper.selectAll(pageArt,goodsName));
     }
 
 }

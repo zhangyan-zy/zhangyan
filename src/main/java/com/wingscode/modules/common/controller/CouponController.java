@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
 
 
@@ -57,6 +58,7 @@ public class CouponController extends AbstractController {
     @RequestMapping("/save")
     @RequiresPermissions("generator:coupon:save")
     public R save(@RequestBody CouponEntity coupon){
+        coupon.setCreateTime(new Date());
 		couponService.save(coupon);
 
         return R.ok();

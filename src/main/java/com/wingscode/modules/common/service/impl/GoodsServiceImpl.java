@@ -16,7 +16,7 @@ import java.util.Map;
 public class GoodsServiceImpl extends ServiceImpl<GoodsDao, GoodsEntity> implements GoodsService {
 
     @Override
-    public PageUtils queryPage(Map<String, Object> params) {
+    public PageUtils queryPage(Map<String, Object> params) throws Exception {
 
         String name = (String) params.get("name");
         String typeId = (String) params.get("typeId");
@@ -33,6 +33,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsDao, GoodsEntity> impleme
         }
 
         Page<GoodsEntity> pageArt = new Page<>(page, limit);
+
 
         return new PageUtils(baseMapper.selectAll(pageArt,name,typeId));
     }

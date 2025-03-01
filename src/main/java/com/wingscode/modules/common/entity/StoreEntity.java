@@ -49,4 +49,9 @@ public class StoreEntity implements Serializable {
 	 */
 	private Date createtime;
 
+	private String phone;
+
+	private String opentime;
+
+
 }

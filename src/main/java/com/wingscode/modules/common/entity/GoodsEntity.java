@@ -7,6 +7,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * 商品表
@@ -50,5 +51,11 @@ public class GoodsEntity implements Serializable {
 
 	private int count;
 	private int state;
+
+
+	private Date createtime;
+
+	private String imageUrl;
+
 
 }

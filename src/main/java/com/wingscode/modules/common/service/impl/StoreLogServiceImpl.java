@@ -3,17 +3,17 @@ package com.wingscode.modules.common.service.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wingscode.common.utils.PageUtils;
-import com.wingscode.modules.common.dao.CouponDao;
-import com.wingscode.modules.common.entity.CouponEntity;
-import com.wingscode.modules.common.service.CouponService;
+import com.wingscode.modules.common.dao.StoreLogDao;
+import com.wingscode.modules.common.entity.StoreLogEntity;
+import com.wingscode.modules.common.service.StoreLogService;
 import io.netty.util.internal.StringUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
 
-@Service("couponService")
-public class CouponServiceImpl extends ServiceImpl<CouponDao, CouponEntity> implements CouponService {
+@Service("storeLogService")
+public class StoreLogServiceImpl extends ServiceImpl<StoreLogDao, StoreLogEntity> implements StoreLogService {
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -28,7 +28,7 @@ public class CouponServiceImpl extends ServiceImpl<CouponDao, CouponEntity> impl
             limit = Integer.parseInt((String) params.get("limit"));
         }
 
-        Page<CouponEntity> pageArt = new Page<>(page, limit);
+        Page<StoreLogEntity> pageArt = new Page<>(page, limit);
 
         return new PageUtils(baseMapper.selectAll(pageArt,name));
     }

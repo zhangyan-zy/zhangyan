@@ -18,9 +18,6 @@ import org.apache.ibatis.annotations.Param;
 public interface OrdersDao extends BaseMapper<OrdersEntity> {
 
     Page<GoodsEntity> selectAll(@Param("page")Page page,
-                                @Param("orderId") String orderId,
-                                @Param("goodsName") String goodsId,
-                                @Param("orderStatus") String orderStatus,
-                                @Param("storeId") String storeId);
+                                @Param("goodsName") String goodsId);
 
 }

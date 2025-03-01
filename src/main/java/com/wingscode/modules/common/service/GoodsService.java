@@ -15,6 +15,6 @@ import java.util.Map;
  */
 public interface GoodsService extends IService<GoodsEntity> {
 
-    PageUtils queryPage(Map<String, Object> params);
+    PageUtils queryPage(Map<String, Object> params) throws  Exception;
 }
 

@@ -1,12 +1,10 @@
 package com.wingscode.config;
 
+import io.swagger.annotations.ApiOperation;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import java.util.List;
-
-import io.swagger.annotations.ApiOperation;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -15,6 +13,8 @@ import springfox.documentation.service.ApiKey;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -51,4 +51,13 @@ public class SwaggerConfig implements WebMvcConfigurer {
         );
     }
 
+
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/doc, html").addResourceLocations("classpath: /META-INF/resources /");
+        registry.addResourceHandler("/webjars/*").addResourceLocations("classpath: /META- INF/resources/webjars/");
+        String urlPath = "/naicha/src/main/resources/file/";
+        String localPath="D:/naicha/src/main/resources/file";
+        registry.addResourceHandler(urlPath + "/**") .addResourceLocations("file:" + localPath+ "/");
+        System.out.println("1111111111111111111111");
+    }
 }

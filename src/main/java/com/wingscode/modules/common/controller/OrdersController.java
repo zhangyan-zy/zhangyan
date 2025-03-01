@@ -9,10 +9,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 
 /**
@@ -86,7 +83,22 @@ public class OrdersController extends AbstractController {
     @RequiresPermissions("generator:orders:delete")
     public R delete(@RequestBody String[] orderNos){
 		ordersService.removeByIds(Arrays.asList(orderNos));
+        return R.ok();
+    }
 
+
+    /**
+     * 删除
+     */
+    @RequestMapping("/updateState")
+    @RequiresPermissions("generator:orders:delete")
+    public R updateState(@RequestBody String[] orderNos){
+        List<String> strings = Arrays.asList(orderNos);
+        if (strings.size()>0){
+            OrdersEntity orders = ordersService.getById(strings.get(0));
+            orders.setState(1);
+            ordersService.updateById(orders);
+        }
         return R.ok();
     }
 

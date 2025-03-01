@@ -1,8 +1,6 @@
 package com.wingscode.modules.oss.controller;
 
 import com.google.gson.Gson;
-import com.wingscode.modules.oss.service.SysOssService;
-import com.wingscode.modules.sys.service.SysConfigService;
 import com.wingscode.common.exception.RRException;
 import com.wingscode.common.utils.ConfigConstant;
 import com.wingscode.common.utils.Constant;
@@ -13,16 +11,15 @@ import com.wingscode.common.validator.group.AliyunGroup;
 import com.wingscode.common.validator.group.QcloudGroup;
 import com.wingscode.common.validator.group.QiniuGroup;
 import com.wingscode.modules.oss.cloud.CloudStorageConfig;
-import com.wingscode.modules.oss.cloud.OSSFactory;
-import com.wingscode.modules.oss.entity.SysOssEntity;
-
+import com.wingscode.modules.oss.service.SysOssService;
+import com.wingscode.modules.sys.service.SysConfigService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -100,16 +97,38 @@ public class SysOssController {
 			throw new RRException("上传文件不能为空");
 		}
 
-		//上传文件
+		// //上传文件
 		String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-		String url = OSSFactory.build().uploadSuffix(file.getBytes(), suffix);
-
-		//保存文件信息
-		SysOssEntity ossEntity = new SysOssEntity();
-		ossEntity.setUrl(url);
-		ossEntity.setCreateDate(new Date());
-		sysOssService.save(ossEntity);
-
+		// String url = OSSFactory.build().uploadSuffix(file.getBytes(), suffix);
+		//
+		//
+		// // String url1="C:/Users/张延/Desktop/小程序素材/"+file.getOriginalFilename();
+		// // String url="D:/naicha/src/main/resources/file/"+file.getOriginalFilename();
+		// //
+		// //
+		// // try (InputStream inputStream = new FileInputStream(url1);
+		// // 	 OutputStream outputStream = new FileOutputStream(url)) {
+		// //
+		// // 	byte[] buffer = new byte[1024];
+		// // 	int bytesRead;
+		// // 	while ((bytesRead = inputStream.read(buffer)) != -1) {
+		// // 		outputStream.write(buffer, 0, bytesRead);
+		// // 	}
+		// // 	System.out.println("文件下载完成！");
+		// // } catch (IOException e) {
+		// // 	e.printStackTrace();
+		// // }
+		//
+		// System.out.println(url);
+		// //保存文件信息
+		// SysOssEntity ossEntity = new SysOssEntity();
+		// ossEntity.setUrl(url);
+		// ossEntity.setCreateDate(new Date());
+		// sysOssService.save(ossEntity);
+		File file1 = new File("D:/loveVue/static/img/" + file.getOriginalFilename());
+		file.transferTo(file1);
+		// String url="http://localhost:8081/naicha/src/main/java/file/"+file1.getName();
+		String url="/static/img/"+file1.getName();
 		return R.ok().put("url", url);
 	}
 

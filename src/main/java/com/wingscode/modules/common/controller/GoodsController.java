@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +44,7 @@ public class GoodsController extends AbstractController {
     @RequestMapping("/list")
     @RequiresPermissions("generator:goods:list")
     @ApiOperation("查询")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) throws Exception {
         PageUtils page = goodsService.queryPage(params);
 
         return R.ok().put("page", page);
@@ -71,6 +72,7 @@ public class GoodsController extends AbstractController {
     @RequiresPermissions("generator:goods:save")
     public R save(@RequestBody GoodsEntity goods){
         goods.setState(2);
+        goods.setCreatetime(new Date());
 		goodsService.save(goods);
 
         return R.ok();
@@ -113,6 +115,7 @@ public class GoodsController extends AbstractController {
     public R selectAll(){
         List<GoodsEntity> goodsList =goodsService.list(
                 new QueryWrapper<GoodsEntity>()
+                .eq("State", "0")
         );
         return R.ok().put("goodsList", goodsList);
     }

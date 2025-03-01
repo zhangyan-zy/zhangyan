@@ -5,37 +5,31 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
 
 /**
- * 优惠券表
+ * 
  * 
  * @author chenshun
  * @email sunlightcs@gmail.com
- * @date 2024-12-26 22:25:27
+ * @date 2024-12-26 22:22:29
  */
 @Data
-@TableName("tb_coupon")
-public class CouponEntity implements Serializable {
+@TableName("tb_appuser_coupon")
+public class AppuserCouponEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * id
+	 * 
 	 */
 	@TableId
 	private Integer id;
 	/**
-	 * 优惠券名称
+	 * 用户id
 	 */
-	private String name;
+	private Integer userId;
 	/**
-	 * 创建时间
+	 * 优惠券id
 	 */
-	private Date createTime;
-	/**
-	 * 优惠券金额
-	 */
-	private BigDecimal price;
+	private Integer couponId;
 
 }

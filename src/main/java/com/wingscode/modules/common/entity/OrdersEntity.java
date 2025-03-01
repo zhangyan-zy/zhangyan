@@ -19,6 +19,8 @@ import java.util.Date;
 public class OrdersEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	private Integer id;
+
 	/**
 	 * 订单编号
 	 */
@@ -39,6 +41,9 @@ public class OrdersEntity implements Serializable {
 	 * 订单状态（0制作中 1成功 2失败）
 	 */
 	private Integer state;
+
+	private Integer userId;
+
 	/**
 	 * 订单创建时间
 	 */
@@ -52,4 +57,10 @@ public class OrdersEntity implements Serializable {
 	private String goodName;
 	@TableField(exist = false)
 	private String storeName;
+	@TableField(exist = false)
+	private String username;
+
+
+	private String msg;
+
 }

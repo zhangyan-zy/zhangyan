@@ -13,6 +13,8 @@
         <if test="typeId !=null and typeId !='' ">
             and b.id =#{typeId}
         </if>
+
+        order by createtime desc
     </select>
 
 </mapper>
