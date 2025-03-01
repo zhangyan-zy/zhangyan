@@ -84,6 +84,10 @@ public class GoodsController extends AbstractController {
     @RequestMapping("/update")
     @RequiresPermissions("generator:goods:update")
     public R update(@RequestBody GoodsEntity goods){
+        if (goods.getImageUrl().contains("token")){
+            GoodsEntity byId = goodsService.getById(goods.getId());
+            goods.setImageUrl(byId.getImageUrl());
+        }
         if (null ==goods) return R.error("系统错误！联系管理员");
         if (goods.getCount()<0) return R.error("数量不能为负数");
         if (goods.getPrice().compareTo(new BigDecimal("0"))<0) return R.error("数量不能为0或负数");

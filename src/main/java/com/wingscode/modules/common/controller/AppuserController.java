@@ -75,6 +75,10 @@ public class AppuserController {
     @RequestMapping("/update")
     @RequiresPermissions("generator:appuser:update")
     public R update(@RequestBody AppuserEntity appuser){
+        if (appuser.getImageUrl().contains("token")){
+            AppuserEntity byId = appuserService.getById(appuser.getId());
+            appuser.setImageUrl(byId.getImageUrl());
+        }
         if (new BigDecimal(appuser.getAmount()).compareTo(new BigDecimal("0"))<0){
             return R.error("余额不能小于0");
         }
