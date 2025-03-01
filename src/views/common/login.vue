@@ -4,7 +4,7 @@
       <div class="site-content">
         <div class="brand-info">
           <h2 class="brand-info__text">
-            飞梦网络呼叫中心业务管理系统</h2>
+            奶茶小程序后台管理</h2>
           <div class="login-main">
             <el-form :model="dataForm" :rules="dataRule" ref="dataForm"
                      @keyup.enter.native="dataFormSubmit()" status-icon>
@@ -31,7 +31,7 @@
               </el-form-item>
             </el-form>
           </div>
-          <p class="brand-info__intro" style="text-align: center">Copyright © 2016-2020 飞梦网络&nbsp&nbsp&nbsp&nbsp<a href="http://www.beian.miit.gov.cn">苏ICP备19010048号-1</a></p>
+          <p class="brand-info__intro" style="text-align: center">Copyright © 2024  zhangyan</p>
         </div>
       </div>
     </div>

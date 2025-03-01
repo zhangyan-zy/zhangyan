@@ -15,17 +15,24 @@
     </el-form-item>
   </el-form>
 </template>
-
 <script>
   export default {
     computed: {
       navbarLayoutType: {
-        get () { return this.$store.state.common.navbarLayoutType },
-        set (val) { this.$store.commit('common/updateNavbarLayoutType', val) }
+        get() {
+          return this.$store.state.common.navbarLayoutType
+        },
+        set(val) {
+          this.$store.commit('common/updateNavbarLayoutType', val)
+        }
       },
       sidebarLayoutSkin: {
-        get () { return this.$store.state.common.sidebarLayoutSkin },
-        set (val) { this.$store.commit('common/updateSidebarLayoutSkin', val) }
+        get() {
+          return this.$store.state.common.sidebarLayoutSkin
+        },
+        set(val) {
+          this.$store.commit('common/updateSidebarLayoutSkin', val)
+        }
       }
     }
   }
